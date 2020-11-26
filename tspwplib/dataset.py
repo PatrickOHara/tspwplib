@@ -9,3 +9,9 @@ def load_tsplib_dataset(root: Path, name: InstanceName):
     """Load a TSP lib problem"""
     problem = tsplib95.load(root / (name.value + ".tsp"))
     return problem
+
+class ProfitsProblem(tsplib95.models.Problem):
+    """TSP with Profits Problem"""
+
+    # TODO allow cost limit
+    # TODO add profit limit
