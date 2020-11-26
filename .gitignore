@@ -1,0 +1,7 @@
+
+# python cache
+*.egg-info
+__pycache__
+
+# misc
+.vscode
