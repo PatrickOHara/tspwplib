@@ -17,8 +17,8 @@ script:
   # Check black formatting would not make any chages
   - black --check */
   # pylint provides stricter linting
-  - pylint --rcfile .pylintrc setup.py tspwp tests/*
+  - pylint --rcfile .pylintrc setup.py tspwplib tests/*
   # type hinting
-  - mypy --config-file .mypy.ini tspwp
+  - mypy --config-file .mypy.ini tspwplib
   # Run unit tests
   - python -m pytest

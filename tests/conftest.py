@@ -5,11 +5,12 @@ from pathlib import Path
 import pytest
 from tspwplib.types import Alpha, Generation, InstanceName
 
+
 def pytest_addoption(parser):
     """Add option to enable travis specific options"""
     parser.addoption(
         "--tsplib-root",
-        default=os.environ.get('TSPLIB_ROOT'),
+        default=os.environ.get("TSPLIB_ROOT"),
         required=False,
         type=str,
         help="Filepath to tsplib95 directory",
@@ -22,10 +23,12 @@ def pytest_addoption(parser):
         help="Filepath to oplib directory",
     )
 
+
 @pytest.fixture(scope="function")
 def tsplib_root(request) -> Path:
     """Root of tsplib95 data"""
     return Path(request.config.getoption("--tsplib-root"))
+
 
 @pytest.fixture(scope="function")
 def oplib_root(request) -> Path:
@@ -58,8 +61,8 @@ def alpha(request) -> Alpha:
     params=[
         InstanceName.eil76,
         InstanceName.st70,
-        InstanceName.vm1748,
-    ]
+        InstanceName.rat195,
+    ],
 )
 def instance_name(request) -> InstanceName:
     """Loop through valid instance names"""

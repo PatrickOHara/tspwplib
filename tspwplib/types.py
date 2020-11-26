@@ -7,6 +7,7 @@ class InstanceName(str, Enum):
     """Names of TSPlib instances"""
 
     eil76 = "eil76"
+    rat195 = "rat195"
     st70 = "st70"
     vm1748 = "vm1748"
 
