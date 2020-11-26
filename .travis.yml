@@ -8,7 +8,7 @@ env:
   - TSPLIB_ROOT="../tsplib95/archives/problems/tsp" OPLIB_ROOT="../OPLib/"
 before_install:
   - git clone https://github.com/bcamath-ds/OPLib.git ../OPLib
-  - git clone https://github.com/rhgrant10/tsplib95.git ../tsblib95
+  - git clone https://github.com/rhgrant10/tsplib95.git ../tsplib95
 install:
   - pip install .
   - pip install -r requirements.txt
