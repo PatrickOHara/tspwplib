@@ -1,9 +1,13 @@
 """Fixtures for testing"""
 
-import pytest
 from pathlib import Path
+import pytest
 from tspwplib.types import Alpha, Generation, InstanceName
 
+@pytest.fixture(scope="function")
+def tsplib_root() -> Path:
+    """Root of tsplib95 data"""
+    return Path("/Users/pohara/data/tsplib95")
 
 @pytest.fixture(scope="function")
 def oplib_root() -> Path:
@@ -31,7 +35,14 @@ def alpha(request) -> Alpha:
     return request.param
 
 
-@pytest.fixture(scope="function", params=[InstanceName.vm1748])
+@pytest.fixture(
+    scope="function",
+    params=[
+        InstanceName.eil76,
+        InstanceName.st70,
+        InstanceName.vm1748,
+    ]
+)
 def instance_name(request) -> InstanceName:
     """Loop through valid instance names"""
     return request.param
