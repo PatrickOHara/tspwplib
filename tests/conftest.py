@@ -1,18 +1,36 @@
 """Fixtures for testing"""
 
+import os
 from pathlib import Path
 import pytest
 from tspwplib.types import Alpha, Generation, InstanceName
 
-@pytest.fixture(scope="function")
-def tsplib_root() -> Path:
-    """Root of tsplib95 data"""
-    return Path("/Users/pohara/data/tsplib95")
+def pytest_addoption(parser):
+    """Add option to enable travis specific options"""
+    parser.addoption(
+        "--tsplib-root",
+        default=os.environ.get('TSPLIB_ROOT'),
+        required=False,
+        type=str,
+        help="Filepath to tsplib95 directory",
+    )
+    parser.addoption(
+        "--oplib-root",
+        default=os.environ.get("OPLIB_ROOT"),
+        required=False,
+        type=str,
+        help="Filepath to oplib directory",
+    )
 
 @pytest.fixture(scope="function")
-def oplib_root() -> Path:
+def tsplib_root(request) -> Path:
+    """Root of tsplib95 data"""
+    return Path(request.config.getoption("--tsplib-root"))
+
+@pytest.fixture(scope="function")
+def oplib_root(request) -> Path:
     """Root of the cloned OP lib"""
-    return Path("/Users/pohara/data/oplib")
+    return Path(request.config.getoption("--oplib-root"))
 
 
 @pytest.fixture(

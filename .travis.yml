@@ -4,6 +4,12 @@ python:
   - "3.6"
   - "3.8"
 cache: pip
+env:
+  - TSPLIB_ROOT="$(pwd)/tsblib95/archives/problems/tsp"
+  - OPLIB_ROOT="$(pwd)/OPLib/"
+before_install:
+  - git clone https://github.com/bcamath-ds/OPLib.git
+  - git clone git://github.com/rhgrant10/tsplib95
 install:
   - pip install .
   - pip install -r requirements.txt
