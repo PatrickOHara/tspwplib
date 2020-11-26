@@ -1,0 +1,18 @@
+language: python
+name: "python unit tests & code style"
+python:
+  - "3.6"
+  - "3.8"
+cache: pip
+install:
+  - pip install .
+  - pip install -r requirements.txt
+script:
+  # Check black formatting would not make any chages
+  - black --check */
+  # pylint provides stricter linting
+  - pylint --rcfile .pylintrc setup.py tspwp tests/*
+  # type hinting
+  - mypy --config-file .mypy.ini tspwp
+  # Run unit tests
+  - python -m pytest
