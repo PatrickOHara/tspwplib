@@ -5,3 +5,6 @@ __pycache__
 
 # misc
 .vscode
+
+# docs
+site/
