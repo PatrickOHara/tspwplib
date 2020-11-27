@@ -13,7 +13,6 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     node_score = tsplib95.fields.DemandsField("NODE_SCORE_SECTION")
     # The optimal solution to the TSP
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
-    # TODO add profit limit for PcTSP
 
     def get_cost_limit(self) -> int:
         """Get the cost limit for a TSP with Profits problem
@@ -29,7 +28,6 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         Returns:
             Mapping from node to node score (profit)
         """
-        # TODO
 
     def get_tsp_optimal_value(self) -> int:
         """Get the value of the optimal solution to TSP

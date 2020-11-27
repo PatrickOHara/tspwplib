@@ -26,8 +26,6 @@ def test_get_cost_limit(oplib_root, generation, instance_name, alpha):
         oplib_root, generation, instance_name, alpha=alpha
     )
     problem = ProfitsProblem.load(filepath)
-    # total_cost = sum([problem.get_weight(source, target) for source, target in problem.get_edges()])
-
     expected_cost_limit = math.ceil(
         OptimalSolutionTSP[instance_name] * (alpha.value / 100.0)
     )
