@@ -10,7 +10,10 @@ import random
 from typing import Dict
 import networkx as nx
 
-def remove_random_edges_from_graph(G: nx.Graph, edge_removal_probability: float = 0.5) -> nx.Graph:
+
+def remove_random_edges_from_graph(
+    G: nx.Graph, edge_removal_probability: float = 0.5
+) -> nx.Graph:
     """Remove edges from the graph to make it more sparse
 
     Args:
@@ -34,9 +37,10 @@ def remove_random_edges_from_graph(G: nx.Graph, edge_removal_probability: float 
             H.remove_edge(u, v)
     return H
 
+
 def measure_sparsity_metrics(G: nx.Graph) -> Dict[str, float]:
     """Calculate metrics for how sparse a graph is"""
     return dict(
         degeneracy=max(nx.core_number(G).values()),
-        degree_ratio=sum(nx.degree(G).values()) / (2 * G.number_of_edges())
+        degree_ratio=sum(nx.degree(G).values()) / (2 * G.number_of_edges()),
     )
