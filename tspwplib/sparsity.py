@@ -14,19 +14,15 @@ import networkx as nx
 def remove_random_edges_from_graph(
     G: nx.Graph, edge_removal_probability: float = 0.5
 ) -> nx.Graph:
-    """Remove edges from the graph to make it more sparse
+    """Remove edges from the graph to make it more sparse.
+    Edges are removed randomly with uniform and indepedent probability.
 
     Args:
         G: Complete graph
-
-    Keyword args:
         edge_removal_probability: Probability of removing an edge from G
 
     Returns:
         New graph with edge removed
-
-    Note:
-        Edges are removed randomly with uniform and indepedent probability
     """
     # make copy of graph to avoid editing original copy
     H = G.copy()
