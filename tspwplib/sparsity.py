@@ -6,19 +6,33 @@ degeneracy(G) = max(networkx.core_number(G).values())
 ```
 """
 
+import random
 from typing import Dict
 import networkx as nx
 
-def remove_gamma_edges_from_graph(G: nx.Graph, gamma: float) -> nx.Graph:
+def remove_random_edges_from_graph(G: nx.Graph, edge_removal_probability: float = 0.5) -> nx.Graph:
     """Remove edges from the graph to make it more sparse
 
     Args:
         G: Complete graph
-        gamma: Fraction of edges to remove
+
+    Keyword args:
+        edge_removal_probability: Probability of removing an edge from G
 
     Returns:
         New graph with edge removed
+
+    Note:
+        Edges are removed randomly with uniform and indepedent probability
     """
+    # make copy of graph to avoid editing original copy
+    H = G.copy()
+
+    # for each edge in G, remove in H if random number if less than edge removal prob
+    for u, v in G.edges():
+        if random.random() < edge_removal_probability:
+            H.remove_edge(u, v)
+    return H
 
 def measure_sparsity_metrics(G: nx.Graph) -> Dict[str, float]:
     """Calculate metrics for how sparse a graph is"""
