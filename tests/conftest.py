@@ -6,6 +6,9 @@ import pytest
 from tspwplib.types import Alpha, Generation, InstanceName
 
 
+# add parser options
+
+
 def pytest_addoption(parser):
     """Add option to enable travis specific options"""
     parser.addoption(
@@ -24,6 +27,9 @@ def pytest_addoption(parser):
     )
 
 
+# fixtures for filepaths
+
+
 @pytest.fixture(scope="function")
 def tsplib_root(request) -> Path:
     """Root of tsplib95 data"""
@@ -34,6 +40,9 @@ def tsplib_root(request) -> Path:
 def oplib_root(request) -> Path:
     """Root of the cloned OP lib"""
     return Path(request.config.getoption("--oplib-root"))
+
+
+# fixtures for types
 
 
 @pytest.fixture(
@@ -66,4 +75,22 @@ def alpha(request) -> Alpha:
 )
 def instance_name(request) -> InstanceName:
     """Loop through valid instance names"""
+    return request.param
+
+
+# fixtures for complete graphs
+
+
+@pytest.fixture(
+    scope="function",
+    params=[
+        0.0,
+        0.1,
+        0.5,
+        0.9,
+        1.0,
+    ],
+)
+def edge_removal_probability(request) -> float:
+    """Different valid values for probability of removing an edge"""
     return request.param
