@@ -11,4 +11,14 @@ setup(
     packages=["tspwplib"],
     python_requires=">=3.6",
     version="0.1",
+    classifiers=[
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3 :: Only',
+        'Operating System :: OS Independent',
+        'License :: MIT License',
+    ],
 )
