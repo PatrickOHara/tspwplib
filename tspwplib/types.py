@@ -3,6 +3,20 @@
 from enum import Enum, IntEnum
 
 
+class VertexFunctionName(str, Enum):
+    """Valid names of functions on vertices"""
+
+    demand = "demand"
+    prize = "prize"
+
+
+class EdgeFunctionName(str, Enum):
+    """Valid names of functions on edges"""
+
+    cost = "cost"
+    weight = "weight"
+
+
 class InstanceName(str, Enum):
     """Names of TSPlib instances"""
 
