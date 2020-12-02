@@ -10,7 +10,6 @@ setup(
     name="tspwplib",
     packages=["tspwplib"],
     python_requires=">=3.6",
-    version="0.1",
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
@@ -21,4 +20,6 @@ setup(
         'Operating System :: OS Independent',
         'License :: MIT License',
     ],
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
 )
