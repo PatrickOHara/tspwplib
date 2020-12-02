@@ -6,3 +6,4 @@ mkdocs-material>=6.0.2
 mypy>=0.782
 pylint>=2.6.0
 pytest>=6.1.1
+pytest-tspwplib@git+https://github.com/PatrickOHara/pytest-tspwplib.git#egg=pytest-tspwplib>=0.1.0
