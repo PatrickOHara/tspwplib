@@ -20,7 +20,6 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3 :: Only",
         "Operating System :: OS Independent",
-        "License :: MIT License",
     ],
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
