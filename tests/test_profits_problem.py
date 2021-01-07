@@ -7,10 +7,10 @@ from tspwplib.types import EdgeFunctionName, OptimalSolutionTSP, VertexFunctionN
 from tspwplib.utils import build_path_to_oplib_instance
 
 
-def test_parse_profits_problem(oplib_root, generation, instance_name, alpha):
+def test_parse_profits_problem(oplib_root, generation, graph_name, alpha):
     """Test an OP instance can be parsed"""
     filepath = build_path_to_oplib_instance(
-        oplib_root, generation, instance_name, alpha=alpha
+        oplib_root, generation, graph_name, alpha=alpha
     )
     assert "COST_LIMIT" in ProfitsProblem.fields_by_keyword
     assert "NODE_SCORE_SECTION" in ProfitsProblem.fields_by_keyword
@@ -19,22 +19,22 @@ def test_parse_profits_problem(oplib_root, generation, instance_name, alpha):
     assert problem.is_complete()
 
 
-def test_get_cost_limit(oplib_root, generation, instance_name, alpha):
+def test_get_cost_limit(oplib_root, generation, graph_name, alpha):
     """Test we can get the cost limit"""
     filepath = build_path_to_oplib_instance(
-        oplib_root, generation, instance_name, alpha=alpha
+        oplib_root, generation, graph_name, alpha=alpha
     )
     problem = ProfitsProblem.load(filepath)
     expected_cost_limit = math.ceil(
-        OptimalSolutionTSP[instance_name] * (alpha.value / 100.0)
+        OptimalSolutionTSP[graph_name] * (alpha.value / 100.0)
     )
     assert problem.get_cost_limit() == expected_cost_limit
 
 
-def test_get_node_score(oplib_root, generation, instance_name, alpha):
+def test_get_node_score(oplib_root, generation, graph_name, alpha):
     """Test every node has a prize"""
     filepath = build_path_to_oplib_instance(
-        oplib_root, generation, instance_name, alpha=alpha
+        oplib_root, generation, graph_name, alpha=alpha
     )
     problem = ProfitsProblem.load(filepath)
     node_scores = problem.get_node_score()
@@ -45,10 +45,10 @@ def test_get_node_score(oplib_root, generation, instance_name, alpha):
         assert value >= 0
 
 
-def test_get_graph(oplib_root, generation, instance_name, alpha):
+def test_get_graph(oplib_root, generation, graph_name, alpha):
     """Test we can load a graph with prizes"""
     filepath = build_path_to_oplib_instance(
-        oplib_root, generation, instance_name, alpha=alpha
+        oplib_root, generation, graph_name, alpha=alpha
     )
     problem = ProfitsProblem.load(filepath)
     graph = problem.get_graph()
