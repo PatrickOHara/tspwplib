@@ -17,7 +17,7 @@ class EdgeFunctionName(str, Enum):
     weight = "weight"
 
 
-class InstanceName(str, Enum):
+class GraphName(str, Enum):
     """Names of TSPlib instances"""
 
     eil76 = "eil76"
@@ -26,16 +26,16 @@ class InstanceName(str, Enum):
     vm1748 = "vm1748"
 
 
-class Generation(Enum):
+class Generation(str, Enum):
     """Generations of TSPwP problem instances"""
 
-    one = "gen1"
-    two = "gen2"
-    three = "gen3"
-    four = "gen4"
+    gen1 = "gen1"
+    gen2 = "gen2"
+    gen3 = "gen3"
+    gen4 = "gen4"
 
 
-class Alpha(Enum):
+class Alpha(IntEnum):
     """Ratio between profit/cost limit and profit/cost of TSP solution"""
 
     fifty = 50

@@ -8,10 +8,10 @@ from tspwplib.utils import build_path_to_tsplib_instance
 
 
 def test_remove_random_edges_from_graph(
-    tsplib_root, instance_name, edge_removal_probability
+    tsplib_root, graph_name, edge_removal_probability
 ):
     """Test the right number of edges are removed"""
-    filepath = build_path_to_tsplib_instance(tsplib_root, instance_name)
+    filepath = build_path_to_tsplib_instance(tsplib_root, graph_name)
     problem = StandardProblem.load(filepath)
     complete_graph = problem.get_graph()
     assert is_complete_with_self_loops(complete_graph)

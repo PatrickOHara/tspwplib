@@ -25,9 +25,9 @@ def test_is_complete_with_self_loops():
         assert is_complete_with_self_loops(graph)
 
 
-def test_tsplib_is_complete(tsplib_root, instance_name):
+def test_tsplib_is_complete(tsplib_root, graph_name):
     """Test each instance of TSPLIB95 is a complete graph"""
-    filepath = build_path_to_tsplib_instance(tsplib_root, instance_name)
+    filepath = build_path_to_tsplib_instance(tsplib_root, graph_name)
     problem = tsplib95.load(filepath)
     graph = problem.get_graph()
     assert is_complete_with_self_loops(graph)

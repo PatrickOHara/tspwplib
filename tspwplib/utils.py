@@ -1,13 +1,13 @@
 """Useful functions for parsing"""
 
 from pathlib import Path
-from .types import Alpha, Generation, InstanceName
+from .types import Alpha, Generation, GraphName
 
 
 def build_path_to_oplib_instance(
     oplib_root: Path,
     generation: Generation,
-    name: InstanceName,
+    name: GraphName,
     alpha: Alpha = Alpha.fifty,
 ) -> Path:
     """Build a filepath to a oplib instance"""
@@ -15,7 +15,7 @@ def build_path_to_oplib_instance(
     return oplib_root / "instances" / generation.value / filename
 
 
-def build_path_to_tsplib_instance(tsplib_root: Path, name: InstanceName) -> Path:
+def build_path_to_tsplib_instance(tsplib_root: Path, name: GraphName) -> Path:
     """Build a filepath to a tsplib instance"""
     filename = name.value + ".tsp"
     return tsplib_root / filename
