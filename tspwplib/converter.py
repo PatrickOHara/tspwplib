@@ -1,10 +1,27 @@
-"""Create asymmetric directed graphs from other types of graphs"""
+"""Converting between different types of graphs"""
+
 
 from copy import deepcopy
 import math
 from typing import Dict, List, Tuple
 import networkx as nx
-from ..types import EdgeFunctionName, Vertex, VertexFunctionName, VertexList
+import pandas as pd
+from .types import EdgeFunctionName, Vertex, VertexFunctionName, VertexList
+
+
+def to_vertex_dataframe(graph: nx.Graph) -> pd.DataFrame:
+    """Convert graph vertices to pandas dataframe
+
+    Args:
+        graph: Input graph
+
+    Returns:
+        pandas dataframe with vertex set as index
+    """
+    vertex_data = list(map(lambda x: dict(vertex=x[0], **x[1]), graph.nodes(data=True)))
+    vertex_df = pd.DataFrame(vertex_data)
+    vertex_df = vertex_df.set_index("vertex")
+    return vertex_df
 
 
 def asymmetric_from_directed(G: nx.DiGraph) -> nx.DiGraph:
