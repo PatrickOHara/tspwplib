@@ -20,7 +20,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
-        DEFAULT_BUMP: minor
+        DEFAULT_BUMP: patch
         REPO_OWNER: PatrickOHara
         RELEASE_BRANCHES: main
     - name: Set up Python
