@@ -19,7 +19,10 @@ jobs:
       uses: anothrNick/github-tag-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REPO_OWNER: anothrNick
+        WITH_V: true
+        DEFAULT_BUMP: minor
+        REPO_OWNER: PatrickOHara
+        RELEASE_BRANCHES: main
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
