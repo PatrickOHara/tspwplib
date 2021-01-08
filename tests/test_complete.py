@@ -2,8 +2,11 @@
 
 import networkx as nx
 import tsplib95
-from tspwplib.complete import is_complete, is_complete_with_self_loops
-from tspwplib.utils import build_path_to_tsplib_instance
+from tspwplib import (
+    is_complete,
+    is_complete_with_self_loops,
+    build_path_to_tsplib_instance,
+)
 
 
 def test_is_complete():

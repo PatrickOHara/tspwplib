@@ -2,9 +2,13 @@
 
 import math
 import networkx as nx
-from tspwplib.problem import ProfitsProblem
-from tspwplib.types import EdgeFunctionName, OptimalSolutionTSP, VertexFunctionName
-from tspwplib.utils import build_path_to_oplib_instance
+from tspwplib import (
+    ProfitsProblem,
+    EdgeFunctionName,
+    OptimalSolutionTSP,
+    VertexFunctionName,
+    build_path_to_oplib_instance,
+)
 
 
 def test_parse_profits_problem(oplib_root, generation, graph_name, alpha):
