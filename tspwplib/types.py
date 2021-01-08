@@ -1,6 +1,21 @@
 """Type hinting and names"""
 
 from enum import Enum, IntEnum
+from typing import Dict, List, Tuple
+
+# vertex data structures
+Vertex = int
+VertexFunction = Dict[Vertex, int]
+VertexList = List[Vertex]
+VertexLookup = Dict[Vertex, Vertex]
+
+# edge data structures
+Edge = Tuple[Vertex, Vertex]
+EdgeList = List[Edge]
+EdgeFunction = Dict[Vertex, VertexFunction]
+
+# path data structures
+DisjointPaths = Tuple[VertexList, VertexList]
 
 
 class VertexFunctionName(str, Enum):
