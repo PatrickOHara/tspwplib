@@ -1,9 +1,9 @@
 # Installation
 
-Install via pip and git:
+Install via pip:
 
 ```bash
-python -m pip install git+https://github.com/PatrickOHara/tspwplib.git
+pip install tspwplib
 ```
 
 You will also need access to the OPLib dataset:
@@ -15,7 +15,7 @@ git clone https://github.com/bcamath-ds/OPLib.git
 Optionally you may also want to download the original tsplib95 dataset:
 
 ```bash
-git clone git://github.com/rhgrant10/tsplib95
+git clone https://github.com/rhgrant10/tsplib95.git
 ```
 
 It is convenient to define environment variables to define the location of OPLib and tsplib95:
