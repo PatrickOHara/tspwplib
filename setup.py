@@ -7,7 +7,10 @@ setup(
     author_email="patrick.h.o-hara@warwick.ac.uk",
     url="https://github.com/PatrickOHara/tspwplib",
     description="Library of instances for TSP with Profits",
-    install_requires=["tsplib95"],
+    install_requires=[
+        "pandas>=1.0.0",
+        "tsplib95",
+    ],
     name="tspwplib",
     packages=["tspwplib"],
     python_requires=">=3.6",

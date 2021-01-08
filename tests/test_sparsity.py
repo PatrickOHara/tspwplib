@@ -1,10 +1,11 @@
 """Tests for sparsity"""
 
-import networkx as nx
 from tsplib95.models import StandardProblem
-from tspwplib.complete import is_complete_with_self_loops
-from tspwplib.sparsity import remove_random_edges_from_graph
-from tspwplib.utils import build_path_to_tsplib_instance
+from tspwplib import (
+    is_complete_with_self_loops,
+    remove_random_edges_from_graph,
+    build_path_to_tsplib_instance,
+)
 
 
 def test_remove_random_edges_from_graph(
@@ -37,7 +38,6 @@ def test_remove_random_edges_from_graph(
             <= smaller_graph.number_of_edges()
             <= num_edges_upper_bound
         )
-        assert nx.is_connected(smaller_graph)
 
 
 def test_measure_sparsity_metrics():

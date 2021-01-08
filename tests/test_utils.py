@@ -1,6 +1,6 @@
 """Tests for the utils module"""
 
-from tspwplib.utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
+from tspwplib import build_path_to_oplib_instance, build_path_to_tsplib_instance
 
 
 def test_build_path_to_oplib_instance(oplib_root, generation, graph_name, alpha):
