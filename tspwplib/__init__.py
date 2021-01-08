@@ -1,12 +1,6 @@
 """Travelling Salesman Problem with Profits library"""
 
-from . import complete
 from . import converter
-from . import problem
-from . import sparsity
-from . import types
-from . import utils
-from . import walk
 from .complete import is_complete, is_complete_with_self_loops
 from .problem import ProfitsProblem
 from .sparsity import remove_random_edges_from_graph, measure_sparsity_metrics
