@@ -13,7 +13,7 @@ def edge_list_from_walk(walk: VertexList) -> EdgeList:
     Returns:
         List of edges in the same order as the walk
     """
-    edge_list = []
+    edge_list: EdgeList = []
     if len(walk) <= 1:
         return edge_list
     for i in range(len(walk) - 1):
