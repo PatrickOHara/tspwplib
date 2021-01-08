@@ -3,6 +3,7 @@
 from .complete import is_complete, is_complete_with_self_loops
 from .problem import ProfitsProblem
 from .sparsity import remove_random_edges_from_graph, measure_sparsity_metrics
+from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
 from .types import (
     Alpha,
     DisjointPaths,
@@ -36,6 +37,8 @@ __all__ = [
     "VertexFunctionName",
     "VertexList",
     "VertexLookup",
+    "build_path_to_oplib_instance",
+    "build_path_to_tsplib_instance",
     "edge_list_from_walk",
     "is_complete",
     "is_complete_with_self_loops",
