@@ -37,7 +37,6 @@ def test_remove_random_edges_from_graph(
             <= smaller_graph.number_of_edges()
             <= num_edges_upper_bound
         )
-        assert nx.is_connected(smaller_graph)
 
 
 def test_measure_sparsity_metrics():
