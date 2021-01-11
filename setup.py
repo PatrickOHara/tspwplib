@@ -10,6 +10,7 @@ setup(
     install_requires=[
         "pandas>=1.0.0",
         "tsplib95",
+        "graph_tool>=2.37",
     ],
     name="tspwplib",
     packages=["tspwplib"],
