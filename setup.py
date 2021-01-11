@@ -9,7 +9,7 @@ setup(
     description="Library of instances for TSP with Profits",
     install_requires=[
         "pandas>=1.0.0",
-        "tsplib95",
+        "tsplib95>=0.7.1",
     ],
     name="tspwplib",
     packages=["tspwplib"],
