@@ -22,8 +22,8 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         for u, v in self.get_edges():
             weight: int = self.get_weight(u, v)
             # pylint: disable=unsupported-membership-test
-            is_fixed: bool = (u, v) in self.fixed_edges
-            graph.add_edge(names[u], names[v], weight=weight, is_fixed=is_fixed)
+            # is_fixed: bool = (u, v) in self.fixed_edges
+            graph.add_edge(names[u], names[v], weight=weight)
 
     def __set_graph_attributes(self, graph: nx.Graph) -> None:
         """Set attributes of the graph such as the name"""
@@ -32,25 +32,29 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         graph.graph["type"] = self.type
         graph.graph["dimension"] = self.dimension
         graph.graph["capacity"] = self.capacity
+        # pylint: disable=unsubscriptable-object
+        graph.graph["root"] = self.depots[0]
 
     def __set_node_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Add node attributes"""
         for vertex in list(self.get_nodes()):
+            # NOTE pyintergraph cannot handle bool, so we remove some attributes:
+            # is_depot, demand, display
             # pylint: disable=unsupported-membership-test,no-member
-            is_depot = vertex in self.depots
+            # is_depot = vertex in self.depots
             coord: List[int] = self.node_coords.get(vertex)
             graph.add_node(
                 names[vertex],
                 x=coord[0],
                 y=coord[1],
-                is_depot=is_depot,
+                # is_depot=is_depot,
             )
-            demand: int = self.demands.get(vertex)
-            display = self.display_data.get(vertex)
-            if not demand is None:
-                graph[vertex]["demand"] = demand
-            if not display is None:
-                graph[vertex]["display"] = display
+            # demand: int = self.demands.get(vertex)
+            # display = self.display_data.get(vertex)
+            # if not demand is None:
+            # graph[vertex]["demand"] = demand
+            # if not display is None:
+            # graph[vertex]["display"] = display
         nx.set_node_attributes(
             graph, self.get_node_score(), name=VertexFunctionName.prize
         )
