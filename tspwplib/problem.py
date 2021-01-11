@@ -20,9 +20,9 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         """Set edge attributes"""
         # add every edge with some associated metadata
         for a, b in self.get_edges():
-            cost = self.get_weight(a, b)
+            weight: int = self.get_weight(a, b)
             is_fixed: bool = (a, b) in self.fixed_edges
-            graph.add_edge(names[a], names[b], cost=cost, is_fixed=is_fixed)
+            graph.add_edge(names[a], names[b], weight=weight, is_fixed=is_fixed)
 
     def __set_graph_attributes(self, graph: nx.Graph) -> nx.Graph:
         """Set attributes of the graph such as the name"""
@@ -32,9 +32,9 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         graph.graph['dimension'] = self.dimension
         graph.graph['capacity'] = self.capacity
 
-    def __add_node_attributes(self, graph: nx.Graph, names: VertexLookup) -> nx.Graph:
+    def __set_node_attributes(self, graph: nx.Graph, names: VertexLookup) -> nx.Graph:
         """Add node attributes"""
-        for vertex in list(self.get_nodes):
+        for vertex in list(self.get_nodes()):
             is_depot = vertex in self.depots
             coord: List[int] = self.node_coords.get(vertex)
             graph.add_node(
