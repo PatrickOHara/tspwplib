@@ -1,9 +1,9 @@
 """Functions and classes for datasets"""
 
-from typing import Dict, List
+from typing import List
 import networkx as nx
 import tsplib95
-from .types import VertexFunctionName, VertexLookup
+from .types import Vertex, VertexFunctionName, VertexLookup
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
@@ -16,31 +16,33 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     # The optimal solution to the TSP
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
 
-    def __set_edge_attributes(self, graph: nx.Graph, names: VertexLookup) -> nx.Graph:
+    def __set_edge_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Set edge attributes"""
         # add every edge with some associated metadata
-        for a, b in self.get_edges():
-            weight: int = self.get_weight(a, b)
-            is_fixed: bool = (a, b) in self.fixed_edges
-            graph.add_edge(names[a], names[b], weight=weight, is_fixed=is_fixed)
+        for u, v in self.get_edges():
+            weight: int = self.get_weight(u, v)
+            # pylint: disable=unsupported-membership-test
+            is_fixed: bool = (u, v) in self.fixed_edges
+            graph.add_edge(names[u], names[v], weight=weight, is_fixed=is_fixed)
 
-    def __set_graph_attributes(self, graph: nx.Graph) -> nx.Graph:
+    def __set_graph_attributes(self, graph: nx.Graph) -> None:
         """Set attributes of the graph such as the name"""
-        graph.graph['name'] = self.name
-        graph.graph['comment'] = self.comment
-        graph.graph['type'] = self.type
-        graph.graph['dimension'] = self.dimension
-        graph.graph['capacity'] = self.capacity
+        graph.graph["name"] = self.name
+        graph.graph["comment"] = self.comment
+        graph.graph["type"] = self.type
+        graph.graph["dimension"] = self.dimension
+        graph.graph["capacity"] = self.capacity
 
-    def __set_node_attributes(self, graph: nx.Graph, names: VertexLookup) -> nx.Graph:
+    def __set_node_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Add node attributes"""
         for vertex in list(self.get_nodes()):
+            # pylint: disable=unsupported-membership-test,no-member
             is_depot = vertex in self.depots
             coord: List[int] = self.node_coords.get(vertex)
             graph.add_node(
                 names[vertex],
-                x = coord[0],
-                y = coord[1],
+                x=coord[0],
+                y=coord[1],
                 is_depot=is_depot,
             )
             demand: int = self.demands.get(vertex)
@@ -66,7 +68,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         self.__set_graph_attributes(graph)
 
         # set up a map from original node name to new node name
-        nodes: VertexLookup = list(self.get_nodes())
+        nodes: List[Vertex] = list(self.get_nodes())
         if normalize:
             names = {n: i for i, n in enumerate(nodes)}
         else:
