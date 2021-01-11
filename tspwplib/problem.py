@@ -4,7 +4,7 @@ from typing import List
 import graph_tool as gt
 import networkx as nx
 import tsplib95
-from .types import Vertex, VertexFunctionName, VertexLookup
+from .types import Vertex, VertexLookup
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
@@ -33,11 +33,11 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         graph.graph["type"] = self.type
         graph.graph["dimension"] = self.dimension
         graph.graph["capacity"] = self.capacity
-        # pylint: disable=unsubscriptable-object
-        graph.graph["root"] = self.depots[0]
+        graph.graph["root"] = self.get_root_vertex()
 
     def __set_node_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Add node attributes"""
+        node_score = self.get_node_score()
         for vertex in list(self.get_nodes()):
             # NOTE pyintergraph cannot handle bool, so we remove some attributes:
             # is_depot, demand, display
@@ -48,6 +48,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                 names[vertex],
                 x=coord[0],
                 y=coord[1],
+                prize=node_score[vertex],
                 # is_depot=is_depot,
             )
             # demand: int = self.demands.get(vertex)
@@ -56,9 +57,9 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
             # graph[vertex]["demand"] = demand
             # if not display is None:
             # graph[vertex]["display"] = display
-        nx.set_node_attributes(
-            graph, self.get_node_score(), name=VertexFunctionName.prize
-        )
+        # nx.set_node_attributes(
+        #     graph, self.get_node_score(), name=VertexFunctionName.prize
+        # )
 
     def get_graph(self, normalize: bool = False) -> nx.Graph:
         """Return a networkx graph instance representing the problem.
@@ -83,13 +84,40 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         self.__set_edge_attributes(graph, names)
         return graph
 
-    def get_graph_tool(self, normalize: bool = False) -> gt.Graph:
+    def get_graph_tool(self, normalize: bool = True) -> gt.Graph:
         """Return a graph tools undirected graph
 
         Args:
             normalize: rename nodes to be zero-indexed
         """
-        pass
+        graph = gt.Graph(directed=not self.is_symmetric())
+
+        # by default normalize because graph tools index starts at zero
+        nodes: List[Vertex] = list(self.get_nodes())
+        if normalize:
+            names = {n: i for i, n in enumerate(nodes)}
+        else:
+            names = {n: n for n in nodes}
+
+        # create list of edges
+        edges = []
+        for u, v in self.get_edges():
+            if u <= v or not self.is_symmetric():
+                edges.append((names[u], names[v], self.get_weight(u, v)))
+
+        # assign weight to edges
+        weight_property = graph.new_edge_property("int")
+        graph.add_edge_list(edges, eprops=[weight_property])
+        graph.ep.weight = weight_property
+
+        # assign prize to vertices
+        prize_property = graph.new_vertex_property("int")
+        node_score = self.get_node_score()
+        prize_list = [node_score[v + 1] for v in graph.get_vertices()]
+        prize_property.a = prize_list
+        graph.vertex_properties.prize = prize_property
+
+        return graph
 
     def get_cost_limit(self) -> int:
         """Get the cost limit for a TSP with Profits problem
@@ -114,3 +142,26 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
             TSP optimal value
         """
         return self.tspsol
+
+    def get_root_vertex(self, normalize: bool = False) -> Vertex:
+        """Get the root vertex
+
+        Args:
+            normalize: If true, vertices start at index 0
+
+        Returns:
+            The first depot in the list
+
+        Raises:
+            ValueError: If the list of depots is empty
+        """
+        nodes: List[Vertex] = list(self.get_nodes())
+        if normalize:
+            names = {n: i for i, n in enumerate(nodes)}
+        else:
+            names = {n: n for n in nodes}
+        try:
+            # pylint: disable=unsubscriptable-object
+            return names[self.depots[0]]
+        except KeyError as key_error:
+            raise ValueError("The list of depots is empty") from key_error
