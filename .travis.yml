@@ -4,21 +4,26 @@ python:
   - "3.6"
   - "3.8"
 cache: pip
-addons:
-  apt:
-    update: true
-    sources:
-      # add the graph-tool source for apt-get
-      - sourceline: "deb [ arch=amd64 ] https://downloads.skewed.de/apt focal main"
-        key_url: https://keys.openpgp.org/vks/v1/by-fingerprint/793CEFE14DBC851A2BFB1222612DEFB798507F25
-    packages:
-      - python3-graph-tool
 env:
   - TSPLIB_ROOT="../tsplib95/archives/problems/tsp" OPLIB_ROOT="../OPLib/"
 before_install:
   - git clone https://github.com/bcamath-ds/OPLib.git ../OPLib
   - git clone https://github.com/rhgrant10/tsplib95.git ../tsplib95
 install:
+  # install conda
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  # create conda env and activate
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+  - conda activate test-environment
+  # install graph tool
+  - conda install -c conda-forge graph-tool
+  # install our package
   - pip install .
   - pip install -r requirements.txt
 script:

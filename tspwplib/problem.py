@@ -1,6 +1,7 @@
 """Functions and classes for datasets"""
 
 from typing import List
+import graph_tool as gt
 import networkx as nx
 import tsplib95
 from .types import Vertex, VertexFunctionName, VertexLookup
@@ -81,6 +82,14 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         self.__set_node_attributes(graph, names)
         self.__set_edge_attributes(graph, names)
         return graph
+
+    def get_graph_tool(self, normalize: bool = False) -> gt.Graph:
+        """Return a graph tools undirected graph
+
+        Args:
+            normalize: rename nodes to be zero-indexed
+        """
+        pass
 
     def get_cost_limit(self) -> int:
         """Get the cost limit for a TSP with Profits problem
