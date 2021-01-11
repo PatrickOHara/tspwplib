@@ -119,6 +119,38 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
 
         return graph
 
+    def get_total_prize(self) -> int:
+        """Get the sum of prize over all vertices
+
+        Returns:
+            Total prize
+        """
+        # pylint: disable=no-member
+        return sum([value for _, value in self.get_node_score().items()])
+
+    def get_quota(self, alpha: int) -> int:
+        """The quota is alpha percent of the total prize
+
+        Args:
+            alpha: Percent of the total prize
+
+        Returns:
+            quota
+        """
+        if alpha > 100:
+            raise ValueError("Cannot have a percent over 100 for alpha")
+        if alpha < 0:
+            raise ValueError("Cannot have a negative percent for alpha")
+        return int(float(alpha * self.get_total_prize()) / 100.0)
+
+    def number_of_nodes(self) -> int:
+        """Get the number of nodes in the problem
+
+        Returns:
+            Number of nodes in graph
+        """
+        return len(list(self.get_nodes()))
+
     def get_cost_limit(self) -> int:
         """Get the cost limit for a TSP with Profits problem
 

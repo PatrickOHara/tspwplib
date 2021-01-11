@@ -1,8 +1,10 @@
 """Test the TSP with Profits Problem class"""
 
 import math
+import pytest
 import networkx as nx
 from tspwplib import (
+    Generation,
     ProfitsProblem,
     EdgeFunctionName,
     OptimalSolutionTSP,
@@ -114,3 +116,30 @@ def test_get_root_vertex(oplib_root, generation, graph_name, alpha):
     problem = ProfitsProblem.load(filepath)
     assert problem.get_root_vertex(normalize=False) == 1
     assert problem.get_root_vertex(normalize=True) == 0
+
+
+def test_get_total_prize(oplib_root, graph_name, alpha):
+    """Test total prize"""
+    generation = Generation.gen1
+    filepath = build_path_to_oplib_instance(
+        oplib_root, generation, graph_name, alpha=alpha
+    )
+    problem = ProfitsProblem.load(filepath)
+    assert problem.get_total_prize() == problem.number_of_nodes()
+
+
+def test_get_quota(oplib_root, graph_name, alpha):
+    """Test the quota is calculated properly"""
+    generation = Generation.gen1
+    filepath = build_path_to_oplib_instance(
+        oplib_root, generation, graph_name, alpha=alpha
+    )
+    problem = ProfitsProblem.load(filepath)
+    assert problem.get_quota(10) == int(0.1 * problem.number_of_nodes())
+    assert problem.get_quota(50) == int(0.5 * problem.number_of_nodes())
+    assert problem.get_quota(90) == int(0.9 * problem.number_of_nodes())
+    assert problem.get_quota(100) == int(1.0 * problem.number_of_nodes())
+    assert problem.get_quota(0) == int(0.0 * problem.number_of_nodes())
+    with pytest.raises(ValueError):
+        problem.get_quota(-1)
+        problem.get_quota(101)
