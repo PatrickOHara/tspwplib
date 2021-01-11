@@ -69,3 +69,12 @@ def test_get_graph(oplib_root, generation, graph_name, alpha):
     # check every edge has an attribute called 'weight'
     for _, _, data in graph.edges(data=True):
         assert EdgeFunctionName.weight in data
+
+    valid_types = [str, int, float, bool]
+    for _, _, data in graph.edges(data=True):
+        for _, value in data.items():
+            assert type(value) in valid_types
+
+    for _, data in graph.nodes(data=True):
+        for _, value in data.items():
+            assert type(value) in valid_types
