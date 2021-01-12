@@ -65,7 +65,7 @@ def asymmetric_from_directed(G: nx.DiGraph) -> nx.DiGraph:
         nodes_for_adding.append((tail, tail_data))
 
         # add zero-cost edge from tail to head
-        edge = (tail, head, {EdgeFunctionName.weight.value: 0})
+        edge = (tail, head, {EdgeFunctionName.cost.value: 0})
         edges_for_adding.append(edge)
 
     for u, v, edge_data in G.edges(data=True):

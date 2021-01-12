@@ -21,10 +21,10 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         """Set edge attributes"""
         # add every edge with some associated metadata
         for u, v in self.get_edges():
-            weight: int = self.get_weight(u, v)
+            cost: int = self.get_weight(u, v)
             # pylint: disable=unsupported-membership-test
             # is_fixed: bool = (u, v) in self.fixed_edges
-            graph.add_edge(names[u], names[v], weight=weight)
+            graph.add_edge(names[u], names[v], cost=cost)
 
     def __set_graph_attributes(self, graph: nx.Graph) -> None:
         """Set attributes of the graph such as the name"""
@@ -105,10 +105,10 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
             if u <= v or not self.is_symmetric():
                 edges.append((names[u], names[v], self.get_weight(u, v)))
 
-        # assign weight to edges
-        weight_property = graph.new_edge_property("int")
-        graph.add_edge_list(edges, eprops=[weight_property])
-        graph.ep.weight = weight_property
+        # assign cost to edges
+        cost_property = graph.new_edge_property("int")
+        graph.add_edge_list(edges, eprops=[cost_property])
+        graph.ep.cost = cost_property
 
         # assign prize to vertices
         prize_property = graph.new_vertex_property("int")

@@ -10,7 +10,7 @@ def undirected_complete_graph(request) -> nx.Graph:
     """Undirected complete graph on 3, 5 & 10 vertices"""
     graph = nx.complete_graph(request.param)
     nx.set_node_attributes(graph, 1, name=VertexFunctionName.prize)
-    nx.set_edge_attributes(graph, 1, name=EdgeFunctionName.weight)
+    nx.set_edge_attributes(graph, 1, name=EdgeFunctionName.cost)
     return graph
 
 
@@ -19,7 +19,7 @@ def directed_complete_graph(request) -> nx.DiGraph:
     """Undirected complete graph on 3, 5 & 10 vertices"""
     graph = nx.complete_graph(request.param, nx.DiGraph())
     nx.set_node_attributes(graph, 1, name=VertexFunctionName.prize)
-    nx.set_edge_attributes(graph, 1, name=EdgeFunctionName.weight)
+    nx.set_edge_attributes(graph, 1, name=EdgeFunctionName.cost)
     return graph
 
 
