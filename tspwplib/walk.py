@@ -88,6 +88,7 @@ def total_prize(prizes: Mapping[Vertex, int], vertices: VertexList) -> int:
         sum_prize += prizes[vertex]
     return sum_prize
 
+
 def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
     """Total cost of edges
 
@@ -107,10 +108,19 @@ def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
                 u, v = edge
                 sum_cost += costs[(v, u)]
             except KeyError as second_key_error:
-                raise KeyError("Edge ({u},{v}) or ({v},{u}) do not exist in costs map".format(u=u, v=v)) from second_key_error
+                raise KeyError(
+                    "Edge ({u},{v}) or ({v},{u}) do not exist in costs map".format(
+                        u=u, v=v
+                    )
+                ) from second_key_error
+        except Exception as error:
+            raise KeyError(
+                "{edge} does not exist in cost map".format(edge=edge)
+            ) from error
     return sum_cost
 
-def total_cost_graph_tool(graph: gt.Graph, walk: Vertex) -> int:
+
+def total_cost_graph_tool(graph: gt.Graph, walk: VertexList) -> int:
     """Get the total cost of edges in a walk of the graph-tool graph
 
     Args:
@@ -123,6 +133,7 @@ def total_cost_graph_tool(graph: gt.Graph, walk: Vertex) -> int:
     edges_in_tour = edge_list_from_walk(walk)
     gt_edges = [graph.edge(*e) for e in edges_in_tour]
     return total_cost(graph.ep.cost, gt_edges)
+
 
 def total_cost_networkx(graph: nx.Graph, walk: VertexList) -> int:
     """Get the total cost of edges in a walk of the networkx graph
