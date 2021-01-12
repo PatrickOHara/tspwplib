@@ -43,7 +43,7 @@ def original_and_asymmetric_comparison(
         )
         # check edge data
         edge_data = asymmetric_graph[tail][head]
-        assert edge_data[EdgeFunctionName.weight] == 0
+        assert edge_data[EdgeFunctionName.cost] == 0
 
     for u, v, original_edge_data in original_graph.edges(data=True):
         head_of_u = split_head(biggest_vertex, u)
