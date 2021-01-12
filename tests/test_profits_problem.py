@@ -68,9 +68,9 @@ def test_get_graph(oplib_root, generation, graph_name, alpha):
     for vertex, data in graph.nodes(data=True):
         assert data[VertexFunctionName.prize] == prizes[vertex]
 
-    # check every edge has an attribute called 'weight'
+    # check every edge has an attribute called 'cost'
     for _, _, data in graph.edges(data=True):
-        assert EdgeFunctionName.weight in data
+        assert EdgeFunctionName.cost in data
 
     # bool and list breaks pyintergraph so we avoid it
     valid_types = [str, int, float]
@@ -98,11 +98,11 @@ def test_get_graph_tool(oplib_root, generation, graph_name, alpha):
     assert gt_graph.num_vertices() == nx_graph.number_of_nodes()
     assert gt_graph.num_edges() == nx_graph.number_of_edges()
 
-    # check weight
+    # check cost
     for u, v, data in nx_graph.edges(data=True):
         gt_edge = gt_graph.edge(u, v, add_missing=False)
         assert gt_edge
-        assert gt_graph.ep.weight[gt_edge] == data["weight"]
+        assert gt_graph.ep.cost[gt_edge] == data["cost"]
     # check prize on vertices
     for u, data in nx_graph.nodes(data=True):
         assert data["prize"] == gt_graph.vertex_properties.prize[u]
