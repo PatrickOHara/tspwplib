@@ -35,7 +35,16 @@ from .types import (
     VertexList,
     VertexLookup,
 )
-from .walk import edge_list_from_walk, is_simple_cycle, is_simple_path, is_walk
+from .walk import (
+    edge_list_from_walk,
+    is_simple_cycle,
+    is_simple_path,
+    is_walk,
+    total_cost,
+    total_cost_graph_tool,
+    total_cost_networkx,
+    total_prize,
+)
 
 __all__ = [
     "Alpha",
@@ -79,6 +88,10 @@ __all__ = [
     "split_tail",
     "tail_prize",
     "to_vertex_dataframe",
+    "total_cost",
+    "total_cost_graph_tool",
+    "total_cost_networkx",
+    "total_prize",
     "types",
     "remove_random_edges_from_graph",
     "utils",
