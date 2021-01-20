@@ -4,7 +4,6 @@
 from tspwplib import (
     ProfitsProblem,
     is_complete_with_self_loops,
-    remove_random_edges_from_graph,
     build_path_to_oplib_instance,
 )
 
@@ -44,7 +43,3 @@ def test_remove_random_edges_from_graph(
             <= smaller_graph.number_of_edges() - smaller_graph.number_of_nodes()
             <= num_edges_upper_bound
         )
-
-
-def test_measure_sparsity_metrics():
-    """Test the sparsity of graphs is measured correctly"""

@@ -17,7 +17,6 @@ from .converter import (
 )
 from .complete import is_complete, is_complete_with_self_loops
 from .problem import ProfitsProblem
-from .sparsity import remove_random_edges_from_graph, measure_sparsity_metrics
 from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
 from .types import (
     Alpha,
@@ -81,9 +80,7 @@ __all__ = [
     "is_vertex_split_head",
     "is_vertex_split_tail",
     "is_walk",
-    "measure_sparsity_metrics",
     "problem",
-    "sparsity",
     "split_head",
     "split_tail",
     "tail_prize",
@@ -93,7 +90,6 @@ __all__ = [
     "total_cost_networkx",
     "total_prize",
     "types",
-    "remove_random_edges_from_graph",
     "utils",
     "walk",
 ]
