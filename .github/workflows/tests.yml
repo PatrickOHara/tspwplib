@@ -1,0 +1,24 @@
+name: Tests
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: patrickohara/graph_tool_ubuntu:latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install development dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip3 install -r requirements.txt
+        pip3 install -e .
+    - name: Test
+      run: pytest
+    - name: Formatting
+      run: black --check */
+    - name: Lint
+      run: pylint --rcfile .pylintrc setup.py tspwplib tests/*
+    - name: Type hinting
+      run: mypy --config-file .mypy.ini tspwplib
