@@ -9,7 +9,10 @@ from .types import EdgeList, Vertex, VertexLookup
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
-    """TSP with Profits Problem"""
+    """TSP with Profits Problem
+    
+    You can set `edge_removal_probability` to remove edges with this probability.
+    """
 
     # Maximum distance of the total route in a OP.
     cost_limit = tsplib95.fields.IntegerField("COST_LIMIT")
