@@ -1,10 +1,11 @@
 """Functions and classes for datasets"""
 
+import random
 from typing import List
 import graph_tool as gt
 import networkx as nx
 import tsplib95
-from .types import Vertex, VertexLookup
+from .types import EdgeList, Vertex, VertexLookup
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
@@ -16,6 +17,21 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     node_score = tsplib95.fields.DemandsField("NODE_SCORE_SECTION")
     # The optimal solution to the TSP
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
+
+    def __init__(
+        self, edge_removal_probability: float = 0.0, seed: int = 0, special=None, **data
+    ):
+        super().__init__(special=special, **data)
+        self._edge_removal_probability = edge_removal_probability
+        self._seed = seed
+
+    @property
+    def edge_removal_probability(self) -> float:
+        """Probability of removing an edge from the graph.
+
+        It is strongly recommended to only set this value in the constructor.
+        """
+        return self._edge_removal_probability
 
     def __set_edge_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Set edge attributes"""
@@ -70,9 +86,6 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         # directed graphs are fundamentally different
         graph: nx.Graph = nx.Graph() if self.is_symmetric() else nx.DiGraph()
 
-        # add basic graph metadata
-        self.__set_graph_attributes(graph)
-
         # set up a map from original node name to new node name
         nodes: List[Vertex] = list(self.get_nodes())
         if normalize:
@@ -82,6 +95,9 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
 
         self.__set_node_attributes(graph, names)
         self.__set_edge_attributes(graph, names)
+
+        # add basic graph metadata
+        self.__set_graph_attributes(graph)
         return graph
 
     def get_graph_tool(self, normalize: bool = True) -> gt.Graph:
@@ -98,6 +114,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
             names = {n: i for i, n in enumerate(nodes)}
         else:
             names = {n: n for n in nodes}
+        graph.add_vertex(len(nodes))
 
         # create list of edges
         edges = []
@@ -197,3 +214,31 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
             return names[self.depots[0]]
         except KeyError as key_error:
             raise ValueError("The list of depots is empty") from key_error
+
+    def get_edges(self) -> EdgeList:
+        """Get a list of edges in the graph
+
+        If the `edge_removal_probability` is set in the constructor,
+        then edges will be randomly removed
+
+        Returns:
+            List of edges in the graph
+        """
+        edges: EdgeList = list(super().get_edges())
+        edges_copy = edges.copy()
+        random.seed(self._seed)
+        for edge in edges:
+            # do not remove self-loops
+            if (
+                random.random() < self.edge_removal_probability
+                and edge[0] != edge[1]
+                and edge in edges_copy
+            ):
+                if self.is_symmetric() and edge[0] < edge[1]:
+                    # remove both (u,v) and (v,u) in undirected case
+                    edges_copy.remove(edge)
+                    edges_copy.remove((edge[1], edge[0]))
+                else:
+                    # remove just (u,v) in directed case
+                    edges_copy.remove(edge)
+        return edges_copy
