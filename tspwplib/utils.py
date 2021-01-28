@@ -8,10 +8,10 @@ def build_path_to_oplib_instance(
     oplib_root: Path,
     generation: Generation,
     name: GraphName,
-    alpha: Alpha = Alpha.fifty,
+    alpha: int = Alpha.fifty.value,
 ) -> Path:
     """Build a filepath to a oplib instance"""
-    filename: str = name + "-" + generation.value + "-" + str(alpha.value) + ".oplib"
+    filename: str = name + "-" + generation.value + "-" + str(alpha) + ".oplib"
     return oplib_root / "instances" / generation.value / filename
 
 

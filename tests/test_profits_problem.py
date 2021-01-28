@@ -31,9 +31,7 @@ def test_get_cost_limit(oplib_root, generation, graph_name, alpha):
         oplib_root, generation, graph_name, alpha=alpha
     )
     problem = ProfitsProblem.load(filepath)
-    expected_cost_limit = math.ceil(
-        OptimalSolutionTSP[graph_name] * (alpha.value / 100.0)
-    )
+    expected_cost_limit = math.ceil(OptimalSolutionTSP[graph_name] * (alpha / 100.0))
     assert problem.get_cost_limit() == expected_cost_limit
 
 
