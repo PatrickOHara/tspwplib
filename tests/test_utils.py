@@ -3,11 +3,9 @@
 from tspwplib import build_path_to_oplib_instance, build_path_to_tsplib_instance
 
 
-def test_build_path_to_oplib_instance(oplib_root, generation, graph_name, alpha):
+def test_build_path_to_oplib_instance(oplib_root, generation, graph_name):
     """Test path building"""
-    assert build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    ).exists()
+    assert build_path_to_oplib_instance(oplib_root, generation, graph_name).exists()
 
 
 def test_build_path_to_tsplib_instance(tsplib_root, graph_name):

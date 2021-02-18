@@ -10,7 +10,7 @@ from tspwplib import *
 
 oplib_root = os.getenv("OPLIB_ROOT")    # TODO set your path to oplib
 filepath = build_path_to_oplib_instance(
-    oplib_root, Generation.gen1, GraphName.st70, alpha=Alpha.fifty
+    oplib_root, Generation.gen1, GraphName.st70
 )
 problem = ProfitsProblem.load(filepath)
 ```
@@ -19,7 +19,13 @@ problem = ProfitsProblem.load(filepath)
 Get a [networkx](https://networkx.org/) graph with attributes for prize on the vertices and cost on the edges:
 
 ```python
-graph = problem.get_graph()
+nx_graph = problem.get_graph()
+```
+
+Get a [graph-tool](https://graph-tool.skewed.de/) graph with a vertex property for prize and edge property for cost:
+
+```python
+gt_graph = problem.get_graph_tool()
 ```
 
 # Acknowledgements

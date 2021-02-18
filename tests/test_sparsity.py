@@ -9,10 +9,10 @@ from tspwplib import (
 
 
 def test_remove_random_edges_from_graph(
-    oplib_root, generation, graph_name, alpha, edge_removal_probability
+    oplib_root, generation, graph_name, edge_removal_probability
 ):
     """Test the right number of edges are removed"""
-    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name, alpha)
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(
         filepath, edge_removal_probability=edge_removal_probability, seed=5
     )
