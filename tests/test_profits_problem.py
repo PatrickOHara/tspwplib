@@ -13,11 +13,9 @@ from tspwplib import (
 )
 
 
-def test_parse_profits_problem(oplib_root, generation, graph_name, alpha):
+def test_parse_profits_problem(oplib_root, generation, graph_name):
     """Test an OP instance can be parsed"""
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     assert "COST_LIMIT" in ProfitsProblem.fields_by_keyword
     assert "NODE_SCORE_SECTION" in ProfitsProblem.fields_by_keyword
 
@@ -27,19 +25,15 @@ def test_parse_profits_problem(oplib_root, generation, graph_name, alpha):
 
 def test_get_cost_limit(oplib_root, generation, graph_name, alpha):
     """Test we can get the cost limit"""
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     expected_cost_limit = math.ceil(OptimalSolutionTSP[graph_name] * (alpha / 100.0))
     assert problem.get_cost_limit() == expected_cost_limit
 
 
-def test_get_node_score(oplib_root, generation, graph_name, alpha):
+def test_get_node_score(oplib_root, generation, graph_name):
     """Test every node has a prize"""
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     node_scores = problem.get_node_score()
     assert isinstance(node_scores, dict)
@@ -49,11 +43,9 @@ def test_get_node_score(oplib_root, generation, graph_name, alpha):
         assert value >= 0
 
 
-def test_get_graph(oplib_root, generation, graph_name, alpha):
+def test_get_graph(oplib_root, generation, graph_name):
     """Test we can load a graph with prizes"""
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     graph = problem.get_graph()
     prizes = problem.get_node_score()
@@ -83,11 +75,9 @@ def test_get_graph(oplib_root, generation, graph_name, alpha):
     assert graph.graph["root"] == 1
 
 
-def test_get_graph_tool(oplib_root, generation, graph_name, alpha):
+def test_get_graph_tool(oplib_root, generation, graph_name):
     """Test returning graph tool undirected weighted graph"""
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     gt_graph = problem.get_graph_tool()
     nx_graph = problem.get_graph(normalize=True)
@@ -106,32 +96,26 @@ def test_get_graph_tool(oplib_root, generation, graph_name, alpha):
         assert data["prize"] == gt_graph.vertex_properties.prize[u]
 
 
-def test_get_root_vertex(oplib_root, generation, graph_name, alpha):
+def test_get_root_vertex(oplib_root, generation, graph_name):
     """Test the root vertex is 1 when un-normalized (0 when normalized)"""
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     assert problem.get_root_vertex(normalize=False) == 1
     assert problem.get_root_vertex(normalize=True) == 0
 
 
-def test_get_total_prize(oplib_root, graph_name, alpha):
+def test_get_total_prize(oplib_root, graph_name):
     """Test total prize"""
     generation = Generation.gen1
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     assert problem.get_total_prize() == problem.number_of_nodes()
 
 
-def test_get_quota(oplib_root, graph_name, alpha):
+def test_get_quota(oplib_root, graph_name):
     """Test the quota is calculated properly"""
     generation = Generation.gen1
-    filepath = build_path_to_oplib_instance(
-        oplib_root, generation, graph_name, alpha=alpha
-    )
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     assert problem.get_quota(10) == int(0.1 * problem.number_of_nodes())
     assert problem.get_quota(50) == int(0.5 * problem.number_of_nodes())
@@ -140,4 +124,5 @@ def test_get_quota(oplib_root, graph_name, alpha):
     assert problem.get_quota(0) == int(0.0 * problem.number_of_nodes())
     with pytest.raises(ValueError):
         problem.get_quota(-1)
+    with pytest.raises(ValueError):
         problem.get_quota(101)
