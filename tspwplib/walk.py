@@ -2,7 +2,6 @@
 
 from typing import Mapping
 
-import graph_tool as gt
 import networkx as nx
 from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList
 
@@ -118,22 +117,6 @@ def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
                 "{edge} does not exist in cost map".format(edge=edge)
             ) from error
     return sum_cost
-
-
-def total_cost_graph_tool(graph: gt.Graph, walk: VertexList) -> int:
-    """Get the total cost of edges in a walk of the graph-tool graph
-
-    Args:
-        graph: Undirected input graph
-        walk: A sequence of adjacent vertices
-
-    Returns:
-        Total cost of edges in walk
-    """
-    edges_in_tour = edge_list_from_walk(walk)
-    gt_edges = [graph.edge(*e) for e in edges_in_tour]
-    return total_cost(graph.ep.cost, gt_edges)
-
 
 def total_cost_networkx(graph: nx.Graph, walk: VertexList) -> int:
     """Get the total cost of edges in a walk of the networkx graph

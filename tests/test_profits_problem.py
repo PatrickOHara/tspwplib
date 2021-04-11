@@ -74,28 +74,6 @@ def test_get_graph(oplib_root, generation, graph_name):
 
     assert graph.graph["root"] == 1
 
-
-def test_get_graph_tool(oplib_root, generation, graph_name):
-    """Test returning graph tool undirected weighted graph"""
-    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
-    problem = ProfitsProblem.load(filepath)
-    gt_graph = problem.get_graph_tool()
-    nx_graph = problem.get_graph(normalize=True)
-    assert nx_graph.has_node(0)
-    assert 0 in gt_graph.get_vertices()
-    assert gt_graph.num_vertices() == nx_graph.number_of_nodes()
-    assert gt_graph.num_edges() == nx_graph.number_of_edges()
-
-    # check cost
-    for u, v, data in nx_graph.edges(data=True):
-        gt_edge = gt_graph.edge(u, v, add_missing=False)
-        assert gt_edge
-        assert gt_graph.ep.cost[gt_edge] == data["cost"]
-    # check prize on vertices
-    for u, data in nx_graph.nodes(data=True):
-        assert data["prize"] == gt_graph.vertex_properties.prize[u]
-
-
 def test_get_root_vertex(oplib_root, generation, graph_name):
     """Test the root vertex is 1 when un-normalized (0 when normalized)"""
     filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)

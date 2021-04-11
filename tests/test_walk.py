@@ -8,7 +8,6 @@ from tspwplib import (
     is_simple_cycle,
     is_simple_path,
     is_walk,
-    total_cost_graph_tool,
     total_cost_networkx,
     total_prize,
 )
@@ -78,15 +77,3 @@ def test_total_prize(weighted_walk_networkx_graph):
     )
     assert total_prize(prizes, [0, 1, 2]) == 3
     assert total_prize(prizes, []) == 0
-
-
-def test_total_cost_graph_tool(weighted_walk_graph_tool):
-    """Test total cost"""
-    assert total_cost_graph_tool(weighted_walk_graph_tool, [0, 1, 2]) == 1 + 3
-    assert total_cost_graph_tool(weighted_walk_graph_tool, []) == 0
-    assert (
-        total_cost_graph_tool(weighted_walk_graph_tool, [0, 1, 2, 1, 0])
-        == 1 + 3 + 3 + 1
-    )
-    with pytest.raises(KeyError):
-        total_cost_graph_tool(weighted_walk_graph_tool, [0, 1, 2, 3])

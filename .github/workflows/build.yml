@@ -18,9 +18,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Docker build
       run: |
-        docker build -f graph_tool_ubuntu.Dockerfile -t patrickohara/graph_tool_ubuntu:latest .
         docker build -t patrickohara/tspwplib:latest .
     - name: Docker push
       run: |
-        docker push patrickohara/graph_tool_ubuntu:latest
         docker push patrickohara/tspwplib:latest

@@ -40,7 +40,6 @@ from .walk import (
     is_simple_path,
     is_walk,
     total_cost,
-    total_cost_graph_tool,
     total_cost_networkx,
     total_prize,
 )
@@ -86,7 +85,6 @@ __all__ = [
     "tail_prize",
     "to_vertex_dataframe",
     "total_cost",
-    "total_cost_graph_tool",
     "total_cost_networkx",
     "total_prize",
     "types",

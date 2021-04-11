@@ -35,19 +35,13 @@ Replace `$(pwd)` with the appropriate directory where you cloned OPLib and tspli
 
 ## Docker
 
-You can also use docker, useful if you are having problems installing graph-tool.
+You can also use docker:
 
 ```bash
 docker pull patrickohara/tspwplib:latest
 ```
 
-To build the graph-tool docker file for Ubuntu:20.04:
-
-```bash
-docker build -f graph_tool_ubuntu.Dockerfile -t patrickohara/graph_tool_ubuntu:latest .
-```
-
-To build the tspwplib docker image (based on the graph-tool image):
+To build the tspwplib docker image:
 ```bash
 docker build -t patrickohara/tspwplib:latest .
 ```

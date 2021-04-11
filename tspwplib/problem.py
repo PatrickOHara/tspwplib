@@ -2,7 +2,6 @@
 
 import random
 from typing import List
-import graph_tool as gt
 import networkx as nx
 import tsplib95
 from .types import EdgeList, Vertex, VertexLookup
@@ -102,43 +101,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         # add basic graph metadata
         self.__set_graph_attributes(graph)
         return graph
-
-    def get_graph_tool(self, normalize: bool = True) -> gt.Graph:
-        """Return a graph tools undirected graph
-
-        Args:
-            normalize: rename nodes to be zero-indexed
-        """
-        graph = gt.Graph(directed=not self.is_symmetric())
-
-        # by default normalize because graph tools index starts at zero
-        nodes: List[Vertex] = list(self.get_nodes())
-        if normalize:
-            names = {n: i for i, n in enumerate(nodes)}
-        else:
-            names = {n: n for n in nodes}
-        graph.add_vertex(len(nodes))
-
-        # create list of edges
-        edges = []
-        for u, v in self.get_edges():
-            if u <= v or not self.is_symmetric():
-                edges.append((names[u], names[v], self.get_weight(u, v)))
-
-        # assign cost to edges
-        cost_property = graph.new_edge_property("int")
-        graph.add_edge_list(edges, eprops=[cost_property])
-        graph.ep.cost = cost_property
-
-        # assign prize to vertices
-        prize_property = graph.new_vertex_property("int")
-        node_score = self.get_node_score()
-        prize_list = [node_score[v + 1] for v in graph.get_vertices()]
-        prize_property.a = prize_list
-        graph.vertex_properties.prize = prize_property
-
-        return graph
-
+        
     def get_total_prize(self) -> int:
         """Get the sum of prize over all vertices
 
