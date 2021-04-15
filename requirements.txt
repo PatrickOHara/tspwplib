@@ -4,6 +4,6 @@ mkdocs>=1.1.2
 mkdocstrings>=0.13.6
 mkdocs-material>=6.0.2
 mypy>=0.782
-pylint>=2.6.0
+pylint>=2.7.0
 pytest>=6.1.1
 pytest-tspwplib>=0.2.5
