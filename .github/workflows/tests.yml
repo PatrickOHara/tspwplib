@@ -11,9 +11,9 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
     
     env:
-      OPLIB_ROOT: ../OPLib
-      TSPLIB95_ROOT: ../tsplib95
-      TSPLIB_ROOT: {{ env.TSPLIB95_ROOT }}/archives/problems/tsp
+      - OPLIB_ROOT: ../OPLib
+      - TSPLIB95_ROOT: ../tsplib95
+      - TSPLIB_ROOT: ../tsplib95/archives/problems/tsp
 
     steps:
     - name: Checkout
