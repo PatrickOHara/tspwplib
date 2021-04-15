@@ -7,7 +7,7 @@ ENV OPLIB_ROOT /app/OPLib
 RUN git clone https://github.com/bcamath-ds/OPLib.git ${OPLIB_ROOT}
 
 # Download data for tspwplib
-ENV TSPLIB_ROOT=/app/tsplib95/archives/problems/tsp
+ENV TSPLIB_ROOT /app/tsplib95/archives/problems/tsp
 RUN git clone https://github.com/rhgrant10/tsplib95.git /app/tsplib95
 
 COPY . tspwplib

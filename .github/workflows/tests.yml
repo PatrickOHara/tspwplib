@@ -13,7 +13,7 @@ jobs:
     env:
       OPLIB_ROOT: ../OPLib
       TSPLIB95_ROOT: ../tsplib95
-      TSPLIB_ROOT: ${TSPLIB95_ROOT}/archives/problems/tsp
+      TSPLIB_ROOT: {{ env.TSPLIB95_ROOT }}/archives/problems/tsp
 
     steps:
     - name: Checkout
