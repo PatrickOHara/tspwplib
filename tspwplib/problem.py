@@ -101,7 +101,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         # add basic graph metadata
         self.__set_graph_attributes(graph)
         return graph
-        
+
     def get_total_prize(self) -> int:
         """Get the sum of prize over all vertices
 

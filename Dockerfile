@@ -12,4 +12,4 @@ RUN git clone https://github.com/rhgrant10/tsplib95.git /app/tsplib95
 
 COPY . tspwplib
 
-# RUN pip3 install -e tspwplib
+RUN pip3 install -e tspwplib

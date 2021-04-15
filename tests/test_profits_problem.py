@@ -74,6 +74,7 @@ def test_get_graph(oplib_root, generation, graph_name):
 
     assert graph.graph["root"] == 1
 
+
 def test_get_root_vertex(oplib_root, generation, graph_name):
     """Test the root vertex is 1 when un-normalized (0 when normalized)"""
     filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)

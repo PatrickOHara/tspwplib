@@ -118,6 +118,7 @@ def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
             ) from error
     return sum_cost
 
+
 def total_cost_networkx(graph: nx.Graph, walk: VertexList) -> int:
     """Get the total cost of edges in a walk of the networkx graph
 
