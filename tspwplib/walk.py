@@ -25,6 +25,7 @@ def edge_list_from_walk(walk: VertexList) -> EdgeList:
         edge_list.append((vertex, next_vertex))
     return edge_list
 
+
 def vertex_set_from_edge_list(edge_list: EdgeList) -> Set[Vertex]:
     """Get a set of vertices from a list of edges
 
@@ -35,6 +36,7 @@ def vertex_set_from_edge_list(edge_list: EdgeList) -> Set[Vertex]:
         Set of vertices in the edge list
     """
     return set(itertools.chain.from_iterable(edge_list))
+
 
 def is_walk(G: nx.Graph, walk: VertexList) -> bool:
     """Is the walk a sequence of adjacent vertices in the graph?

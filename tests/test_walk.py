@@ -10,6 +10,7 @@ from tspwplib import (
     is_walk,
     total_cost_networkx,
     total_prize,
+    vertex_set_from_edge_list,
 )
 
 
@@ -28,6 +29,12 @@ def test_edge_list_from_walk():
     assert edge_list_from_walk([]) == []
     assert edge_list_from_walk([0]) == []
     assert edge_list_from_walk([0, 1, 3, 1, 2]) == [(0, 1), (1, 3), (3, 1), (1, 2)]
+
+
+def test_vertex_set_from_edge_list():
+    """Test a vertex set is returned from an edge list"""
+    assert vertex_set_from_edge_list([]) == set()
+    assert vertex_set_from_edge_list([(0, 1), (1, 2), (2, 2)]) == {0, 1, 2}
 
 
 def test_is_simple_path(walk_graph, simple_path):
