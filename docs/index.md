@@ -22,7 +22,7 @@ Get a [networkx](https://networkx.org/) graph with attributes for prize on the v
 nx_graph = problem.get_graph()
 ```
 
-# Acknowledgements
+## Acknowledgements
 
 This library relies heavily upon [tsplib95](https://github.com/rhgrant10/tsplib95.git) and [OPLib](https://github.com/bcamath-ds/OPLib.git).
 

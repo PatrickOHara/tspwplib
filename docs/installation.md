@@ -1,11 +1,5 @@
 # Installation
 
-Depends upon [graph-tool](https://graph-tool.skewed.de/) which you can install with conda:
-
-```bash
-conda install graph-tool
-```
-
 Install via pip:
 
 ```bash
