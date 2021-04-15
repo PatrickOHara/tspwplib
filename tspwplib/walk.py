@@ -49,7 +49,7 @@ def is_walk(G: nx.Graph, walk: VertexList) -> bool:
         True if all vertices are adjacent in the graph
     """
     edge_list = edge_list_from_walk(walk)
-    return all([G.has_edge(u, v) for u, v in edge_list])
+    return all(G.has_edge(u, v) for u, v in edge_list)
 
 
 def is_simple_cycle(G: nx.Graph, cycle: VertexList) -> bool:
