@@ -22,12 +22,6 @@ Get a [networkx](https://networkx.org/) graph with attributes for prize on the v
 nx_graph = problem.get_graph()
 ```
 
-Get a [graph-tool](https://graph-tool.skewed.de/) graph with a vertex property for prize and edge property for cost:
-
-```python
-gt_graph = problem.get_graph_tool()
-```
-
 # Acknowledgements
 
 This library relies heavily upon [tsplib95](https://github.com/rhgrant10/tsplib95.git) and [OPLib](https://github.com/bcamath-ds/OPLib.git).

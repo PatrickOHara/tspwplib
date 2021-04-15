@@ -17,6 +17,8 @@ EdgeFunction = Dict[Vertex, VertexFunction]
 # path data structures
 DisjointPaths = Tuple[VertexList, VertexList]
 
+# pylint: disable=invalid-name
+
 
 class VertexFunctionName(str, Enum):
     """Valid names of functions on vertices"""

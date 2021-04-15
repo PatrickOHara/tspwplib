@@ -1,8 +1,8 @@
 """Functions for walks in a graph"""
 
-from typing import Mapping
+import itertools
+from typing import Mapping, Set
 
-import graph_tool as gt
 import networkx as nx
 from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList
 
@@ -26,6 +26,18 @@ def edge_list_from_walk(walk: VertexList) -> EdgeList:
     return edge_list
 
 
+def vertex_set_from_edge_list(edge_list: EdgeList) -> Set[Vertex]:
+    """Get a set of vertices from a list of edges
+
+    Args:
+        edge_list: List of edges
+
+    Returns:
+        Set of vertices in the edge list
+    """
+    return set(itertools.chain.from_iterable(edge_list))
+
+
 def is_walk(G: nx.Graph, walk: VertexList) -> bool:
     """Is the walk a sequence of adjacent vertices in the graph?
 
@@ -37,7 +49,7 @@ def is_walk(G: nx.Graph, walk: VertexList) -> bool:
         True if all vertices are adjacent in the graph
     """
     edge_list = edge_list_from_walk(walk)
-    return all([G.has_edge(u, v) for u, v in edge_list])
+    return all(G.has_edge(u, v) for u, v in edge_list)
 
 
 def is_simple_cycle(G: nx.Graph, cycle: VertexList) -> bool:
@@ -118,21 +130,6 @@ def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
                 "{edge} does not exist in cost map".format(edge=edge)
             ) from error
     return sum_cost
-
-
-def total_cost_graph_tool(graph: gt.Graph, walk: VertexList) -> int:
-    """Get the total cost of edges in a walk of the graph-tool graph
-
-    Args:
-        graph: Undirected input graph
-        walk: A sequence of adjacent vertices
-
-    Returns:
-        Total cost of edges in walk
-    """
-    edges_in_tour = edge_list_from_walk(walk)
-    gt_edges = [graph.edge(*e) for e in edges_in_tour]
-    return total_cost(graph.ep.cost, gt_edges)
 
 
 def total_cost_networkx(graph: nx.Graph, walk: VertexList) -> int:
