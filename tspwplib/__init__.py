@@ -42,6 +42,7 @@ from .walk import (
     total_cost,
     total_cost_networkx,
     total_prize,
+    vertex_set_from_edge_list,
 )
 
 __all__ = [
@@ -90,4 +91,5 @@ __all__ = [
     "types",
     "utils",
     "walk",
+    "vertex_set_from_edge_list",
 ]

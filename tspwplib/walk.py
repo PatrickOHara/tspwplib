@@ -1,6 +1,7 @@
 """Functions for walks in a graph"""
 
-from typing import Mapping
+import itertools
+from typing import Mapping, Set
 
 import networkx as nx
 from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList
@@ -24,6 +25,16 @@ def edge_list_from_walk(walk: VertexList) -> EdgeList:
         edge_list.append((vertex, next_vertex))
     return edge_list
 
+def vertex_set_from_edge_list(edge_list: EdgeList) -> Set[Vertex]:
+    """Get a set of vertices from a list of edges
+
+    Args:
+        edge_list: List of edges
+
+    Returns:
+        Set of vertices in the edge list
+    """
+    return set(itertools.chain.from_iterable(edge_list))
 
 def is_walk(G: nx.Graph, walk: VertexList) -> bool:
     """Is the walk a sequence of adjacent vertices in the graph?
