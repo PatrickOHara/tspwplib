@@ -8,6 +8,7 @@ from tspwplib import (
     is_simple_cycle,
     is_simple_path,
     is_walk,
+    remove_self_loops_from_edge_list,
     total_cost_networkx,
     total_prize,
     vertex_set_from_edge_list,
@@ -84,3 +85,11 @@ def test_total_prize(weighted_walk_networkx_graph):
     )
     assert total_prize(prizes, [0, 1, 2]) == 3
     assert total_prize(prizes, []) == 0
+
+
+def test_remove_self_loops_from_edge_list():
+    """Test all self loops are removed"""
+    edge_list = [(0, 1), (1, 3), (3, 1), (1, 2)]
+    assert remove_self_loops_from_edge_list(edge_list) == edge_list
+    with_self_loop = edge_list + [(5, 5), (6, 6)]
+    assert remove_self_loops_from_edge_list(with_self_loop) == edge_list
