@@ -1,0 +1,4460 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
+    
+    
+      
+        <title>API - tspwplib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.9299cb39.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="tspwplib" class="md-header__button md-logo" aria-label="tspwplib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            tspwplib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="tspwplib" class="md-nav__button md-logo" aria-label="tspwplib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    tspwplib
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        tspwplib
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        API
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib" class="md-nav__link">
+    tspwplib
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.complete" class="md-nav__link">
+    complete
+  </a>
+  
+    <nav class="md-nav" aria-label="complete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.complete.is_complete" class="md-nav__link">
+    is_complete()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.complete.is_complete_with_self_loops" class="md-nav__link">
+    is_complete_with_self_loops()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.converter" class="md-nav__link">
+    converter
+  </a>
+  
+    <nav class="md-nav" aria-label="converter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.asymmetric_from_directed" class="md-nav__link">
+    asymmetric_from_directed()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.asymmetric_from_undirected" class="md-nav__link">
+    asymmetric_from_undirected()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.biggest_vertex_id_from_graph" class="md-nav__link">
+    biggest_vertex_id_from_graph()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.get_original_from_split_vertex" class="md-nav__link">
+    get_original_from_split_vertex()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.get_original_path_from_split_path" class="md-nav__link">
+    get_original_path_from_split_path()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.head_prize" class="md-nav__link">
+    head_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.is_split_vertex_pair" class="md-nav__link">
+    is_split_vertex_pair()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.is_vertex_split_head" class="md-nav__link">
+    is_vertex_split_head()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.is_vertex_split_tail" class="md-nav__link">
+    is_vertex_split_tail()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.split_head" class="md-nav__link">
+    split_head()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.split_tail" class="md-nav__link">
+    split_tail()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.tail_prize" class="md-nav__link">
+    tail_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.to_vertex_dataframe" class="md-nav__link">
+    to_vertex_dataframe()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.problem" class="md-nav__link">
+    problem
+  </a>
+  
+    <nav class="md-nav" aria-label="problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem" class="md-nav__link">
+    ProfitsProblem
+  </a>
+  
+    <nav class="md-nav" aria-label="ProfitsProblem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.edge_removal_probability" class="md-nav__link">
+    edge_removal_probability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_cost_limit" class="md-nav__link">
+    get_cost_limit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_edges" class="md-nav__link">
+    get_edges()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_graph" class="md-nav__link">
+    get_graph()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_node_score" class="md-nav__link">
+    get_node_score()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_quota" class="md-nav__link">
+    get_quota()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_root_vertex" class="md-nav__link">
+    get_root_vertex()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_total_prize" class="md-nav__link">
+    get_total_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_tsp_optimal_value" class="md-nav__link">
+    get_tsp_optimal_value()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.number_of_nodes" class="md-nav__link">
+    number_of_nodes()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.types" class="md-nav__link">
+    types
+  </a>
+  
+    <nav class="md-nav" aria-label="types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.Alpha" class="md-nav__link">
+    Alpha
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.EdgeFunctionName" class="md-nav__link">
+    EdgeFunctionName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.Generation" class="md-nav__link">
+    Generation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.GraphName" class="md-nav__link">
+    GraphName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.OptimalSolutionTSP" class="md-nav__link">
+    OptimalSolutionTSP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.VertexFunctionName" class="md-nav__link">
+    VertexFunctionName
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.utils" class="md-nav__link">
+    utils
+  </a>
+  
+    <nav class="md-nav" aria-label="utils">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.utils.build_path_to_oplib_instance" class="md-nav__link">
+    build_path_to_oplib_instance()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.utils.build_path_to_tsplib_instance" class="md-nav__link">
+    build_path_to_tsplib_instance()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.walk" class="md-nav__link">
+    walk
+  </a>
+  
+    <nav class="md-nav" aria-label="walk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.edge_list_from_walk" class="md-nav__link">
+    edge_list_from_walk()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.is_simple_cycle" class="md-nav__link">
+    is_simple_cycle()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.is_simple_path" class="md-nav__link">
+    is_simple_path()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.is_walk" class="md-nav__link">
+    is_walk()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.remove_self_loops_from_edge_list" class="md-nav__link">
+    remove_self_loops_from_edge_list()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.total_cost" class="md-nav__link">
+    total_cost()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.total_cost_networkx" class="md-nav__link">
+    total_cost_networkx()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.total_prize" class="md-nav__link">
+    total_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.vertex_set_from_edge_list" class="md-nav__link">
+    vertex_set_from_edge_list()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib" class="md-nav__link">
+    tspwplib
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.complete" class="md-nav__link">
+    complete
+  </a>
+  
+    <nav class="md-nav" aria-label="complete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.complete.is_complete" class="md-nav__link">
+    is_complete()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.complete.is_complete_with_self_loops" class="md-nav__link">
+    is_complete_with_self_loops()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.converter" class="md-nav__link">
+    converter
+  </a>
+  
+    <nav class="md-nav" aria-label="converter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.asymmetric_from_directed" class="md-nav__link">
+    asymmetric_from_directed()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.asymmetric_from_undirected" class="md-nav__link">
+    asymmetric_from_undirected()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.biggest_vertex_id_from_graph" class="md-nav__link">
+    biggest_vertex_id_from_graph()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.get_original_from_split_vertex" class="md-nav__link">
+    get_original_from_split_vertex()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.get_original_path_from_split_path" class="md-nav__link">
+    get_original_path_from_split_path()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.head_prize" class="md-nav__link">
+    head_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.is_split_vertex_pair" class="md-nav__link">
+    is_split_vertex_pair()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.is_vertex_split_head" class="md-nav__link">
+    is_vertex_split_head()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.is_vertex_split_tail" class="md-nav__link">
+    is_vertex_split_tail()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.split_head" class="md-nav__link">
+    split_head()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.split_tail" class="md-nav__link">
+    split_tail()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.tail_prize" class="md-nav__link">
+    tail_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.converter.to_vertex_dataframe" class="md-nav__link">
+    to_vertex_dataframe()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.problem" class="md-nav__link">
+    problem
+  </a>
+  
+    <nav class="md-nav" aria-label="problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem" class="md-nav__link">
+    ProfitsProblem
+  </a>
+  
+    <nav class="md-nav" aria-label="ProfitsProblem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.edge_removal_probability" class="md-nav__link">
+    edge_removal_probability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_cost_limit" class="md-nav__link">
+    get_cost_limit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_edges" class="md-nav__link">
+    get_edges()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_graph" class="md-nav__link">
+    get_graph()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_node_score" class="md-nav__link">
+    get_node_score()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_quota" class="md-nav__link">
+    get_quota()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_root_vertex" class="md-nav__link">
+    get_root_vertex()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_total_prize" class="md-nav__link">
+    get_total_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.get_tsp_optimal_value" class="md-nav__link">
+    get_tsp_optimal_value()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.problem.ProfitsProblem.number_of_nodes" class="md-nav__link">
+    number_of_nodes()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.types" class="md-nav__link">
+    types
+  </a>
+  
+    <nav class="md-nav" aria-label="types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.Alpha" class="md-nav__link">
+    Alpha
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.EdgeFunctionName" class="md-nav__link">
+    EdgeFunctionName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.Generation" class="md-nav__link">
+    Generation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.GraphName" class="md-nav__link">
+    GraphName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.OptimalSolutionTSP" class="md-nav__link">
+    OptimalSolutionTSP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.types.VertexFunctionName" class="md-nav__link">
+    VertexFunctionName
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.utils" class="md-nav__link">
+    utils
+  </a>
+  
+    <nav class="md-nav" aria-label="utils">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.utils.build_path_to_oplib_instance" class="md-nav__link">
+    build_path_to_oplib_instance()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.utils.build_path_to_tsplib_instance" class="md-nav__link">
+    build_path_to_tsplib_instance()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tspwplib.walk" class="md-nav__link">
+    walk
+  </a>
+  
+    <nav class="md-nav" aria-label="walk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.edge_list_from_walk" class="md-nav__link">
+    edge_list_from_walk()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.is_simple_cycle" class="md-nav__link">
+    is_simple_cycle()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.is_simple_path" class="md-nav__link">
+    is_simple_path()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.is_walk" class="md-nav__link">
+    is_walk()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.remove_self_loops_from_edge_list" class="md-nav__link">
+    remove_self_loops_from_edge_list()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.total_cost" class="md-nav__link">
+    total_cost()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.total_cost_networkx" class="md-nav__link">
+    total_cost_networkx()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.total_prize" class="md-nav__link">
+    total_prize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tspwplib.walk.vertex_set_from_edge_list" class="md-nav__link">
+    vertex_set_from_edge_list()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="api">API</h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="tspwplib"></a>
+    <div class="doc doc-contents first">
+
+      <p>Travelling Salesman Problem with Profits library</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="tspwplib.complete" class="doc doc-heading">
+        <code>complete</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Functions for complete graphs</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.complete.is_complete" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_complete</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Check if the graph is complete</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>Simple graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the graph is complete, false otherwise</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
+    Assumes no self loops</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/complete.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_complete</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check if the graph is complete</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: Simple graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the graph is complete, false otherwise</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Assumes no self loops</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">u</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.complete.is_complete_with_self_loops" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_complete_with_self_loops</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Check if the graph is complete, and every vertex has a self loop</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>Simple graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the graph is complete, false otherwise</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/complete.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_complete_with_self_loops</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check if the graph is complete, and every vertex has a self loop</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: Simple graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the graph is complete, false otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">is_complete</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="tspwplib.converter" class="doc doc-heading">
+        <code>converter</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Converting between different types of graphs</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.asymmetric_from_directed" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">asymmetric_from_directed</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create asymmetric directed graph from directed graph</p>
+<p>Split every node u two nodes u1 and u2.
+We add a directed arc between u1 and u2.
+Any previous inward edge v-&gt;u is now v-&gt;u1 and any outward edge from u is now u2-&gt;v.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>DiGraph</code></td>
+        <td><p>Directed graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DiGraph</code></td>
+      <td><p>Directed asymmetric graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">asymmetric_from_directed</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create asymmetric directed graph from directed graph</span>
+
+<span class="sd">    Split every node u two nodes u1 and u2.</span>
+<span class="sd">    We add a directed arc between u1 and u2.</span>
+<span class="sd">    Any previous inward edge v-&gt;u is now v-&gt;u1 and any outward edge from u is now u2-&gt;v.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: Directed graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Directed asymmetric graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">asymmetric_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+    <span class="n">nodes_for_adding</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Vertex</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">edges_for_adding</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Vertex</span><span class="p">,</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="c1"># deepcopy when not a view</span>
+    <span class="n">asymmetric_graph</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">))</span>
+
+    <span class="c1"># find the id of the biggest vertex</span>
+    <span class="n">biggest_vertex</span> <span class="o">=</span> <span class="n">biggest_vertex_id_from_graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># split the vertex into two</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="n">split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span>
+
+        <span class="c1"># the data is copied to both vertices</span>
+        <span class="n">tail_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">head_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># split the value of the prize</span>
+        <span class="n">prize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">VertexFunctionName</span><span class="o">.</span><span class="n">prize</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">tail_data</span><span class="p">[</span><span class="n">VertexFunctionName</span><span class="o">.</span><span class="n">prize</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail_prize</span><span class="p">(</span><span class="n">prize</span><span class="p">)</span>
+        <span class="n">head_data</span><span class="p">[</span><span class="n">VertexFunctionName</span><span class="o">.</span><span class="n">prize</span><span class="p">]</span> <span class="o">=</span> <span class="n">head_prize</span><span class="p">(</span><span class="n">prize</span><span class="p">)</span>
+
+        <span class="c1"># add vertex to asymmetric graph with new data</span>
+        <span class="n">nodes_for_adding</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">head</span><span class="p">,</span> <span class="n">head_data</span><span class="p">))</span>
+        <span class="n">nodes_for_adding</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tail</span><span class="p">,</span> <span class="n">tail_data</span><span class="p">))</span>
+
+        <span class="c1"># add zero-cost edge from tail to head</span>
+        <span class="n">edge</span> <span class="o">=</span> <span class="p">(</span><span class="n">tail</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="p">{</span><span class="n">EdgeFunctionName</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+        <span class="n">edges_for_adding</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># add edge from head of u to tail of v with data</span>
+        <span class="n">u_head</span> <span class="o">=</span> <span class="n">split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+        <span class="n">v_tail</span> <span class="o">=</span> <span class="n">split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">edge_uv</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_head</span><span class="p">,</span> <span class="n">v_tail</span><span class="p">,</span> <span class="n">edge_data</span><span class="p">)</span>
+        <span class="n">edges_for_adding</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge_uv</span><span class="p">)</span>
+
+    <span class="c1"># add nodes and edges then return graph</span>
+    <span class="n">asymmetric_graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">)</span>
+    <span class="n">asymmetric_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edges_for_adding</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">asymmetric_graph</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.asymmetric_from_undirected" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">asymmetric_from_undirected</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create asymmetric directed graph from undirected graph</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>Undirected graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DiGraph</code></td>
+      <td><p>Directed asymmetric graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">asymmetric_from_undirected</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create asymmetric directed graph from undirected graph</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: Undirected graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Directed asymmetric graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">directed_graph</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">asymmetric_from_directed</span><span class="p">(</span><span class="n">directed_graph</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.biggest_vertex_id_from_graph" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">biggest_vertex_id_from_graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the vertex with the largest integer id</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>Graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Vertex with biggest id</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">biggest_vertex_id_from_graph</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return the vertex with the largest integer id</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: Graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Vertex with biggest id</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.get_original_from_split_vertex" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_original_from_split_vertex</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the original vertex id given a split vertex (may be head or tail)</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>split_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>A split vertex in asymmetric graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>ID of the vertex in the original graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_original_from_split_vertex</span><span class="p">(</span>
+    <span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">:</span> <span class="n">Vertex</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return the original vertex id given a split vertex (may be head or tail)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        split_vertex: A split vertex in asymmetric graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ID of the vertex in the original graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_vertex_split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">split_vertex</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># else split tail</span>
+    <span class="k">return</span> <span class="n">split_vertex</span> <span class="o">-</span> <span class="n">biggest_vertex</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.get_original_path_from_split_path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_original_path_from_split_path</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_path</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the path in the original graph given a path of split vertices in the asymmetric graph</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>split_path</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>A path of split vertices in the asymmetric directed graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[int]</code></td>
+      <td><p>A path of vertices in the original graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_original_path_from_split_path</span><span class="p">(</span>
+    <span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">split_path</span><span class="p">:</span> <span class="n">VertexList</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VertexList</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the path in the original graph given a path of split vertices in the asymmetric graph</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        split_path: A path of split vertices in the asymmetric directed graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A path of vertices in the original graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">original_path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">previous_vertex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">split_vertex</span> <span class="ow">in</span> <span class="n">split_path</span><span class="p">:</span>
+        <span class="n">original_vertex</span> <span class="o">=</span> <span class="n">get_original_from_split_vertex</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_vertex_split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">):</span>
+            <span class="n">original_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">original_vertex</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="n">is_vertex_split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">previous_vertex</span> <span class="o">!=</span> <span class="n">original_vertex</span>
+        <span class="p">):</span>
+            <span class="n">original_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">original_vertex</span><span class="p">)</span>
+        <span class="n">previous_vertex</span> <span class="o">=</span> <span class="n">original_vertex</span>
+    <span class="k">return</span> <span class="n">original_path</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.head_prize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">head_prize</span><span class="p">(</span><span class="n">prize</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the prize of the split head</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>prize</code></td>
+        <td><code>int</code></td>
+        <td><p>The prize of a vertex</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>      <p>Returns
+    Split head prize</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">head_prize</span><span class="p">(</span><span class="n">prize</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the prize of the split head</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prize: The prize of a vertex</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        Split head prize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">prize</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">prize</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">prize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.is_split_vertex_pair" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_split_vertex_pair</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">tail</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Does the arc (tail, head) represent a split vertex in the original graph?</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>tail</code></td>
+        <td><code>int</code></td>
+        <td><p>Tail of edge in directed graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>head</code></td>
+        <td><code>int</code></td>
+        <td><p>Head of edge in directed graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the arc (tail, head) represents a split vertex in the original graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_split_vertex_pair</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">tail</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Does the arc (tail, head) represent a split vertex in the original graph?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        tail: Tail of edge in directed graph</span>
+<span class="sd">        head: Head of edge in directed graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the arc (tail, head) represents a split vertex in the original graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">head</span> <span class="o">-</span> <span class="n">tail</span> <span class="o">==</span> <span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="ow">and</span> <span class="n">is_vertex_split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">is_vertex_split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.is_vertex_split_head" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_vertex_split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Is the vertex a head in the asymmetric graph?</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>split_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>A potential head of an edge in directed graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the vertex is a head</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_vertex_split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">split_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Is the vertex a head in the asymmetric graph?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        split_vertex: A potential head of an edge in directed graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the vertex is a head</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">split_vertex</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.is_vertex_split_tail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_vertex_split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Is the vertex a tail in the asymmetric graph?</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>A potential tail of an edge in directed graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the vertex is a tail</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_vertex_split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Is the vertex a tail in the asymmetric graph?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        vertex: A potential tail of an edge in directed graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the vertex is a tail</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">vertex</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.split_head" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">original_vertex</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the split head of the vertex</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>original_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>Vertex in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>New split vertex that is a head of all arcs in the asymmetric graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split_head</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">original_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the split head of the vertex</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        original_vertex: Vertex in the original graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        New split vertex that is a head of all arcs in the asymmetric graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">original_vertex</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.split_tail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">,</span> <span class="n">original_vertex</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the split tail of the vertex</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>biggest_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>The vertex with the biggest id in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>original_vertex</code></td>
+        <td><code>int</code></td>
+        <td><p>Vertex in the original graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>New split vertex that is a tail of all arcs in the asymmetric graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split_tail</span><span class="p">(</span><span class="n">biggest_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">,</span> <span class="n">original_vertex</span><span class="p">:</span> <span class="n">Vertex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the split tail of the vertex</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        biggest_vertex: The vertex with the biggest id in the original graph</span>
+<span class="sd">        original_vertex: Vertex in the original graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        New split vertex that is a tail of all arcs in the asymmetric graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">biggest_vertex</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">original_vertex</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.tail_prize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">tail_prize</span><span class="p">(</span><span class="n">prize</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the prize of the split tail</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>prize</code></td>
+        <td><code>int</code></td>
+        <td><p>The prize of a vertex</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>      <p>Returns
+    Split tail prize</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tail_prize</span><span class="p">(</span><span class="n">prize</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the prize of the split tail</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prize: The prize of a vertex</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        Split tail prize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">prize</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.converter.to_vertex_dataframe" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">to_vertex_dataframe</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert graph vertices to pandas dataframe</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>graph</code></td>
+        <td><code>Graph</code></td>
+        <td><p>Input graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DataFrame</code></td>
+      <td><p>pandas dataframe with vertex set as index</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/converter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_vertex_dataframe</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Convert graph vertices to pandas dataframe</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        graph: Input graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas dataframe with vertex set as index</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vertex_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+    <span class="n">vertex_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">vertex_data</span><span class="p">)</span>
+    <span class="n">vertex_df</span> <span class="o">=</span> <span class="n">vertex_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;vertex&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vertex_df</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="tspwplib.problem" class="doc doc-heading">
+        <code>problem</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Functions and classes for datasets</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.problem.ProfitsProblem" class="doc doc-heading">
+        <code>ProfitsProblem</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>TSP with Profits Problem</p>
+<p>You can set <code>edge_removal_probability</code> to remove edges with this probability.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.edge_removal_probability" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">edge_removal_probability</span><span class="p">:</span> <span class="nb">float</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Probability of removing an edge from the graph.</p>
+<p>It is strongly recommended to only set this value in the constructor.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_cost_limit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_cost_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the cost limit for a TSP with Profits problem</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Cost limit</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_cost_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the cost limit for a TSP with Profits problem</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Cost limit</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_limit</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_edges" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get a list of edges in the graph</p>
+<p>If the <code>edge_removal_probability</code> is set in the constructor,
+then edges will be randomly removed</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Tuple[int, int]]</code></td>
+      <td><p>List of edges in the graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EdgeList</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get a list of edges in the graph</span>
+
+<span class="sd">    If the `edge_removal_probability` is set in the constructor,</span>
+<span class="sd">    then edges will be randomly removed</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of edges in the graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edges</span><span class="p">:</span> <span class="n">EdgeList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_edges</span><span class="p">())</span>
+    <span class="n">edges_copy</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seed</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="c1"># do not remove self-loops</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_removal_probability</span>
+            <span class="ow">and</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges_copy</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_symmetric</span><span class="p">()</span> <span class="ow">and</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># remove both (u,v) and (v,u) in undirected case</span>
+                <span class="n">edges_copy</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+                <span class="n">edges_copy</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># remove just (u,v) in directed case</span>
+                <span class="n">edges_copy</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">edges_copy</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_graph" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Return a networkx graph instance representing the problem.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>normalize</code></td>
+        <td><code>bool</code></td>
+        <td><p>rename nodes to be zero-indexed</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return a networkx graph instance representing the problem.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        normalize: rename nodes to be zero-indexed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># directed graphs are fundamentally different</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_symmetric</span><span class="p">()</span> <span class="k">else</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+
+    <span class="c1"># set up a map from original node name to new node name</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vertex</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">)}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">}</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">__set_node_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__set_edge_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+
+    <span class="c1"># add basic graph metadata</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__set_graph_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_node_score" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_node_score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the node scores (profits)</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict[int, int]</code></td>
+      <td><p>Mapping from node to node score (profit)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_node_score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VertexLookup</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the node scores (profits)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Mapping from node to node score (profit)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_score</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_quota" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_quota</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>The quota is alpha percent of the total prize</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>alpha</code></td>
+        <td><code>int</code></td>
+        <td><p>Percent of the total prize</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>quota</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_quota</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The quota is alpha percent of the total prize</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        alpha: Percent of the total prize</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        quota</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot have a percent over 100 for alpha&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot have a negative percent for alpha&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_prize</span><span class="p">())</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_root_vertex" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_root_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the root vertex</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>normalize</code></td>
+        <td><code>bool</code></td>
+        <td><p>If true, vertices start at index 0</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>The first depot in the list</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ValueError</code></td>
+        <td><p>If the list of depots is empty</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_root_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the root vertex</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        normalize: If true, vertices start at index 0</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The first depot in the list</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the list of depots is empty</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vertex</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">)}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># pylint: disable=unsubscriptable-object</span>
+        <span class="k">return</span> <span class="n">names</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">depots</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">key_error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The list of depots is empty&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">key_error</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_total_prize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_total_prize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the sum of prize over all vertices</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Total prize</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_total_prize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the sum of prize over all vertices</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Total prize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=no-member</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_node_score</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.get_tsp_optimal_value" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_tsp_optimal_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the value of the optimal solution to TSP</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>TSP optimal value</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_tsp_optimal_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the value of the optimal solution to TSP</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        TSP optimal value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tspsol</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="tspwplib.problem.ProfitsProblem.number_of_nodes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">number_of_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the number of nodes in the problem</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Number of nodes in graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/problem.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">number_of_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the number of nodes in the problem</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Number of nodes in graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()))</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="tspwplib.types" class="doc doc-heading">
+        <code>types</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Type hinting and names</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.types.Alpha" class="doc doc-heading">
+        <code>Alpha</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Ratio between profit/cost limit and profit/cost of TSP solution</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.types.EdgeFunctionName" class="doc doc-heading">
+        <code>EdgeFunctionName</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Valid names of functions on edges</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.types.Generation" class="doc doc-heading">
+        <code>Generation</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Generations of TSPwP problem instances</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.types.GraphName" class="doc doc-heading">
+        <code>GraphName</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Names of TSPlib instances</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.types.OptimalSolutionTSP" class="doc doc-heading">
+        <code>OptimalSolutionTSP</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Value of optimal solutions to TSP instances</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="tspwplib.types.VertexFunctionName" class="doc doc-heading">
+        <code>VertexFunctionName</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Valid names of functions on vertices</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="tspwplib.utils" class="doc doc-heading">
+        <code>utils</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Useful functions for parsing</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.utils.build_path_to_oplib_instance" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">build_path_to_oplib_instance</span><span class="p">(</span><span class="n">oplib_root</span><span class="p">,</span> <span class="n">generation</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Build a filepath to a oplib instance</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>oplib_root</code></td>
+        <td><code>Path</code></td>
+        <td><p>The directory of the clones oplib</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>generation</code></td>
+        <td><code>Generation</code></td>
+        <td><p>Generation of OPLib instance</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>GraphName</code></td>
+        <td><p>Graph instance name</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>alpha</code></td>
+        <td><code>int</code></td>
+        <td><p>Percent of the total cost to set the cost limit to.
+Not useful for instances of Prize-collecting TSPs.
+Default is 50.
+Note if you change to a different value, make sure the file exists</p></td>
+        <td><code>50</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Path to the OPLib instance</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build_path_to_oplib_instance</span><span class="p">(</span>
+    <span class="n">oplib_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">generation</span><span class="p">:</span> <span class="n">Generation</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">GraphName</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Alpha</span><span class="o">.</span><span class="n">fifty</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Build a filepath to a oplib instance</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        oplib_root: The directory of the clones oplib</span>
+<span class="sd">        generation: Generation of OPLib instance</span>
+<span class="sd">        name: Graph instance name</span>
+<span class="sd">        alpha: Percent of the total cost to set the cost limit to.</span>
+<span class="sd">            Not useful for instances of Prize-collecting TSPs.</span>
+<span class="sd">            Default is 50.</span>
+<span class="sd">            Note if you change to a different value, make sure the file exists</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Path to the OPLib instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">generation</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.oplib&quot;</span>
+    <span class="k">return</span> <span class="n">oplib_root</span> <span class="o">/</span> <span class="s2">&quot;instances&quot;</span> <span class="o">/</span> <span class="n">generation</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">filename</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.utils.build_path_to_tsplib_instance" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">build_path_to_tsplib_instance</span><span class="p">(</span><span class="n">tsplib_root</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Build a filepath to a tsplib instance</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>tsplib_root</code></td>
+        <td><code>Path</code></td>
+        <td><p>Directory containing TSP txt instances</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>GraphName</code></td>
+        <td><p>Name of the instance</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Filepath to the TSP instance</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build_path_to_tsplib_instance</span><span class="p">(</span><span class="n">tsplib_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">GraphName</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Build a filepath to a tsplib instance</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tsplib_root: Directory containing TSP txt instances</span>
+<span class="sd">        name: Name of the instance</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Filepath to the TSP instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;.tsp&quot;</span>
+    <span class="k">return</span> <span class="n">tsplib_root</span> <span class="o">/</span> <span class="n">filename</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="tspwplib.walk" class="doc doc-heading">
+        <code>walk</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Functions for walks in a graph</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.edge_list_from_walk" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">edge_list_from_walk</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get ordered list of edges from an ordered list of vertices</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>walk</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>Ordered list of vertices that represent a walk in the graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Tuple[int, int]]</code></td>
+      <td><p>List of edges in the same order as the walk</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">edge_list_from_walk</span><span class="p">(</span><span class="n">walk</span><span class="p">:</span> <span class="n">VertexList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EdgeList</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get ordered list of edges from an ordered list of vertices</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        walk: Ordered list of vertices that represent a walk in the graph</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of edges in the same order as the walk</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edge_list</span><span class="p">:</span> <span class="n">EdgeList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">edge_list</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">vertex</span> <span class="o">=</span> <span class="n">walk</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">next_vertex</span> <span class="o">=</span> <span class="n">walk</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">vertex</span><span class="p">,</span> <span class="n">next_vertex</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">edge_list</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.is_simple_cycle" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_simple_cycle</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cycle</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Is the cycle simple in the graph?</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>input graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>cycle</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>Ordered sequence of vertices</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the cycle is simple in the graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_simple_cycle</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">cycle</span><span class="p">:</span> <span class="n">VertexList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Is the cycle simple in the graph?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: input graph</span>
+<span class="sd">        cycle: Ordered sequence of vertices</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the cycle is simple in the graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cycle_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cycle_length</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">is_walk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cycle</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">cycle_length</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cycle</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="ow">and</span> <span class="n">cycle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">cycle</span><span class="p">[</span><span class="n">cycle_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.is_simple_path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_simple_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Is the path simple in the graph?</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>input graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>Ordered sequence of vertices</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if the path is simple in the graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_simple_path</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">VertexList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Is the path simple in the graph?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: input graph</span>
+<span class="sd">        path: Ordered sequence of vertices</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the path is simple in the graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">is_walk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.is_walk" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_walk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">walk</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Is the walk a sequence of adjacent vertices in the graph?</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>G</code></td>
+        <td><code>Graph</code></td>
+        <td><p>input graph</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>walk</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>Ordered sequence of vertices</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True if all vertices are adjacent in the graph</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_walk</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">walk</span><span class="p">:</span> <span class="n">VertexList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Is the walk a sequence of adjacent vertices in the graph?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        G: input graph</span>
+<span class="sd">        walk: Ordered sequence of vertices</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if all vertices are adjacent in the graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="n">edge_list_from_walk</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.remove_self_loops_from_edge_list" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">remove_self_loops_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return a new edge list with no self loops</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>edge_list</code></td>
+        <td><code>List[Tuple[int, int]]</code></td>
+        <td><p>List of edges</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Tuple[int, int]]</code></td>
+      <td><p>Edge list with no self loops</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">remove_self_loops_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">:</span> <span class="n">EdgeList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EdgeList</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return a new edge list with no self loops</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        edge_list: List of edges</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Edge list with no self loops</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">edge</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edge_list</span> <span class="k">if</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.total_cost" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">total_cost</span><span class="p">(</span><span class="n">costs</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Total cost of edges</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>costs</code></td>
+        <td><code>Mapping[Tuple[int, int], int]</code></td>
+        <td><p>Mapping from edges to costs</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>edges</code></td>
+        <td><code>List[Tuple[int, int]]</code></td>
+        <td><p>List of edges</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Total cost of edges</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">total_cost</span><span class="p">(</span><span class="n">costs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Edge</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">edges</span><span class="p">:</span> <span class="n">EdgeList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Total cost of edges</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        costs: Mapping from edges to costs</span>
+<span class="sd">        edges: List of edges</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Total cost of edges</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sum_cost</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sum_cost</span> <span class="o">+=</span> <span class="n">costs</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
+                <span class="n">sum_cost</span> <span class="o">+=</span> <span class="n">costs</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">second_key_error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="s2">&quot;Edge (</span><span class="si">{u}</span><span class="s2">,</span><span class="si">{v}</span><span class="s2">) or (</span><span class="si">{v}</span><span class="s2">,</span><span class="si">{u}</span><span class="s2">) do not exist in costs map&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span>
+                    <span class="p">)</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">second_key_error</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{edge}</span><span class="s2"> does not exist in cost map&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge</span><span class="o">=</span><span class="n">edge</span><span class="p">)</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+    <span class="k">return</span> <span class="n">sum_cost</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.total_cost_networkx" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">total_cost_networkx</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">walk</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the total cost of edges in a walk of the networkx graph</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>graph</code></td>
+        <td><code>Graph</code></td>
+        <td><p>Undirected input graph with cost attribute</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>walk</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>A sequence of adjacent vertices</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Total cost of edges in the walk</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">total_cost_networkx</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">walk</span><span class="p">:</span> <span class="n">VertexList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the total cost of edges in a walk of the networkx graph</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        graph: Undirected input graph with cost attribute</span>
+<span class="sd">        walk: A sequence of adjacent vertices</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Total cost of edges in the walk</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edges_in_tour</span> <span class="o">=</span> <span class="n">edge_list_from_walk</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
+    <span class="n">cost_attr</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">EdgeFunctionName</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">cost_attr</span><span class="p">,</span> <span class="n">edges_in_tour</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.total_prize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">total_prize</span><span class="p">(</span><span class="n">prizes</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Total prize of vertices</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>prizes</code></td>
+        <td><code>Mapping[int, int]</code></td>
+        <td><p>A mapping from vertices to prizes, e.g. dict, property map</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>vertices</code></td>
+        <td><code>List[int]</code></td>
+        <td><p>List of vertices in the prizes map</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Total prize of vertices</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">total_prize</span><span class="p">(</span><span class="n">prizes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Vertex</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">vertices</span><span class="p">:</span> <span class="n">VertexList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Total prize of vertices</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prizes: A mapping from vertices to prizes, e.g. dict, property map</span>
+<span class="sd">        vertices: List of vertices in the prizes map</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Total prize of vertices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sum_prize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+        <span class="n">sum_prize</span> <span class="o">+=</span> <span class="n">prizes</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sum_prize</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="tspwplib.walk.vertex_set_from_edge_list" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">vertex_set_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get a set of vertices from a list of edges</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>edge_list</code></td>
+        <td><code>List[Tuple[int, int]]</code></td>
+        <td><p>List of edges</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Set[int]</code></td>
+      <td><p>Set of vertices in the edge list</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tspwplib/walk.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">vertex_set_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">:</span> <span class="n">EdgeList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Vertex</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Get a set of vertices from a list of edges</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        edge_list: List of edges</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Set of vertices in the edge list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">edge_list</span><span class="p">))</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              tspwplib
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../installation/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Installation
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7353b375.min.js"></script>
+      
+    
+  </body>
+</html>
