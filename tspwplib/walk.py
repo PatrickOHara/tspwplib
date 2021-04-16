@@ -145,3 +145,15 @@ def total_cost_networkx(graph: nx.Graph, walk: VertexList) -> int:
     edges_in_tour = edge_list_from_walk(walk)
     cost_attr = nx.get_edge_attributes(graph, EdgeFunctionName.cost.value)
     return total_cost(cost_attr, edges_in_tour)
+
+
+def remove_self_loops_from_edge_list(edge_list: EdgeList) -> EdgeList:
+    """Return a new edge list with no self loops
+
+    Args:
+        edge_list: List of edges
+
+    Returns:
+        Edge list with no self loops
+    """
+    return [edge for edge in edge_list if edge[0] != edge[1]]
