@@ -63,7 +63,7 @@ def test_get_graph(oplib_root, generation, graph_name):
         assert EdgeFunctionName.cost in data
 
     # bool and list breaks pyintergraph so we avoid it
-    valid_types = [str, int, float]
+    valid_types = [str, int, float, bool]
     for _, _, data in graph.edges(data=True):
         for _, value in data.items():
             assert type(value) in valid_types
