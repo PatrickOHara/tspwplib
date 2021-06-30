@@ -16,7 +16,12 @@ from .converter import (
     to_vertex_dataframe,
 )
 from .complete import is_complete, is_complete_with_self_loops
-from .exception import EdgesNotAdjacentException
+from .exception import (
+    EdgesNotAdjacentException,
+    NotSimpleException,
+    NotSimpleCycleException,
+    NotSimplePathException,
+)
 from .problem import ProfitsProblem, is_pctsp_yes_instance
 from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
 from .types import (
@@ -40,6 +45,7 @@ from .walk import (
     is_simple_cycle,
     is_simple_path,
     is_walk,
+    order_edge_list,
     remove_self_loops_from_edge_list,
     total_cost,
     total_cost_networkx,
@@ -55,8 +61,12 @@ __all__ = [
     "EdgeFunction",
     "EdgeFunctionName",
     "EdgeList",
+    "EdgesNotAdjacentException",
     "Generation",
     "GraphName",
+    "NotSimpleException",
+    "NotSimpleCycleException",
+    "NotSimplePathException",
     "OptimalSolutionTSP",
     "ProfitsProblem",
     "Vertex",
@@ -84,6 +94,7 @@ __all__ = [
     "is_vertex_split_head",
     "is_vertex_split_tail",
     "is_walk",
+    "order_edge_list",
     "problem",
     "remove_self_loops_from_edge_list",
     "split_head",

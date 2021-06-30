@@ -1,10 +1,10 @@
 """Functions for walks in a graph"""
 
 import itertools
-from typing import Mapping, Set
+from typing import Dict, Mapping, Set
 
 import networkx as nx
-from .exception import EdgesNotAdjacentException
+from .exception import EdgesNotAdjacentException, NotSimpleException
 from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList
 
 
@@ -37,6 +37,95 @@ def vertex_set_from_edge_list(edge_list: EdgeList) -> Set[Vertex]:
         Set of vertices in the edge list
     """
     return set(itertools.chain.from_iterable(edge_list))
+
+
+def __add_vertex_to_occurence(
+    first_occurence: Dict[Vertex, int],
+    second_occurence: Dict[Vertex, int],
+    vertex: Vertex,
+    index: int,
+) -> None:
+    """Add vertex to either the first or second occurence lookup"""
+    if vertex in first_occurence:
+        second_occurence[vertex] = index
+    elif vertex not in first_occurence:
+        first_occurence[vertex] = index
+    else:
+        message = f"Vertex {vertex} appears in more than two edges. Walk is not simple."
+        raise NotSimpleException(message)
+
+
+def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
+    """Given a list of unordered edges, return an ordered edge list
+    such that every two adjacent edge in the list are also adjacent in
+    the input graph.
+
+    Note that the list of edges should form a simple path or cycle.
+
+    Args:
+        unordered_edges: List of unique edges in no particular order
+
+    Returns:
+        List of unique edges that are adjacent in the graph
+
+    Raises:
+        NotSimpleException: If the list of edges is not a simple path or cycle
+    """
+    # create a lookup table of the first and second occurence of each vertex in the edge list
+    first_occurence = dict()
+    second_occurence = dict()
+    for i in range(len(unordered_edges)):
+        u, v = unordered_edges[i]
+        __add_vertex_to_occurence(first_occurence, second_occurence, u, i)
+        __add_vertex_to_occurence(first_occurence, second_occurence, v, i)
+
+    # use the lookup tables to place the edges in the correct order in the edge list
+    ordered_edges = list()
+    j = 0
+    target_index = -1
+    found_source = False
+    for i in range(len(unordered_edges)):
+        u, v = unordered_edges[i]
+        if not found_source and u not in second_occurence:
+            j = i
+            found_source = True
+        elif found_source and u not in second_occurence:
+            target_index = i
+            break
+        elif not found_source and v not in second_occurence:
+            j = i
+            found_source = True
+        elif found_source and v not in second_occurence:
+            target_index = i
+            break
+    prev = unordered_edges[0][0]
+    visited = [False] * len(unordered_edges)
+    for i in range(len(unordered_edges)):
+        edge = unordered_edges[j]
+
+        if visited[j]:
+            raise NotSimpleException()
+        visited[j] = True
+        u, v = edge
+        ordered_edges.append(edge)
+        if j == target_index:
+            break
+
+        # if u == prev then follow v
+        if u == prev and j == first_occurence[v]:
+            j = second_occurence[v]
+            prev = v
+        elif u == prev and j == second_occurence[v]:
+            j = first_occurence[v]
+            prev = v
+        # if v == prev then follow u
+        elif v == prev and j == first_occurence[u]:
+            j = second_occurence[u]
+            prev = u
+        elif v == prev and j == second_occurence[u]:
+            j = second_occurence[u]
+            prev = u
+    return ordered_edges
 
 
 def walk_from_edge_list(edge_list: EdgeList) -> VertexList:
