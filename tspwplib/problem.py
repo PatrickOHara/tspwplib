@@ -7,6 +7,7 @@ import tsplib95
 from .types import EdgeList, Vertex, VertexFunctionName, VertexLookup
 from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
+
 class ProfitsProblem(tsplib95.models.StandardProblem):
     """TSP with Profits Problem
 
@@ -234,6 +235,8 @@ def is_pctsp_yes_instance(
         is_simple_cycle(graph, walk)
         and total_prize(
             nx.get_node_attributes(graph, VertexFunctionName.prize.value), vertex_set
-        ) >= quota
-        and root_vertex == walk[0] and root_vertex == walk[len(walk) - 1]
+        )
+        >= quota
+        and root_vertex == walk[0]
+        and root_vertex == walk[len(walk) - 1]
     )

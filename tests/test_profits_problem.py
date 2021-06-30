@@ -108,6 +108,7 @@ def test_get_quota(oplib_root, graph_name):
     with pytest.raises(ValueError):
         problem.get_quota(101)
 
+
 def test_is_pctsp_yes_instance(
     oplib_root,
     generation,
@@ -122,5 +123,5 @@ def test_is_pctsp_yes_instance(
     edge_list = []
     num_nodes = graph.number_of_nodes()
     for i in range(num_nodes):
-        edge_list.append((i, (i+1)%num_nodes))
+        edge_list.append((i, (i + 1) % num_nodes))
     assert is_pctsp_yes_instance(graph, quota, root, edge_list)
