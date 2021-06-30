@@ -84,6 +84,7 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     j = 0
     target_index = -1
     found_source = False
+    first_vertex = 0
     for i in range(len(unordered_edges)):
         u, v = unordered_edges[i]
         if not found_source and u not in second_occurence:
@@ -95,14 +96,16 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
         elif not found_source and v not in second_occurence:
             j = i
             found_source = True
+            first_vertex = 1
         elif found_source and v not in second_occurence:
             target_index = i
             break
-    prev = unordered_edges[0][0]
+    prev = unordered_edges[j][first_vertex]
     visited = [False] * len(unordered_edges)
+
     for i in range(len(unordered_edges)):
         edge = unordered_edges[j]
-
+        print(edge)
         if visited[j]:
             raise NotSimpleException()
         visited[j] = True
@@ -123,8 +126,9 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
             j = second_occurence[u]
             prev = u
         elif v == prev and j == second_occurence[u]:
-            j = second_occurence[u]
+            j = first_occurence[u]
             prev = u
+
     return ordered_edges
 
 
