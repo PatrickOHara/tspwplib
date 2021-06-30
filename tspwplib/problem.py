@@ -4,8 +4,8 @@ import random
 from typing import List
 import networkx as nx
 import tsplib95
-from .types import EdgeList, Vertex, VertexLookup
-
+from .types import EdgeList, Vertex, VertexFunctionName, VertexLookup
+from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
     """TSP with Profits Problem
@@ -208,3 +208,32 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                     # remove just (u,v) in directed case
                     edges_copy.remove(edge)
         return edges_copy
+
+
+def is_pctsp_yes_instance(
+    graph: nx.Graph, quota: int, root_vertex: Vertex, edge_list: EdgeList
+) -> bool:
+    """Returns true if the list of edges is a solution to the instance
+    of the Prize collecting Travelling Salesman Problem.
+
+    Args:
+        graph: Undirected graph with cost function on edges and prize function on vertices
+        quota: The salesman must collect at least the quota in prize money
+        root_vertex: Start and finish vertex of the tour
+        edge_list: Edges in the solution of the instance
+
+    Returns:
+        True if the total prize of the tour is at least the quota and the tour is a simple
+        cycle that starts and ends at the root vertex. False otherwise.
+    """
+    if len(edge_list) < 3:
+        return False
+    walk = walk_from_edge_list(edge_list)
+    vertex_set = set(walk)
+    return (
+        is_simple_cycle(graph, walk)
+        and total_prize(
+            nx.get_node_attributes(graph, VertexFunctionName.prize.value), vertex_set
+        ) >= quota
+        and root_vertex == walk[0] and root_vertex == walk[len(walk) - 1]
+    )

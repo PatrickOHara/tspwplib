@@ -39,6 +39,7 @@ def test_vertex_set_from_edge_list():
     assert vertex_set_from_edge_list([]) == set()
     assert vertex_set_from_edge_list([(0, 1), (1, 2), (2, 2)]) == {0, 1, 2}
 
+
 def test_walk_from_edge_list():
     """Test a walk is returned from an edge list"""
     assert walk_from_edge_list([]) == list()
@@ -51,6 +52,7 @@ def test_walk_from_edge_list():
         walk_from_edge_list([(0, 1), (2, 1), (0, 3)])
     with pytest.raises(EdgesNotAdjacentException):
         walk_from_edge_list([(0, 1), (2, 1), (1, 0)])
+
 
 def test_is_simple_path(walk_graph, simple_path):
     """Test simple paths"""

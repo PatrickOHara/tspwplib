@@ -47,7 +47,7 @@ def walk_from_edge_list(edge_list: EdgeList) -> VertexList:
 
     Returns:
         List of vertices in walk of edges
-    
+
     Raises:
         EdgesNotAdjacentException: When two edges in the walk are not adjacent
     """

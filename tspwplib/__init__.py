@@ -17,7 +17,7 @@ from .converter import (
 )
 from .complete import is_complete, is_complete_with_self_loops
 from .exception import EdgesNotAdjacentException
-from .problem import ProfitsProblem
+from .problem import ProfitsProblem, is_pctsp_yes_instance
 from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
 from .types import (
     Alpha,
@@ -77,6 +77,7 @@ __all__ = [
     "head_prize",
     "is_complete",
     "is_complete_with_self_loops",
+    "is_pctsp_yes_instance",
     "is_simple_cycle",
     "is_simple_path",
     "is_split_vertex_pair",
