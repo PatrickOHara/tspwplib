@@ -3,6 +3,7 @@
 import pytest
 import networkx as nx
 from tspwplib import (
+    EdgesNotAdjacentException,
     VertexFunctionName,
     edge_list_from_walk,
     is_simple_cycle,
@@ -12,6 +13,7 @@ from tspwplib import (
     total_cost_networkx,
     total_prize,
     vertex_set_from_edge_list,
+    walk_from_edge_list,
 )
 
 
@@ -37,6 +39,18 @@ def test_vertex_set_from_edge_list():
     assert vertex_set_from_edge_list([]) == set()
     assert vertex_set_from_edge_list([(0, 1), (1, 2), (2, 2)]) == {0, 1, 2}
 
+def test_walk_from_edge_list():
+    """Test a walk is returned from an edge list"""
+    assert walk_from_edge_list([]) == list()
+    assert walk_from_edge_list([(0, 1)]) == [0, 1]
+    assert walk_from_edge_list([(0, 1), (2, 1)]) == [0, 1, 2]
+    assert walk_from_edge_list([(1, 0), (2, 1), (0, 2)]) == [0, 1, 2, 0]
+    with pytest.raises(EdgesNotAdjacentException):
+        walk_from_edge_list([(0, 1), (2, 3)])
+    with pytest.raises(EdgesNotAdjacentException):
+        walk_from_edge_list([(0, 1), (2, 1), (0, 3)])
+    with pytest.raises(EdgesNotAdjacentException):
+        walk_from_edge_list([(0, 1), (2, 1), (1, 0)])
 
 def test_is_simple_path(walk_graph, simple_path):
     """Test simple paths"""

@@ -4,6 +4,7 @@ import itertools
 from typing import Mapping, Set
 
 import networkx as nx
+from .exception import EdgesNotAdjacentException
 from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList
 
 
@@ -36,6 +37,55 @@ def vertex_set_from_edge_list(edge_list: EdgeList) -> Set[Vertex]:
         Set of vertices in the edge list
     """
     return set(itertools.chain.from_iterable(edge_list))
+
+
+def walk_from_edge_list(edge_list: EdgeList) -> VertexList:
+    """Get a walk from a list of unique, adjacent edges
+
+    Args:
+        edge_list: List of unique edges that are adjacent in the graph
+
+    Returns:
+        List of vertices in walk of edges
+    
+    Raises:
+        EdgesNotAdjacentException: When two edges in the walk are not adjacent
+    """
+    walk = list()
+    if len(edge_list) == 0:
+        return walk
+
+    first_edge = edge_list[0]
+    if len(edge_list) == 1:
+        walk.append(first_edge[0])
+        walk.append(first_edge[1])
+        return walk
+
+    second_edge = edge_list[1]
+    if first_edge[0] == second_edge[0] or first_edge[0] == second_edge[1]:
+        current = first_edge[0]
+        walk.append(first_edge[1])
+    else:
+        current = first_edge[1]
+        walk.append(first_edge[0])
+
+    for i in range(1, len(edge_list)):
+        walk.append(current)
+        edge = edge_list[i]
+        u = edge[0]
+        v = edge[1]
+        if u == current:
+            current = v
+        elif v == current:
+            current = u
+        else:
+            message = f"Edges in the edge list must be adjacent, but edge {u} - {v}"
+            message += (
+                f" is not adjacent to vertex {current} from previous edge in list."
+            )
+            raise EdgesNotAdjacentException(message)
+    walk.append(current)
+    return walk
 
 
 def is_walk(G: nx.Graph, walk: VertexList) -> bool:

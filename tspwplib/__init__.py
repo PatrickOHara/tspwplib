@@ -16,6 +16,7 @@ from .converter import (
     to_vertex_dataframe,
 )
 from .complete import is_complete, is_complete_with_self_loops
+from .exception import EdgesNotAdjacentException
 from .problem import ProfitsProblem
 from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
 from .types import (
@@ -44,6 +45,7 @@ from .walk import (
     total_cost_networkx,
     total_prize,
     vertex_set_from_edge_list,
+    walk_from_edge_list,
 )
 
 __all__ = [
@@ -93,5 +95,6 @@ __all__ = [
     "types",
     "utils",
     "walk",
+    "walk_from_edge_list",
     "vertex_set_from_edge_list",
 ]
