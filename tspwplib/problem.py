@@ -57,27 +57,22 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         """Add node attributes"""
         node_score = self.get_node_score()
         for vertex in list(self.get_nodes()):
-            # NOTE pyintergraph cannot handle bool, so we remove some attributes:
-            # is_depot, demand, display
             # pylint: disable=unsupported-membership-test,no-member
-            # is_depot = vertex in self.depots
+            is_depot = vertex in self.depots
             coord: List[int] = self.node_coords.get(vertex)
             graph.add_node(
                 names[vertex],
                 x=coord[0],
                 y=coord[1],
                 prize=node_score[vertex],
-                # is_depot=is_depot,
+                is_depot=is_depot,
             )
-            # demand: int = self.demands.get(vertex)
-            # display = self.display_data.get(vertex)
-            # if not demand is None:
-            # graph[vertex]["demand"] = demand
-            # if not display is None:
-            # graph[vertex]["display"] = display
-        # nx.set_node_attributes(
-        #     graph, self.get_node_score(), name=VertexFunctionName.prize
-        # )
+            demand: int = self.demands.get(vertex)
+            display = self.display_data.get(vertex)
+            if not demand is None:
+                graph[vertex]["demand"] = demand
+            if not display is None:
+                graph[vertex]["display"] = display
 
     def get_graph(self, normalize: bool = False) -> nx.Graph:
         """Return a networkx graph instance representing the problem.
