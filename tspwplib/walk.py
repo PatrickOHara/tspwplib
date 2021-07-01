@@ -74,8 +74,7 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     # create a lookup table of the first and second occurence of each vertex in the edge list
     first_occurence = dict()
     second_occurence = dict()
-    for i in range(len(unordered_edges)):
-        u, v = unordered_edges[i]
+    for i, (u, v) in enumerate(unordered_edges):
         __add_vertex_to_occurence(first_occurence, second_occurence, u, i)
         __add_vertex_to_occurence(first_occurence, second_occurence, v, i)
 
@@ -85,7 +84,7 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     target_index = -1
     found_source = False
     first_vertex = 0
-    for i in range(len(unordered_edges)):
+    for i, (u, v) in enumerate(unordered_edges):
         u, v = unordered_edges[i]
         if not found_source and u not in second_occurence:
             j = i

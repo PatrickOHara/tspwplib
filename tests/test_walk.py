@@ -1,7 +1,5 @@
 """Tests for walks"""
 
-from networkx.classes.function import edges
-from tspwplib.walk import order_edge_list
 import pytest
 import networkx as nx
 from tspwplib import (
@@ -12,6 +10,7 @@ from tspwplib import (
     is_simple_cycle,
     is_simple_path,
     is_walk,
+    order_edge_list,
     remove_self_loops_from_edge_list,
     reorder_edge_list_from_root,
     total_cost_networkx,

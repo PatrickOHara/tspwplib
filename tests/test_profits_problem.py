@@ -11,7 +11,6 @@ from tspwplib import (
     VertexFunctionName,
     build_path_to_oplib_instance,
     is_pctsp_yes_instance,
-    total_prize,
 )
 
 
