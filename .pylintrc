@@ -431,6 +431,7 @@ good-names=i,
            T,
            x,
            y,
+           n,
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted

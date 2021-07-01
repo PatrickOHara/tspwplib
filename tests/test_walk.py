@@ -1,5 +1,6 @@
 """Tests for walks"""
 
+from networkx.classes.function import edges
 from tspwplib.walk import order_edge_list
 import pytest
 import networkx as nx
@@ -12,6 +13,7 @@ from tspwplib import (
     is_simple_path,
     is_walk,
     remove_self_loops_from_edge_list,
+    reorder_edge_list_from_root,
     total_cost_networkx,
     total_prize,
     vertex_set_from_edge_list,
@@ -55,6 +57,24 @@ def test_order_edge_list():
     assert order_edge_list(edges5)
     with pytest.raises(NotSimpleException):
         order_edge_list(edges3)
+
+def test_reorder_edge_list_from_root():
+    """Test edges are reordered starting and ending at root"""
+    root = 0
+    edges1 = [(2, 3), (1, 2), (0, 1)]
+    edges2 = [(2, 1), (1, 0), (0, 2)]
+    edges3 = []
+    edges4 = [(1, 0), (2, 1), (0, 2)]
+    ordered1 = reorder_edge_list_from_root(edges1, root)
+    ordered2 = reorder_edge_list_from_root(edges2, root)
+    ordered4 = reorder_edge_list_from_root(edges4, root)
+    assert root in ordered1[0]
+    assert root in ordered2[0]
+    assert root in ordered2[len(ordered2) - 1]
+    with pytest.raises(nx.NodeNotFound):
+        reorder_edge_list_from_root(edges3, root)
+    assert root in ordered4[0]
+    assert root in ordered4[len(ordered4) - 1]
 
 
 def test_walk_from_edge_list():

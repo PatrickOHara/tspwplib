@@ -131,6 +131,34 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
 
     return ordered_edges
 
+def reorder_edge_list_from_root(edge_list: EdgeList, root: Vertex) -> EdgeList:
+    """Reorder a list of edges such that the root vertex is in the first (and last) edge
+
+    Args:
+        edge_list: List of unique, adjacent edges
+        root: Root vertex
+
+    Returns:
+        List of edges. The first (and last) edge will contain the root vertex.
+
+    Raises:
+        nx.NodeNotFound: If the root vertex is not in any edges.
+    """
+    root_index = -1
+    not_found = nx.NodeNotFound(f"Root vertex {root} not found in edge list")
+    n = len(edge_list)
+    if n == 0:
+        raise not_found
+    if n > 1 and root in edge_list[0] and root in edge_list[n-1]:
+        return edge_list
+    for i in range(n):
+        edge = edge_list[i]
+        if root in edge:
+            root_index = i
+    if root_index == -1:
+        raise not_found
+    reordered_edges = edge_list[root_index:] + edge_list[:root_index]
+    return reordered_edges
 
 def walk_from_edge_list(edge_list: EdgeList) -> VertexList:
     """Get a walk from a list of unique, adjacent edges
