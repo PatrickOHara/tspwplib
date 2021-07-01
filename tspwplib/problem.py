@@ -149,7 +149,10 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         Returns:
             Mapping from node to node score (profit)
         """
-        return self.node_score
+        score_dict: VertexLookup = dict()
+        for key, value in self.node_score.items():  # pylint: disable=no-member
+            score_dict[key] = value
+        return score_dict
 
     def get_tsp_optimal_value(self) -> int:
         """Get the value of the optimal solution to TSP
