@@ -1,11 +1,11 @@
 """Functions for walks in a graph"""
 
 import itertools
-from typing import Dict, Mapping, Set
+from typing import Dict, Iterable, Mapping, Set
 
 import networkx as nx
 from .exception import EdgesNotAdjacentException, NotSimpleException
-from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList
+from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList, VertexLookup
 
 
 def edge_list_from_walk(walk: VertexList) -> EdgeList:
@@ -72,8 +72,8 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
         NotSimpleException: If the list of edges is not a simple path or cycle
     """
     # create a lookup table of the first and second occurence of each vertex in the edge list
-    first_occurence = dict()
-    second_occurence = dict()
+    first_occurence: VertexLookup = dict()
+    second_occurence: VertexLookup = dict()
     for i, (u, v) in enumerate(unordered_edges):
         __add_vertex_to_occurence(first_occurence, second_occurence, u, i)
         __add_vertex_to_occurence(first_occurence, second_occurence, v, i)
@@ -173,7 +173,7 @@ def walk_from_edge_list(edge_list: EdgeList) -> VertexList:
     Raises:
         EdgesNotAdjacentException: When two edges in the walk are not adjacent
     """
-    walk = list()
+    walk: VertexList = list()
     if len(edge_list) == 0:
         return walk
 
@@ -257,7 +257,7 @@ def is_simple_path(G: nx.Graph, path: VertexList) -> bool:
     return is_walk(G, path) and len(path) == len(set(path))
 
 
-def total_prize(prizes: Mapping[Vertex, int], vertices: VertexList) -> int:
+def total_prize(prizes: Mapping[Vertex, int], vertices: Iterable[Vertex]) -> int:
     """Total prize of vertices
 
     Args:
