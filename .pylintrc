@@ -431,6 +431,7 @@ good-names=i,
            T,
            x,
            y,
+           n,
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted
@@ -567,7 +568,7 @@ max-attributes=7
 max-bool-expr=5
 
 # Maximum number of branch for function / method body.
-max-branches=12
+max-branches=20
 
 # Maximum number of locals for function / method body.
 max-locals=30

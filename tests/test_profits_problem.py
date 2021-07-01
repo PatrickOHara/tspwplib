@@ -10,6 +10,7 @@ from tspwplib import (
     OptimalSolutionTSP,
     VertexFunctionName,
     build_path_to_oplib_instance,
+    is_pctsp_yes_instance,
 )
 
 
@@ -105,3 +106,21 @@ def test_get_quota(oplib_root, graph_name):
         problem.get_quota(-1)
     with pytest.raises(ValueError):
         problem.get_quota(101)
+
+
+def test_is_pctsp_yes_instance(
+    oplib_root,
+    generation,
+    graph_name,
+):
+    """Test a yes instance is correctly identified"""
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
+    problem = ProfitsProblem.load(filepath)
+    graph = problem.get_graph(normalize=True)
+    quota = problem.get_quota(100)
+    root = problem.get_root_vertex(True)
+    edge_list = []
+    num_nodes = graph.number_of_nodes()
+    for i in range(num_nodes):
+        edge_list.append((i, (i + 1) % num_nodes))
+    assert is_pctsp_yes_instance(graph, quota, root, edge_list)
