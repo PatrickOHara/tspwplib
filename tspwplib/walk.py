@@ -72,14 +72,14 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
         NotSimpleException: If the list of edges is not a simple path or cycle
     """
     # create a lookup table of the first and second occurence of each vertex in the edge list
-    first_occurence: VertexLookup = dict()
-    second_occurence: VertexLookup = dict()
+    first_occurence: VertexLookup = {}
+    second_occurence: VertexLookup = {}
     for i, (u, v) in enumerate(unordered_edges):
         __add_vertex_to_occurence(first_occurence, second_occurence, u, i)
         __add_vertex_to_occurence(first_occurence, second_occurence, v, i)
 
     # use the lookup tables to place the edges in the correct order in the edge list
-    ordered_edges = list()
+    ordered_edges = []
     j = 0
     target_index = -1
     found_source = False
@@ -173,7 +173,7 @@ def walk_from_edge_list(edge_list: EdgeList) -> VertexList:
     Raises:
         EdgesNotAdjacentException: When two edges in the walk are not adjacent
     """
-    walk: VertexList = list()
+    walk: VertexList = []
     if len(edge_list) == 0:
         return walk
 
@@ -298,9 +298,7 @@ def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
                     )
                 ) from second_key_error
         except Exception as error:
-            raise KeyError(
-                "{edge} does not exist in cost map".format(edge=edge)
-            ) from error
+            raise KeyError(f"{edge} does not exist in cost map") from error
     return sum_cost
 
 

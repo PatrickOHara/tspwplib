@@ -144,7 +144,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         Returns:
             Mapping from node to node score (profit)
         """
-        score_dict: VertexLookup = dict()
+        score_dict: VertexLookup = {}
         for key, value in self.node_score.items():  # pylint: disable=no-member
             score_dict[key] = value
         return score_dict

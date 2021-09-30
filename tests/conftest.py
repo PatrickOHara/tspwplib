@@ -48,7 +48,7 @@ def weighted_walk_networkx_graph(walk_graph) -> nx.Graph:
     """Walk graph with cost on edges and prize on vertices"""
     for vertex in walk_graph:
         walk_graph.nodes[vertex][VertexFunctionName.prize] = vertex
-    edge_attrs = dict()
+    edge_attrs = {}
     for u, v in walk_graph.edges():
         edge_attrs[(u, v)] = {EdgeFunctionName.cost.value: u + v}
     nx.set_edge_attributes(walk_graph, edge_attrs)
