@@ -79,7 +79,7 @@ def test_reorder_edge_list_from_root():
 
 def test_walk_from_edge_list():
     """Test a walk is returned from an edge list"""
-    assert walk_from_edge_list([]) == list()
+    assert walk_from_edge_list([]) == []
     assert walk_from_edge_list([(0, 1)]) == [0, 1]
     assert walk_from_edge_list([(0, 1), (2, 1)]) == [0, 1, 2]
     assert walk_from_edge_list([(1, 0), (2, 1), (0, 2)]) == [0, 1, 2, 0]

@@ -6,6 +6,7 @@ import math
 from typing import Dict, List, Tuple
 import networkx as nx
 import pandas as pd
+from .exception import UnexpectedSelfLoopException
 from .types import EdgeFunctionName, Vertex, VertexFunctionName, VertexList
 
 
@@ -38,8 +39,8 @@ def asymmetric_from_directed(G: nx.DiGraph) -> nx.DiGraph:
         Directed asymmetric graph
     """
     asymmetric_graph = nx.DiGraph()
-    nodes_for_adding: List[Tuple[Vertex, Dict]] = list()
-    edges_for_adding: List[Tuple[Vertex, Vertex, Dict]] = list()
+    nodes_for_adding: List[Tuple[Vertex, Dict]] = []
+    edges_for_adding: List[Tuple[Vertex, Vertex, Dict]] = []
     # deepcopy when not a view
     asymmetric_graph.graph.update(deepcopy(G.graph))
 
@@ -245,3 +246,78 @@ def tail_prize(prize: int) -> int:
         Split tail prize
     """
     return math.floor(prize / 2.0)
+
+
+def new_dummy_vertex(vertex: int, key: int, biggest: int) -> int:
+    """New dummy vertex ID
+
+    Args:
+        vertex: Vertex ID
+        key: Edge key
+        biggest: Biggest vertex ID
+
+    Returns:
+        ID of a new negative dummy vertex if key is greater than one.
+        Otherwise return the same vertex ID as the input.
+    """
+    if key > 0:
+        return -((biggest + 1) * (key - 1)) - vertex - 1
+    return vertex
+
+
+def old_vertex_from_dummy(dummy: int, key: int, biggest) -> int:
+    """Old vertex ID from the dummy vertex ID"""
+    if dummy < 0:
+        return -(dummy + (biggest + 1) * (key - 1) + 1)
+    return dummy
+
+
+def to_simple_undirected(G: nx.MultiGraph) -> nx.Graph:
+    """Given an undirected multigraph, multi edges to create a simple undirected graph.
+
+    Args:
+        G: Undirected networkx multi graph.
+
+    Returns:
+        Undirected networkx simple graph with no multi edges.
+
+    Notes:
+        Assumes the vertex ids are integers.
+    """
+    if not isinstance(G, nx.MultiGraph) and isinstance(G, nx.Graph):
+        return G
+    if isinstance(G, nx.DiGraph):
+        raise TypeError("Directed graphs are not valid for this method")
+    simple_graph = nx.Graph()
+
+    # copy graph attributes to new graph
+    for key, value in simple_graph.graph.items():
+        simple_graph.graph[key] = value
+
+    # copy vertex attributes
+    for v, data in G.nodes(data=True):
+        simple_graph.add_node(v, **data)
+
+    biggest = biggest_vertex_id_from_graph(G)
+
+    for u, v, k, data in G.edges.data(keys=True):
+        if u == v and k > 0:
+            message = "Self loop found with key greater than zero: "
+            message += "implies there is more than one self loop on this vertex."
+            raise UnexpectedSelfLoopException(message)
+
+        # the first multi edge - add all data to new graph edge
+        if k == 0:
+            simple_graph.add_edge(u, v, **data)
+
+        # multi edge - create new vertex for the source if it does not yet exist
+        elif k > 0:
+            vertex_data = G.nodes[u]
+            dummy = new_dummy_vertex(u, k, biggest)
+            simple_graph.add_node(dummy, **vertex_data)
+            simple_graph.add_edge(u, dummy, **data)
+            simple_graph.add_edge(dummy, v, **data)
+        else:
+            raise ValueError("Negative key for edge.")
+
+    return simple_graph
