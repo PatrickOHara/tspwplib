@@ -3,6 +3,7 @@
 import random
 from typing import List
 import networkx as nx
+import pandas as pd
 import tsplib95
 from .types import EdgeList, Vertex, VertexFunctionName, VertexLookup
 from .walk import is_simple_cycle, walk_from_edge_list, total_prize
@@ -32,7 +33,11 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     def edge_removal_probability(self) -> float:
         """Probability of removing an edge from the graph.
 
-        It is strongly recommended to only set this value in the constructor.
+        Returns:
+            Edge removal probability.
+
+        Notes:
+            It is strongly recommended to only set this value in the constructor.
         """
         return self._edge_removal_probability
 
