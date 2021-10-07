@@ -1,13 +1,26 @@
 """Functions and classes for datasets"""
 
 import random
+import re
 from typing import List
 import networkx as nx
-import pandas as pd
 import tsplib95
-from .types import EdgeList, Vertex, VertexFunctionName, VertexLookup
+from .types import EdgeFunction, EdgeList, Vertex, VertexFunctionName, VertexLookup
 from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
+from tsplib95 import transformers
+from tsplib95.fields import TransformerField
+
+class PrizesField(TransformerField):
+    """Field for demands."""
+
+    default = dict
+
+    @classmethod
+    def build_transformer(cls):
+        node = transformers.FuncT(func=int)
+        demand = transformers.FuncT(func=float)
+        return transformers.MapT(key=node, value=demand, sep='\n')
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
     """TSP with Profits Problem
@@ -18,7 +31,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     # Maximum distance of the total route in a OP.
     cost_limit = tsplib95.fields.IntegerField("COST_LIMIT")
     # The scores of the nodes of a OP are given in the form (per line)
-    node_score = tsplib95.fields.DemandsField("NODE_SCORE_SECTION")
+    node_score = PrizesField("NODE_SCORE_SECTION")
     # The optimal solution to the TSP
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
 
@@ -65,11 +78,8 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         for vertex in list(self.get_nodes()):
             # pylint: disable=unsupported-membership-test,no-member
             is_depot = vertex in self.depots
-            coord: List[int] = self.node_coords.get(vertex)
             graph.add_node(
                 names[vertex],
-                x=coord[0],
-                y=coord[1],
                 prize=node_score[vertex],
                 is_depot=is_depot,
             )
@@ -79,6 +89,10 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                 graph[vertex]["demand"] = demand
             if not display is None:
                 graph[vertex]["display"] = display
+            if self.node_coords:
+                coord = self.node_coords.get(vertex)
+                graph.nodes[names[vertex]]["x"] = coord[0]
+                graph.nodes[names[vertex]]["y"] = coord[1]
 
     def get_graph(self, normalize: bool = False) -> nx.Graph:
         """Return a networkx graph instance representing the problem.
@@ -185,15 +199,20 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         except KeyError as key_error:
             raise ValueError("The list of depots is empty") from key_error
 
-    def get_edges(self) -> EdgeList:
+    def get_edges(self, normalize: bool = False) -> EdgeList:   # pylint: disable=arguments-differ
         """Get a list of edges in the graph
 
         If the `edge_removal_probability` is set in the constructor,
         then edges will be randomly removed
 
+        Args:
+            normalize: If true use the normalized vertex ids
+
         Returns:
             List of edges in the graph
         """
+        if normalize:
+            raise NotImplementedError("Normalizing edges not yet implemented")
         edges: EdgeList = list(super().get_edges())
         edges_copy = edges.copy()
         random.seed(self._seed)
@@ -212,6 +231,79 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                     # remove just (u,v) in directed case
                     edges_copy.remove(edge)
         return edges_copy
+
+    def _create_wfunc(self, special=None):
+        """Overwrite create weight function"""
+        if self.is_explicit() and self.edge_weight_format == "EDGE_LIST_WEIGHTS":
+            return lambda i, j: self.edge_weights[(i, j)]
+        return super()._create_wfunc(special=special)
+
+    def render(self):
+        # render each value by keyword
+        rendered = self.as_name_dict()
+        for name in list(rendered):
+            value = rendered.pop(name)
+            field = self.__class__.fields_by_name[name]
+            if self.is_explicit() and self.edge_weight_format == "EDGE_LIST_WEIGHTS" and name == "edge_weights":
+                rendered["EDGE_WEIGHT_SECTION"] = render_edge_list_weights(self.edge_weights)
+
+            elif name in self.__dict__ or value != field.get_default_value():
+                rendered[field.keyword] = field.render(value)
+
+        # build keyword-value pairs with the separator
+        kvpairs = []
+        for keyword, value in rendered.items():
+            sep = ':\n' if '\n' in value else ': '
+            kvpairs.append(f'{keyword}{sep}{value}')
+        kvpairs.append('EOF')
+
+        # join and return the result
+        return '\n'.join(kvpairs)
+
+    @classmethod
+    def parse(cls, text: str, **options):
+        """Parse text into a problem instance.
+
+        Any keyword options are passed to the class constructor. If a keyword
+        argument has the same name as a field then they will collide and cause
+        an error.
+
+        Args:
+            text: problem text
+            options: any keyword arguments to pass to the constructor
+
+        Returns:
+            problem instance
+        """
+        # prepare the regex for all known keys
+        keywords = '|'.join(cls.fields_by_keyword)
+        sep = r'''\s*:\s*|\s*\n'''
+        pattern = f'({keywords}|EOF)(?:{sep})'
+
+        # split the whole text by known keys
+        regex = re.compile(pattern, re.M)
+        __, *results = regex.split(text)
+
+        # pair keys and values
+        field_keywords = results[::2]
+        field_values = results[1::2]
+
+        # parse into a dictionary
+        is_edge_list_weights = False
+        data = {}
+        for keyword, value in zip(field_keywords, field_values):
+            if keyword != 'EOF':
+                field = cls.fields_by_keyword[keyword]
+                name = cls.names_by_keyword[keyword]
+                field_value = field.parse(value.strip())
+                if name == "EDGE_WEIGHT_TYPE" and field_value == "EDGE_LIST_WEIGHTS":
+                    is_edge_list_weights = True
+                if name == "EDGE_WEIGHT_SECTION" and is_edge_list_weights:
+                    field_value = parse_edge_list_weights(value.strip())
+                data[name] = field_value
+
+        # return as a model, letting options and field data potentially collide
+        return cls(**data, **options)
 
 
 def is_pctsp_yes_instance(
@@ -243,3 +335,21 @@ def is_pctsp_yes_instance(
         and root_vertex == walk[0]
         and root_vertex == walk[len(walk) - 1]
     )
+
+def parse_edge_list_weights(text: str) -> EdgeFunction:
+    print(text)
+    return {}
+
+def render_edge_list_weights(edge_weights: EdgeFunction) -> str:
+    """Render edge weight dictionary to a string
+
+    Args:
+        edge_weights: Keys are edge tuples. Values are the weight of the edge.
+
+    Returns:
+        String representation of edge weights, including new lines.
+    """
+    render = ""
+    for (u, v), weight in edge_weights.items():
+        render += f"{u} {v} {weight}\n"
+    return render

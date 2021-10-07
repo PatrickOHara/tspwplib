@@ -441,7 +441,22 @@ def split_edge_cost(edge_cost: EdgeFunction, to_split: LookupToSplit) -> EdgeFun
 
 
 def split_graph_from_properties(edge_properties: EdgeProperties) -> nx.Graph:
-    """Split edges with properties and create undirected simple graph"""
+    """Split edges with properties and create undirected simple graph.
+
+    Args:
+        edge_properties: keys are edges, values are dicts of edge attributes
+
+    Returns:
+        Undirected simple graph with edge attributes for cost, prize and old_edge
+
+    Notes:
+        To get the original_edge that a split edge represents, access the 'old_edge' attribute
+    """
+    for edge, data in edge_properties.items():
+        if not "cost" in data:
+            raise KeyError(f"Edge property for edge {edge} has no cost")
+        if not "weight" in data:
+            raise KeyError(f"Edge property for edge {edge} has no weight")
     edge_list = list(edge_properties.keys())
     splits = split_edges(edge_list)
     to_split = lookup_to_split(edge_list, splits)
