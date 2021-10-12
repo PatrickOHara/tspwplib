@@ -1,5 +1,6 @@
 """Type hinting and names"""
 
+from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Any, Dict, List, Tuple, Union
 
@@ -23,21 +24,106 @@ DisjointPaths = Tuple[VertexList, VertexList]
 # pylint: disable=invalid-name
 
 
-class VertexFunctionName(str, Enum):
+class StrEnumMixin:
+    """When the `str(...)` method is called on this mixin, return the value of the Enum."""
+
+    def __str__(self):
+        try:
+            return self.value()
+        except TypeError:
+            return self
+
+
+class EdgeWeightType(StrEnumMixin, str, Enum):
+    """Specifies how the edge weights (or distances) are given"""
+
+    EXPLICIT = "EXPLICIT"  # Weights are listed explicitly in the corresponding section
+    EUC2D = "EUC2D"  # Weights are Euclidean distances in 2-D
+    EUC3D = "EUC3D"  # Weights are Euclidean distances in 3-D
+    MAX2D = "MAX2D"  # Weights are maximum distances in 2-D
+    MAX3D = "MAX3D"  # Weights are maximum distances in 3-D
+    MAN2D = "MAN2D"  # Weights are Manhattan distances in 2-D
+    MAN3D = "MAN3D"  # Weights are Manhattan distances in 3-D
+    CEIL2D = "CEIL2D"  # Weights are Euclidean distances in 2-D rounded up
+    GEO = "GEO"  # Weights are geographical distances
+    ATT = "ATT"  # Special distance function for problems att48 and att532
+    XRAY1 = (
+        "XRAY1"  # Special distance function for crystallography problems (Version 1)
+    )
+    XRAY2 = (
+        "XRAY2"  # Special distance function for crystallography problems (Version 2)
+    )
+    SPECIAL = "SPECIAL"  # There is a special distance function documented elsewhere
+
+
+class EdgeWeightFormat(StrEnumMixin, str, Enum):
+    """Describes the format of the edge weights if they are given explicitly"""
+
+    FUNCTION = "FUNCTION"  # Weights are given by a function (see above)
+    FULL_MATRIX = "FULL_MATRIX"  # Weights are given by a full matrix
+    UPPER_ROW = (
+        "UPPER_ROW"  # Upper triangular matrix (row-wise without diagonal entries)
+    )
+    LOWER_ROW = (
+        "LOWER_ROW"  # Lower triangular matrix (row-wise without diagonal entries)
+    )
+    UPPER_DIAG_ROW = "UPPER_DIAG_ROW"  # Upper triangular matrix
+    LOWER_DIAG_ROW = "LOWER_DIAG_ROW"  # Lower triangular matrix
+    UPPER_COL = (
+        "UPPER_COL"  # Upper triangular matrix (column-wise without diagonal entries)
+    )
+    LOWER_COL = (
+        "LOWER_COL"  # Lower triangular matrix (column-wise without diagonal entries)
+    )
+    UPPER_DIAG_COL = "UPPER_DIAG_COL"  # Upper triangular matrix
+    LOWER_DIAG_COL = "LOWER_DIAG_COL"  # Lower triangular matrix
+
+
+class EdgeDataFormat(StrEnumMixin, str, Enum):
+    """How the edges are listed.
+
+    Notes:
+        This does not include edge attributes. It is only the edge IDs.
+    """
+
+    EDGE_LIST = "EDGE_LIST"
+    ADJ_LIST = "ADJ_LIST"
+
+
+class NodeCoordType(StrEnumMixin, str, Enum):
+    """How node co-ordinates are represented"""
+
+    TWOD_COORDS = "TWOD_COORDS"  # Nodes are specified by coordinates in 2-D
+    THREED_COORDS = "THREED_COORDS"  # Nodes are specified by coordinates in 3-D
+    NO_COORDS = "NO_COORDS"  # The nodes do not have associated coordinates
+
+
+class DisplayDataType(StrEnumMixin, str, Enum):
+    """How visualisation should be done."""
+
+    COORD_DISPLAY = "COORD_DISPLAY"  # Display is generated from the node coordinates
+    TWOD_DISPLAY = "TWOD_DISPLAY"  # Explicit coordinates in 2-D are given
+    NO_DISPLAY = "NO_DISPLAY"  # No graphical display is possible
+
+
+NodeCoords = Dict[Vertex, Union[Tuple[float, float], Tuple[float, float, float]]]
+
+
+class VertexFunctionName(StrEnumMixin, str, Enum):
     """Valid names of functions on vertices"""
 
     demand = "demand"
     prize = "prize"
 
 
-class EdgeFunctionName(str, Enum):
+class EdgeFunctionName(StrEnumMixin, str, Enum):
     """Valid names of functions on edges"""
 
     cost = "cost"
     weight = "weight"
 
 
-class GraphName(str, Enum):
+class GraphName(StrEnumMixin, str, Enum):
     """Names of TSPlib instances"""
 
     a280 = "a280"
@@ -153,7 +239,28 @@ class GraphName(str, Enum):
     vm1748 = "vm1748"
 
 
-class Generation(str, Enum):
+class LondonaqGraphName(StrEnumMixin, str, Enum):
+    """Names of graphs with London air quality forecasts"""
+
+    laqkxA = "laqkxA"
+
+
+class LondonaqTimestamp(Enum):
+    """Timestamps of the forecasts for London air quality forecasts"""
+
+    A = datetime(2021, 10, 12, 8, 0, 0, tzinfo=datetime.timezone.utc)  # 9am BST
+
+
+class LondonaqLocation(StrEnumMixin, str, Enum):
+    """Names of locations that the London air quality graph is centered upon"""
+
+    bb = "Big Ben"
+    kx = "King's Cross"
+    ro = "Royal Observatory Greenwich"
+    ws = "Wembley Stadium"
+
+
+class Generation(StrEnumMixin, str, Enum):
     """Generations of TSPwP problem instances"""
 
     gen1 = "gen1"

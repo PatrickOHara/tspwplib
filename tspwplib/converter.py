@@ -440,11 +440,21 @@ def split_edge_cost(edge_cost: EdgeFunction, to_split: LookupToSplit) -> EdgeFun
     return split_cost
 
 
-def split_graph_from_properties(edge_properties: EdgeProperties) -> nx.Graph:
+def split_graph_from_properties(
+    edge_properties: EdgeProperties,
+    edge_attr_to_split: str = "cost",
+    edge_attr_to_vertex: str = "length",
+    new_vertex_attr: str = "prize",
+    old_edge_attr: str = "old_edge",
+) -> nx.Graph:
     """Split edges with properties and create undirected simple graph.
 
     Args:
-        edge_properties: keys are edges, values are dicts of edge attributes
+        edge_properties: Keys are edges. Values are dicts of edge attributes.
+        edge_attr_to_split: Name of edge attribute. Assign half the value to each split edge.
+        edge_attr_to_vertex: Name of edge attribute. Assign edge value to a new vertex attribute.
+        new_vertex_attr: Name of the newly created vertex attribute.
+        old_edge_attr: Name of the newly created attribute for the old edge ID.
 
     Returns:
         Undirected simple graph with edge attributes for cost, prize and old_edge
@@ -452,28 +462,38 @@ def split_graph_from_properties(edge_properties: EdgeProperties) -> nx.Graph:
     Notes:
         To get the original_edge that a split edge represents, access the 'old_edge' attribute
     """
-    for edge, data in edge_properties.items():
-        if not "cost" in data:
-            raise KeyError(f"Edge property for edge {edge} has no cost")
-        if not "weight" in data:
-            raise KeyError(f"Edge property for edge {edge} has no weight")
+    # check that every edge has an attribute to split and an attr to move to vertex
+    is_edge_attr_to_split = True
+    is_edge_attr_to_vertex = True
+    for data in edge_properties.values():
+        if not edge_attr_to_split in data:
+            is_edge_attr_to_split = False
+        if not edge_attr_to_vertex in data:
+            is_edge_attr_to_vertex = False
+
+    # split edges and create lookups
     edge_list = list(edge_properties.keys())
     splits = split_edges(edge_list)
     to_split = lookup_to_split(edge_list, splits)
     from_split = lookup_from_split(edge_list, splits)
-    prize = prize_from_weighted_edges(
-        {edge: item["weight"] for edge, item in edge_properties.items()}, to_split
-    )
-    cost = split_edge_cost(
-        {edge: item["cost"] for edge, item in edge_properties.items()}, to_split
-    )
 
     # create graph and assign prizes and costs
     G = nx.Graph()
     G.add_edges_from(splits)
-    nx.set_node_attributes(G, 0, name="prize")
-    nx.set_node_attributes(G, prize, name="prize")
-    nx.set_edge_attributes(G, 0, name="cost")
-    nx.set_edge_attributes(G, cost, name="cost")
-    nx.set_edge_attributes(G, from_split, name="old_edge")
+    if is_edge_attr_to_vertex:
+        prize = prize_from_weighted_edges(
+            {edge: item[edge_attr_to_vertex] for edge, item in edge_properties.items()},
+            to_split,
+        )
+        nx.set_node_attributes(G, 0.0, name=new_vertex_attr)
+        nx.set_node_attributes(G, prize, name=new_vertex_attr)
+
+    if is_edge_attr_to_split:
+        cost = split_edge_cost(
+            {edge: item[edge_attr_to_split] for edge, item in edge_properties.items()},
+            to_split,
+        )
+        nx.set_edge_attributes(G, 0.0, name=edge_attr_to_split)
+        nx.set_edge_attributes(G, cost, name=edge_attr_to_split)
+    nx.set_edge_attributes(G, from_split, name=old_edge_attr)
     return G

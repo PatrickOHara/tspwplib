@@ -1,6 +1,9 @@
 """Useful functions for parsing"""
 
+from itertools import chain
 from pathlib import Path
+from typing import List
+import networkx as nx
 from .types import Alpha, Generation, GraphName
 
 
@@ -40,3 +43,27 @@ def build_path_to_tsplib_instance(tsplib_root: Path, name: GraphName) -> Path:
     """
     filename = name.value + ".tsp"
     return tsplib_root / filename
+
+
+def edge_attribute_names(G: nx.Graph) -> List[str]:
+    """Get the names of all edge attributes
+
+    Args:
+        G: Graph
+
+    Returns:
+        List of attribute names
+    """
+    return list(set(chain.from_iterable(d.keys() for *_, d in G.edges(data=True))))
+
+
+def node_attribute_names(G: nx.Graph) -> List[str]:
+    """Get the names of all node attributes
+
+    Args:
+        G: Graph
+
+    Returns:
+        List of node attribute names
+    """
+    return list(set(chain.from_iterable(d.keys() for _, d in G.nodes(data=True))))

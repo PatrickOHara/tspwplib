@@ -1,26 +1,357 @@
 """Functions and classes for datasets"""
 
 import random
-import re
-from typing import List
+from typing import List, Optional, Tuple, Union
+
 import networkx as nx
+import pandas as pd
+import pydantic
 import tsplib95
-from .types import EdgeFunction, EdgeList, Vertex, VertexFunctionName, VertexLookup
+
+from .types import (
+    DisplayDataType,
+    EdgeDataFormat,
+    EdgeFunction,
+    EdgeList,
+    EdgeWeightFormat,
+    EdgeWeightType,
+    NodeCoords,
+    NodeCoordType,
+    Vertex,
+    VertexFunction,
+    VertexFunctionName,
+    VertexList,
+    VertexLookup,
+)
+from .utils import edge_attribute_names, node_attribute_names
 from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
-from tsplib95 import transformers
-from tsplib95.fields import TransformerField
 
-class PrizesField(TransformerField):
-    """Field for demands."""
+class BaseTSP(pydantic.BaseModel):
+    """A pydantic model for tsplib95.
 
-    default = dict
+    Each field is validated with type hinting.
+    """
+
+    capacity: Optional[Union[int, float]]
+    comment: str
+    demands: Optional[VertexFunction]
+    depots: VertexList
+    dimension: int
+    display_data: Optional[List[Tuple[int, float, float]]]
+    display_data_type: DisplayDataType
+    edge_data: EdgeList
+    edge_data_format: EdgeDataFormat
+    edge_weights: Optional[EdgeFunction]
+    edge_weight_format: EdgeWeightFormat
+    edge_weight_type: EdgeWeightType
+    fixed_edges: EdgeList
+    name: str
+    node_coords: NodeCoords
+    node_coord_type: NodeCoordType
+    problem_type: str
+    tours: Optional[List[VertexList]]
+
+    class Config:
+        """Pydantic configuration"""
+
+        arbitrary_types_allowed = True
 
     @classmethod
-    def build_transformer(cls):
-        node = transformers.FuncT(func=int)
-        demand = transformers.FuncT(func=float)
-        return transformers.MapT(key=node, value=demand, sep='\n')
+    def from_networkx(
+        cls,
+        name: str,
+        comment: str,
+        problem_type: str,
+        G: nx.Graph,
+        capacity: Optional[Union[int, float]] = None,
+        display_data: Optional[List[Tuple[Vertex, float, float]]] = None,
+        display_data_type: DisplayDataType = DisplayDataType.NO_DISPLAY,
+        edge_weight_format: EdgeWeightFormat = EdgeWeightFormat.FULL_MATRIX,
+    ):
+        """Get a base TSP model from a networkx graph"""
+        edge_attr_names = edge_attribute_names(G)
+        node_attr_names = node_attribute_names(G)
+        if "weight" not in edge_attr_names:
+            message = "'weight' is required to be an edge attribute, but was not found in graph. "
+            message += "This function only supports an explicit weight function. "
+            raise NotImplementedError(message)
+        is_2d = "x" in node_attr_names and "y" in node_attr_names
+        is_3d = is_2d and "z" in node_attr_names
+        if is_3d:
+            node_coord_type = NodeCoordType.THREED_COORDS
+            node_coords = {
+                node: (data["x"], data["y"], data["z"])
+                for node, data in G.nodes(data=True)
+            }
+        elif is_2d:
+            node_coord_type = NodeCoordType.TWOD_COORDS
+            node_coords = {
+                node: (data["x"], data["y"]) for node, data in G.nodes(data=True)
+            }
+        else:
+            node_coord_type = NodeCoordType.NO_COORDS
+            node_coords = {}
+
+        demands = None
+        if "demand" in node_attr_names:
+            demands = nx.get_node_attributes(G, "demand")
+        if display_data_type == DisplayDataType.COORD_DISPLAY:
+            display_data = node_coords
+
+        fixed_edges = []
+        if "is_fixed" in edge_attr_names:
+            fixed_edges = [
+                edge for edge, data in G.edges(data=True) if data["is_fixed"]
+            ]
+
+        depots = []
+        if "is_depot" in node_attr_names:
+            depots = [node for node, data in G.nodes(data=True) if data["is_depot"]]
+        edge_data = list(G.edges())
+        edge_weights = nx.get_edge_attributes(G, "weight")
+        return cls(
+            capacity=capacity,
+            comment=comment,
+            demands=demands,
+            depots=depots,
+            dimension=G.number_of_nodes(),
+            display_data=display_data,
+            display_data_type=display_data_type,
+            edge_data=edge_data,
+            edge_data_format=EdgeDataFormat.EDGE_LIST,
+            edge_weights=edge_weights,
+            edge_weight_format=edge_weight_format,
+            edge_weight_type=EdgeWeightType.EXPLICIT,
+            fixed_edges=fixed_edges,
+            name=name,
+            node_coords=node_coords,
+            node_coord_type=node_coord_type,
+            problem_type=problem_type,
+            tours=None,
+        )
+
+    @classmethod
+    def from_dataframes(
+        cls,
+        name: str,
+        comment: str,
+        problem_type: str,
+        edges_df: pd.DataFrame,
+        nodes_df: pd.DataFrame,
+        capacity: Optional[Union[int, float]] = None,
+        display_data: Optional[List[Tuple[Vertex, float, float]]] = None,
+        display_data_type: DisplayDataType = DisplayDataType.NO_DISPLAY,
+        edge_weight_format: EdgeWeightFormat = EdgeWeightFormat.FULL_MATRIX,
+    ):
+        """Get a TSP base model from edge and node dataframes
+
+        Notes:
+            Essential edge columns: [source, target, weight].
+            Optional edge columns: [is_fixed].
+            Essential node columns: [node, is_depot].
+            Optional node columns: [x, y, z, demand].
+            The edge weight function is explicitly given by the 'weight' column.
+        """
+        if "weight" not in edges_df:
+            message = "'weight' is not a column in edges_df. "
+            message += "This function only supports an explicit weight function. "
+            message += "If you have a column that can be used as the weight function, "
+            message += "please rename the column to 'weight'."
+            raise NotImplementedError(message)
+        is_2d = "x" in nodes_df.columns and "y" in nodes_df.columns
+        is_3d = is_2d and "z" in nodes_df.columns
+        if is_3d:
+            node_coord_type = NodeCoordType.THREED_COORDS
+            node_coords = dict(
+                zip(nodes_df["node"], zip(nodes_df["x"], nodes_df["y"], nodes_df["z"]))
+            )
+        elif is_2d:
+            node_coord_type = NodeCoordType.TWOD_COORDS
+            node_coords = dict(zip(nodes_df["node"], zip(nodes_df["x"], nodes_df["y"])))
+        else:
+            node_coord_type = NodeCoordType.NO_COORDS
+            node_coords = {}
+
+        demands = None
+        if "demand" in nodes_df.columns:
+            demands = dict(zip(nodes_df["node"], nodes_df["demand"]))
+
+        if display_data_type == DisplayDataType.COORD_DISPLAY:
+            display_data = node_coords
+
+        fixed_edges = []
+        if "is_fixed" in edges_df.columns:
+            fixed_edges_df = edges_df.loc[edges_df["is_fixed"]]
+            fixed_edges = list(zip(fixed_edges_df["source"], fixed_edges_df["target"]))
+
+        depots = nodes_df.loc[nodes_df["is_depot"]]["node"].to_list()
+        edge_data = list(zip(edges_df["source"], edges_df["target"]))
+        edge_weights = dict(zip(edge_data, edges_df["weight"]))
+        return cls(
+            capacity=capacity,
+            comment=comment,
+            demands=demands,
+            depots=depots,
+            dimension=len(nodes_df["node"]),
+            display_data=display_data,
+            display_data_type=display_data_type,
+            edge_data=edge_data,
+            edge_data_format=EdgeDataFormat.EDGE_LIST,
+            edge_weights=edge_weights,
+            edge_weight_format=edge_weight_format,
+            edge_weight_type=EdgeWeightType.EXPLICIT,
+            fixed_edges=fixed_edges,
+            name=name,
+            node_coords=node_coords,
+            node_coord_type=node_coord_type,
+            problem_type=problem_type,
+            tours=None,
+        )
+
+    @classmethod
+    def from_tsplib95(cls, problem: tsplib95.models.StandardProblem):
+        """Get a TSP base model from a StandardProblem object"""
+        return cls(
+            capacity=problem.capacity,
+            comment=problem.comment,
+            demands=problem.demands,
+            depots=problem.depots,
+            dimension=problem.dimension,
+            display_data=problem.display_data,
+            display_data_type=problem.display_data_type,
+            edge_data=problem.get_edges(),
+            edge_data_format=problem.edge_data_format,
+            edge_weights={
+                (i, j): problem.get_weight(i, j) for i, j in problem.get_edges()
+            },
+            edge_weight_format=problem.edge_weight_format,
+            edge_weight_type=problem.edge_weight_type,
+            fixed_edges=problem.fixed_edges,
+            name=problem.name,
+            node_coords=[problem.node_coords.get(i) for i in problem.get_nodes()],
+            node_coord_type=problem.node_coord_type,
+            problem_type=problem.type,
+            tours=problem.tours,
+        )
+
+    def to_tsplib95(self) -> tsplib95.models.StandardProblem:
+        """Convert to a tsplib95 standard model"""
+        weights = self.edge_weights
+        if self.edge_weight_type == EdgeWeightType.EXPLICIT:
+            # create a graph
+            G = nx.Graph(incoming_graph_data=self.edge_data)
+            nx.set_edge_attributes(G, self.edge_weights, name="weight")
+            # then get the weighted adjacency matrix
+            weights = nx.to_numpy_array(
+                G, nodelist=list(G.nodes()).sort(), weight="weight", dtype=int
+            )
+
+        return tsplib95.models.StandardProblem(
+            # capacity=self.capacity,
+            comment=self.comment,
+            demands=self.demands,
+            depots=self.depots,
+            dimension=self.dimension,
+            # display_data=self.display_data,
+            display_data_type=self.display_data_type,
+            edge_data=self.edge_data,
+            edge_data_format=self.edge_data_format,
+            edge_weights=weights,
+            edge_weight_format=self.edge_weight_format,
+            edge_weight_type=self.edge_weight_type,
+            # fixed_edges=self.fixed_edges,
+            name=self.name,
+            node_coords=self.node_coords,
+            node_coord_type=self.node_coord_type,
+            type=self.problem_type,
+            # tours=self.tours,
+        )
+
+    def __set_graph_attributes(self, graph: nx.Graph) -> None:
+        """Set graph attributes such as 'name' and 'comment'"""
+        graph.graph["name"] = self.name
+        graph.graph["comment"] = self.comment
+        graph.graph["problem_type"] = self.problem_type
+        graph.graph["dimension"] = self.dimension
+        if not self.capacity is None:
+            graph.graph["capacity"] = self.capacity
+
+    def __set_node_attributes(self, graph: nx.Graph) -> None:
+        """Set node attributes"""
+        for vertex in graph.nodes():
+            graph.nodes[vertex]["is_depot"] = vertex in self.depots
+            if self.demands:
+                graph.nodes[vertex]["demand"] = self.demands[vertex]
+            if self.display_data:
+                graph.nodes[vertex]["display"] = self.display_data[vertex]
+            if self.node_coords:
+                coords = self.node_coords[vertex]
+                graph.nodes[vertex]["x"] = coords["x"]
+                graph.nodes[vertex]["y"] = coords["y"]
+                if self.node_coord_type == NodeCoordType.THREED_COORDS:
+                    graph.nodes[vertex]["z"] = coords["z"]
+
+    def __add_edges(self, graph: nx.Graph) -> None:
+        """Add edges from edge data
+
+        Args:
+            graph: Input graph
+        """
+        for (u, v) in self.edge_data:
+            graph.add_edge(u, v)
+
+    def __set_edge_attributes(self, graph: nx.Graph) -> None:
+        """Set edge attributes for 'weight' and 'is_fixed'
+
+        Args:
+            graph: Input graph
+        """
+        nx.set_edge_attributes(graph, self.edge_weights, name="weight")
+        fixed = {(u, v): (u, v) in self.fixed_edges for u, v in graph.edges()}
+        nx.set_edge_attributes(graph, fixed, name="is_fixed")
+
+    def get_graph(self) -> nx.Graph:
+        """Get a networkx graph
+
+        Returns:
+            Undirected networkx graph with node attributes such as 'is_depot'
+            and edge attributes such as 'weight' and 'is_fixed'.
+        """
+        G = nx.Graph()
+        self.__set_graph_attributes(G)
+        self.__add_edges(G)
+        self.__set_edge_attributes(G)
+        self.__set_node_attributes(G)
+        return G
+
+
+class PrizeCollectingTSP(BaseTSP):
+    """Prize-collecting TSP pydantic model"""
+
+    def get_root_vertex(self) -> Vertex:
+        """Get the root vertex from the 'depots' attribute
+
+        Returns:
+            Root vertex
+
+        Raises:
+            ValueError: If the number of depots to choose from is zero or greater than 1
+        """
+        if len(self.depots) > 1:
+            raise ValueError(
+                "More than 1 depot to choose from: which depot should I choose?"
+            )
+        try:
+            # pylint: disable=unsubscriptable-object
+            return self.depots[0]
+        except KeyError as key_error:
+            raise ValueError("The list of depots is empty") from key_error
+
+    def get_total_prize(self) -> Union[int, float]:
+        """"Get the total prize (demand) of all vertices"""
+        return sum(self.demands.values())
+
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
     """TSP with Profits Problem
@@ -31,7 +362,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     # Maximum distance of the total route in a OP.
     cost_limit = tsplib95.fields.IntegerField("COST_LIMIT")
     # The scores of the nodes of a OP are given in the form (per line)
-    node_score = PrizesField("NODE_SCORE_SECTION")
+    node_score = tsplib95.fields.DemandsField("NODE_SCORE_SECTION")
     # The optimal solution to the TSP
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
 
@@ -199,7 +530,9 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         except KeyError as key_error:
             raise ValueError("The list of depots is empty") from key_error
 
-    def get_edges(self, normalize: bool = False) -> EdgeList:   # pylint: disable=arguments-differ
+    def get_edges(
+        self, normalize: bool = False
+    ) -> EdgeList:  # pylint: disable=arguments-differ
         """Get a list of edges in the graph
 
         If the `edge_removal_probability` is set in the constructor,
@@ -232,79 +565,6 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                     edges_copy.remove(edge)
         return edges_copy
 
-    def _create_wfunc(self, special=None):
-        """Overwrite create weight function"""
-        if self.is_explicit() and self.edge_weight_format == "EDGE_LIST_WEIGHTS":
-            return lambda i, j: self.edge_weights[(i, j)]
-        return super()._create_wfunc(special=special)
-
-    def render(self):
-        # render each value by keyword
-        rendered = self.as_name_dict()
-        for name in list(rendered):
-            value = rendered.pop(name)
-            field = self.__class__.fields_by_name[name]
-            if self.is_explicit() and self.edge_weight_format == "EDGE_LIST_WEIGHTS" and name == "edge_weights":
-                rendered["EDGE_WEIGHT_SECTION"] = render_edge_list_weights(self.edge_weights)
-
-            elif name in self.__dict__ or value != field.get_default_value():
-                rendered[field.keyword] = field.render(value)
-
-        # build keyword-value pairs with the separator
-        kvpairs = []
-        for keyword, value in rendered.items():
-            sep = ':\n' if '\n' in value else ': '
-            kvpairs.append(f'{keyword}{sep}{value}')
-        kvpairs.append('EOF')
-
-        # join and return the result
-        return '\n'.join(kvpairs)
-
-    @classmethod
-    def parse(cls, text: str, **options):
-        """Parse text into a problem instance.
-
-        Any keyword options are passed to the class constructor. If a keyword
-        argument has the same name as a field then they will collide and cause
-        an error.
-
-        Args:
-            text: problem text
-            options: any keyword arguments to pass to the constructor
-
-        Returns:
-            problem instance
-        """
-        # prepare the regex for all known keys
-        keywords = '|'.join(cls.fields_by_keyword)
-        sep = r'''\s*:\s*|\s*\n'''
-        pattern = f'({keywords}|EOF)(?:{sep})'
-
-        # split the whole text by known keys
-        regex = re.compile(pattern, re.M)
-        __, *results = regex.split(text)
-
-        # pair keys and values
-        field_keywords = results[::2]
-        field_values = results[1::2]
-
-        # parse into a dictionary
-        is_edge_list_weights = False
-        data = {}
-        for keyword, value in zip(field_keywords, field_values):
-            if keyword != 'EOF':
-                field = cls.fields_by_keyword[keyword]
-                name = cls.names_by_keyword[keyword]
-                field_value = field.parse(value.strip())
-                if name == "EDGE_WEIGHT_TYPE" and field_value == "EDGE_LIST_WEIGHTS":
-                    is_edge_list_weights = True
-                if name == "EDGE_WEIGHT_SECTION" and is_edge_list_weights:
-                    field_value = parse_edge_list_weights(value.strip())
-                data[name] = field_value
-
-        # return as a model, letting options and field data potentially collide
-        return cls(**data, **options)
-
 
 def is_pctsp_yes_instance(
     graph: nx.Graph, quota: int, root_vertex: Vertex, edge_list: EdgeList
@@ -336,9 +596,11 @@ def is_pctsp_yes_instance(
         and root_vertex == walk[len(walk) - 1]
     )
 
+
 def parse_edge_list_weights(text: str) -> EdgeFunction:
     print(text)
     return {}
+
 
 def render_edge_list_weights(edge_weights: EdgeFunction) -> str:
     """Render edge weight dictionary to a string

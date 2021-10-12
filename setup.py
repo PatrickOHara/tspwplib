@@ -8,7 +8,9 @@ setup(
     url="https://github.com/PatrickOHara/tspwplib",
     description="Library of instances for TSP with Profits",
     install_requires=[
+        "networkx>=2.6.0",
         "pandas>=1.0.0",
+        "pydantic>=1.8.2",
         "tsplib95>=0.7.1",
     ],
     name="tspwplib",
