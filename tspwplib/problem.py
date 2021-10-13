@@ -33,6 +33,8 @@ class BaseTSP(pydantic.BaseModel):
     Each field is validated with type hinting.
     """
 
+    # pylint: disable=too-many-arguments
+
     capacity: Optional[Union[int, float]]
     comment: str
     demands: Optional[VertexFunction]
@@ -68,12 +70,13 @@ class BaseTSP(pydantic.BaseModel):
         display_data: Optional[List[Tuple[Vertex, float, float]]] = None,
         display_data_type: DisplayDataType = DisplayDataType.NO_DISPLAY,
         edge_weight_format: EdgeWeightFormat = EdgeWeightFormat.FULL_MATRIX,
+        weight_attr_name: str = "weight",
     ):
         """Get a base TSP model from a networkx graph"""
         edge_attr_names = edge_attribute_names(G)
         node_attr_names = node_attribute_names(G)
-        if "weight" not in edge_attr_names:
-            message = "'weight' is required to be an edge attribute, but was not found in graph. "
+        if weight_attr_name not in edge_attr_names:
+            message = f"{weight_attr_name} is required to be an edge attribute, but was not found in graph. "
             message += "This function only supports an explicit weight function. "
             raise NotImplementedError(message)
         is_2d = "x" in node_attr_names and "y" in node_attr_names
@@ -109,7 +112,7 @@ class BaseTSP(pydantic.BaseModel):
         if "is_depot" in node_attr_names:
             depots = [node for node, data in G.nodes(data=True) if data["is_depot"]]
         edge_data = list(G.edges())
-        edge_weights = nx.get_edge_attributes(G, "weight")
+        edge_weights = nx.get_edge_attributes(G, weight_attr_name)
         return cls(
             capacity=capacity,
             comment=comment,

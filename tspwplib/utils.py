@@ -4,7 +4,14 @@ from itertools import chain
 from pathlib import Path
 from typing import List
 import networkx as nx
-from .types import Alpha, Generation, GraphName
+from .types import (
+    Alpha,
+    Generation,
+    GraphName,
+    LondonaqGraphName,
+    LondonaqLocation,
+    LondonaqTimestamp,
+)
 
 
 def build_path_to_oplib_instance(
@@ -67,3 +74,19 @@ def node_attribute_names(G: nx.Graph) -> List[str]:
         List of node attribute names
     """
     return list(set(chain.from_iterable(d.keys() for _, d in G.nodes(data=True))))
+
+
+def londonaq_graph_name(
+    location_id: LondonaqLocation, timestamp_id: LondonaqTimestamp
+) -> LondonaqGraphName:
+    """Get a londonaq graph name"""
+    return LondonaqGraphName["laq" + location_id.name + timestamp_id.name]
+
+
+def londonaq_comment(
+    location_id: LondonaqLocation, timestamp_id: LondonaqTimestamp
+) -> str:
+    """Get a comment for a londonaq dataset"""
+    comment = f"A London air quality dataset starting at {location_id.value}. "
+    comment += f"The UTC timestamp for the air quality forecast is {timestamp_id.value.isoformat()}"
+    return comment

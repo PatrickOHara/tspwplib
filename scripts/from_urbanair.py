@@ -8,7 +8,8 @@ import typer
 
 from tspwplib import split_graph_from_properties
 from tspwplib.problem import BaseTSP
-from tspwplib.types import EdgeWeightFormat, LondonaqLocation, LondonaqTimestamp
+from tspwplib.types import Edge, EdgeWeightFormat, LondonaqGraphName, LondonaqLocation, LondonaqLocationShort, LondonaqTimestamp
+from tspwplib.utils import londonaq_comment, londonaq_graph_name
 
 
 def choose_root(G):
@@ -20,8 +21,6 @@ def choose_root(G):
         if not root_found and G.degree(vertex) > 2:
             root_found = True
             root = vertex
-        else:
-            root
     return root
 
 
@@ -31,14 +30,16 @@ OLD_NODE_LOOKUP_JSON = "old_node_lookup.json"
 
 def generate_londonaq_dataset(
     dataset_dir: Path,
-    location_id: LondonaqLocation,
-    timestamp_id: LondonaqTimestamp,
+    name: LondonaqGraphName,
+    comment: str,
     edges_csv_filename: str = "edges.csv",
     nodes_csv_filename: str = "nodes.csv",
     old_edge_lookup: str = OLD_EDGE_LOOKUP_JSON,
     old_node_lookup: str = OLD_NODE_LOOKUP_JSON,
 ) -> BaseTSP:
     """Generate a londonaq dataset"""
+
+
     # get the CSV files for edges and nodes
     dataset_dir.mkdir(parents=False, exist_ok=True)
     edges_filepath = dataset_dir / edges_csv_filename
@@ -53,29 +54,51 @@ def generate_londonaq_dataset(
     # split edges then relabel the nodes
     edges_df = edges_df.set_index(["source", "target", "key"])
     edge_attrs = edges_df.to_dict("index")
-    split_graph = split_graph_from_properties(edge_attrs)
+    split_graph = split_graph_from_properties(
+        edge_attrs,
+        edge_attr_to_split="cost",
+        edge_attr_to_vertex="length",
+        new_vertex_attr="demand",
+        old_edge_attr="old_edge",
+    )
     normalize_map = {node: i for i, node in enumerate(split_graph.nodes())}
     normalized_graph = nx.relabel_nodes(split_graph, normalize_map, copy=True)
 
     # save the node and edge mappings to a json file
-    old_edge_lookup = {
+    old_edges = {
         (normalize_map[u], normalize_map[v]): data["old_edge"]
         for u, v, data in split_graph.edges(data=True)
     }
-    old_vertex_lookup = {new: old for old, new in normalize_map.items()}
-    with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as f:
-        json.dump(old_edge_lookup, f)
+    old_vertices= {new: old for old, new in normalize_map.items()}
+
+    # TODO convert tuples to lists when dumping
+    # with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as f:
+    #     json.dump(old_edges, f)
     with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as f:
-        json.dump(old_vertex_lookup, f)
+        json.dump(old_vertices, f)
 
     # TODO get root vertex
-    root = 0
+    root_vertex = 0
+    nx.set_node_attributes(normalized_graph, False, "is_depot")
+    normalized_graph.nodes[root_vertex]["is_depot"] = True
 
     # TODO get node co-ordinates
 
     # get TSP representation
+    tsp = BaseTSP.from_networkx(
+        name,
+        comment,
+        "PCTSP",
+        normalized_graph,
+        edge_weight_format=EdgeWeightFormat.LOWER_DIAG_ROW,
+        weight_attr_name="cost",
+    )
 
     # save to txt file
+    problem = tsp.to_tsplib95()
+    txt_filepath = dataset_dir / f"{name}.txt"
+    problem.save(txt_filepath)
+    return tsp
 
 
 def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
@@ -83,36 +106,19 @@ def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
     return pd.DataFrame([{"node": node, **data} for node, data in G.nodes(data=True)])
 
 
-def main():
-    dataset_dir = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq")
-
-    root_vertex = choose_root(normalized_graph)
-    nx.set_node_attributes(normalized_graph, False, "is_depot")
-    normalized_graph.nodes[root_vertex]["is_depot"] = True
-
-    ndf = to_pandas_nodelist(normalized_graph)
-    ndf = ndf.rename(columns={"prize": "demand"})
-    ndf["demand"] = ndf["demand"].apply(lambda x: int(round(x)))
-    edf = nx.to_pandas_edgelist(normalized_graph)
-    edf = edf.rename(columns={"cost": "weight"})
-    edf["weight"] = edf["weight"].apply(lambda x: int(round(x)))
-
-    name = "londonaq_tiny"
-    comment = "Prize-collecting TSP on air quality dataset in London."
-    problem_type = "PCTSP"
-    problem = BaseTSP.from_dataframes(
-        name,
-        comment,
-        problem_type,
-        edf,
-        ndf,
-        edge_weight_format=EdgeWeightFormat.LOWER_DIAG_ROW,
+def main(
+    location: LondonaqLocationShort, 
+    dataset_dir: Path = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq")
+):
+    timestamp_id: LondonaqTimestamp = LondonaqTimestamp.A
+    location_id = LondonaqLocation[location.value]
+    name = londonaq_graph_name(location, timestamp_id)
+    comment = londonaq_comment(location, timestamp_id)
+    generate_londonaq_dataset(
+        dataset_dir / name.value, name, comment,
+        edges_csv_filename=name.value+"_edges.csv",
+        nodes_csv_filename=name.value+"_nodes.csv"
     )
-    graph = problem.get_graph()
-
-    tsplib = problem.to_tsplib95()
-    tsplib.save("test.txt")
-    loaded_tsplib = tsplib95.models.StandardProblem.load("test.txt")
 
 
 if __name__ == "__main__":

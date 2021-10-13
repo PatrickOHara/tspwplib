@@ -1,6 +1,6 @@
 """Type hinting and names"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum, IntEnum
 from typing import Any, Dict, List, Tuple, Union
 
@@ -243,12 +243,13 @@ class LondonaqGraphName(StrEnumMixin, str, Enum):
     """Names of graphs with London air quality forecasts"""
 
     laqkxA = "laqkxA"
+    laqtinyA = "laqtinyA"
 
 
 class LondonaqTimestamp(Enum):
     """Timestamps of the forecasts for London air quality forecasts"""
 
-    A = datetime(2021, 10, 12, 8, 0, 0, tzinfo=datetime.timezone.utc)  # 9am BST
+    A = datetime(2021, 10, 13, 8, 0, 0, tzinfo=timezone.utc)  # 9am BST
 
 
 class LondonaqLocation(StrEnumMixin, str, Enum):
@@ -256,9 +257,18 @@ class LondonaqLocation(StrEnumMixin, str, Enum):
 
     bb = "Big Ben"
     kx = "King's Cross"
+    tiny = "King's Cross"
     ro = "Royal Observatory Greenwich"
     ws = "Wembley Stadium"
 
+class LondonaqLocationShort(StrEnumMixin, str, Enum):
+    """Short codes for londonaq locations"""
+
+    bb = "bb"
+    kx = "kx"
+    tiny = "tiny"
+    ro = "ro"
+    ws = "ws"
 
 class Generation(StrEnumMixin, str, Enum):
     """Generations of TSPwP problem instances"""
