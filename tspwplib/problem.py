@@ -28,6 +28,7 @@ from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
 # pylint: disable=too-few-public-methods
 
+
 class BaseTSP(pydantic.BaseModel):
     """A pydantic model for tsplib95.
 
