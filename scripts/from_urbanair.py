@@ -3,12 +3,16 @@ from pathlib import Path
 
 import networkx as nx
 import pandas as pd
-import tsplib95
 import typer
 
 from tspwplib import split_graph_from_properties
 from tspwplib.problem import BaseTSP
-from tspwplib.types import Edge, EdgeWeightFormat, LondonaqGraphName, LondonaqLocation, LondonaqLocationShort, LondonaqTimestamp
+from tspwplib.types import (
+    EdgeWeightFormat,
+    LondonaqGraphName,
+    LondonaqLocationShort,
+    LondonaqTimestamp,
+)
 from tspwplib.utils import londonaq_comment, londonaq_graph_name
 
 
@@ -39,7 +43,6 @@ def generate_londonaq_dataset(
 ) -> BaseTSP:
     """Generate a londonaq dataset"""
 
-
     # get the CSV files for edges and nodes
     dataset_dir.mkdir(parents=False, exist_ok=True)
     edges_filepath = dataset_dir / edges_csv_filename
@@ -49,6 +52,7 @@ def generate_londonaq_dataset(
     if not nodes_filepath.exists():
         raise FileNotFoundError(nodes_filepath)
     nodes_df = pd.read_csv(nodes_filepath)
+    nodes_df = nodes_df.set_index("node")
     edges_df = pd.read_csv(edges_filepath)
 
     # split edges then relabel the nodes
@@ -69,20 +73,22 @@ def generate_londonaq_dataset(
         (normalize_map[u], normalize_map[v]): data["old_edge"]
         for u, v, data in split_graph.edges(data=True)
     }
-    old_vertices= {new: old for old, new in normalize_map.items()}
+    old_vertices = {new: old for old, new in normalize_map.items()}
 
-    # TODO convert tuples to lists when dumping
-    # with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as f:
-    #     json.dump(old_edges, f)
+    # convert tuples to lists when dumping
+    json_old_edges = {list(key): list(value) for key, value in old_edges.items()}
+    with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as f:
+        json.dump(json_old_edges, f)
     with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as f:
         json.dump(old_vertices, f)
 
-    # TODO get root vertex
-    root_vertex = 0
+    # get depots
+    depots = list(nodes_df.loc[nodes_df.is_depot].index.map(normalize_map))
     nx.set_node_attributes(normalized_graph, False, "is_depot")
-    normalized_graph.nodes[root_vertex]["is_depot"] = True
+    for v in depots:
+        normalized_graph.nodes[v]["is_depot"] = True
 
-    # TODO get node co-ordinates
+    # NOTE (not implemented yet) get node co-ordinates
 
     # get TSP representation
     tsp = BaseTSP.from_networkx(
@@ -107,17 +113,18 @@ def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
 
 
 def main(
-    location: LondonaqLocationShort, 
-    dataset_dir: Path = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq")
+    location: LondonaqLocationShort,
+    dataset_dir: Path = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq"),
 ):
     timestamp_id: LondonaqTimestamp = LondonaqTimestamp.A
-    location_id = LondonaqLocation[location.value]
     name = londonaq_graph_name(location, timestamp_id)
     comment = londonaq_comment(location, timestamp_id)
     generate_londonaq_dataset(
-        dataset_dir / name.value, name, comment,
-        edges_csv_filename=name.value+"_edges.csv",
-        nodes_csv_filename=name.value+"_nodes.csv"
+        dataset_dir / name.value,
+        name,
+        comment,
+        edges_csv_filename=name.value + "_edges.csv",
+        nodes_csv_filename=name.value + "_nodes.csv",
     )
 
 

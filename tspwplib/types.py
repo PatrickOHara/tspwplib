@@ -261,6 +261,7 @@ class LondonaqLocation(StrEnumMixin, str, Enum):
     ro = "Royal Observatory Greenwich"
     ws = "Wembley Stadium"
 
+
 class LondonaqLocationShort(StrEnumMixin, str, Enum):
     """Short codes for londonaq locations"""
 
@@ -269,6 +270,7 @@ class LondonaqLocationShort(StrEnumMixin, str, Enum):
     tiny = "tiny"
     ro = "ro"
     ws = "ws"
+
 
 class Generation(StrEnumMixin, str, Enum):
     """Generations of TSPwP problem instances"""
