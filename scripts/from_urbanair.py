@@ -1,3 +1,5 @@
+"""Script for generating a tsplib style txt file from londonaq CSV"""
+
 import json
 from pathlib import Path
 
@@ -14,19 +16,6 @@ from tspwplib.types import (
     LondonaqTimestamp,
 )
 from tspwplib.utils import londonaq_comment, londonaq_graph_name
-
-
-def choose_root(G):
-    # choose the root vertex
-    root = None
-    root_found = False
-
-    for vertex in G.nodes():
-        if not root_found and G.degree(vertex) > 2:
-            root_found = True
-            root = vertex
-    return root
-
 
 OLD_EDGE_LOOKUP_JSON = "old_edge_lookup.json"
 OLD_NODE_LOOKUP_JSON = "old_node_lookup.json"
@@ -77,10 +66,10 @@ def generate_londonaq_dataset(
 
     # convert tuples to lists when dumping
     json_old_edges = {list(key): list(value) for key, value in old_edges.items()}
-    with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as f:
-        json.dump(json_old_edges, f)
-    with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as f:
-        json.dump(old_vertices, f)
+    with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as json_file:
+        json.dump(json_old_edges, json_file)
+    with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as json_file:
+        json.dump(old_vertices, json_file)
 
     # get depots
     depots = list(nodes_df.loc[nodes_df.is_depot].index.map(normalize_map))
@@ -116,6 +105,7 @@ def main(
     location: LondonaqLocationShort,
     dataset_dir: Path = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq"),
 ):
+    """Entrypoint for generating londonaq dataset"""
     timestamp_id: LondonaqTimestamp = LondonaqTimestamp.A
     name = londonaq_graph_name(location, timestamp_id)
     comment = londonaq_comment(location, timestamp_id)

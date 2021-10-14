@@ -124,13 +124,3 @@ def test_is_pctsp_yes_instance(
     for i in range(num_nodes):
         edge_list.append((i, (i + 1) % num_nodes))
     assert is_pctsp_yes_instance(graph, quota, root, edge_list)
-
-
-from pathlib import Path
-
-
-def test_parse_problem():
-    dataset_dir = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq")
-    prob_filename = "londonaq_tiny.txt"
-    filepath = dataset_dir / prob_filename
-    ProfitsProblem.load(filepath)

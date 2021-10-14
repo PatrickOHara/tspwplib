@@ -35,11 +35,6 @@ def test_split_graph_from_properties():
         (0, 2): {"weight": 2, "cost": 5},
     }
     G = split_graph_from_properties(properties)
-    for v in G:
-        if v < 0:
-            assert G.nodes[v]["prize"] > 0
-        else:
-            assert G.nodes[v]["prize"] == 0
     for _, _, data in G.edges(data=True):
         old_edge = data["old_edge"]
         assert data["cost"] == float(properties[old_edge]["cost"]) / 2.0

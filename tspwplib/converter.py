@@ -334,7 +334,7 @@ def to_simple_undirected(G: nx.MultiGraph) -> nx.Graph:
     return simple_graph
 
 
-def split_edges(edge_list: EdgeList) -> EdgeList:
+def split_edges(edge_list: EdgeList) -> List[Edge]:
     """Split each edge (u,v) by adding a new vertex w and two new edges (u,w), (w,v).
 
     Args:
@@ -345,7 +345,7 @@ def split_edges(edge_list: EdgeList) -> EdgeList:
         Size of returned edge list is twice the size of the input edges.
     """
     new_vertex = -1
-    splits: EdgeList = []
+    splits: List[Edge] = []
     for edge in edge_list:
         splits.append((edge[0], new_vertex))
         splits.append((new_vertex, edge[1]))
@@ -356,7 +356,7 @@ def split_edges(edge_list: EdgeList) -> EdgeList:
 LookupFromSplit = Dict[Edge, Union[Edge, MultiEdge]]
 
 
-def lookup_from_split(edge_list: EdgeList, splits: EdgeList) -> LookupFromSplit:
+def lookup_from_split(edge_list: EdgeList, splits: List[Edge]) -> LookupFromSplit:
     """Get lookup from a split edge to an original edge.
 
     Args:
@@ -376,7 +376,7 @@ def lookup_from_split(edge_list: EdgeList, splits: EdgeList) -> LookupFromSplit:
 LookupToSplit = Dict[Union[Edge, MultiEdge], Tuple[Edge, Edge]]
 
 
-def lookup_to_split(edge_list: EdgeList, splits: EdgeList) -> LookupToSplit:
+def lookup_to_split(edge_list: EdgeList, splits: List[Edge]) -> LookupToSplit:
     """Get lookup from an original edge to the two split edges.
 
     Args:
@@ -417,7 +417,9 @@ def prize_from_weighted_edges(
     return prizes
 
 
-def split_edge_cost(edge_cost: EdgeFunction, to_split: LookupToSplit) -> EdgeFunction:
+def split_edge_cost(
+    edge_cost: EdgeFunction, to_split: LookupToSplit
+) -> Dict[Edge, float]:
     """Assign half the cost of the original edge to each of the split edges.
 
     Args:

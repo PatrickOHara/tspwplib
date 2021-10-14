@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 # vertex data structures
 Vertex = int
-VertexFunction = Dict[Vertex, Union[int, float]]
+VertexFunction = Dict[Vertex, int]
 VertexList = List[Vertex]
 VertexLookup = Dict[Vertex, Vertex]
 VertexProperties = Dict[Vertex, Dict[str, Any]]
@@ -15,13 +15,13 @@ VertexProperties = Dict[Vertex, Dict[str, Any]]
 Edge = Tuple[Vertex, Vertex]
 MultiEdge = Tuple[Vertex, Vertex, int]
 EdgeList = List[Union[Edge, MultiEdge]]
-EdgeFunction = Dict[Union[Edge, MultiEdge], Union[int, float]]
+EdgeFunction = Dict[Union[Edge, MultiEdge], int]
 EdgeProperties = Dict[Union[Edge, MultiEdge], Dict[str, Any]]
 
 # path data structures
 DisjointPaths = Tuple[VertexList, VertexList]
 
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name,too-few-public-methods
 
 
 class StrEnumMixin:
@@ -106,7 +106,8 @@ class DisplayDataType(StrEnumMixin, str, Enum):
     NO_DISPLAY = "NO_DISPLAY"  # No graphical display is possible
 
 
-NodeCoords = Dict[Vertex, Union[Tuple[float, float], Tuple[float, float, float]]]
+# NodeCoords = Dict[Vertex, Union[Tuple[float, float], Tuple[float, float, float]]]
+NodeCoords = Dict[Vertex, Tuple[float, float]]
 
 
 class VertexFunctionName(StrEnumMixin, str, Enum):

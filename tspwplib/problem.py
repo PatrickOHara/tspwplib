@@ -1,7 +1,7 @@
 """Functions and classes for datasets"""
 
 import random
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Union
 
 import networkx as nx
 import pandas as pd
@@ -26,6 +26,7 @@ from .types import (
 from .utils import edge_attribute_names, node_attribute_names
 from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
+# pylint: disable=too-few-public-methods
 
 class BaseTSP(pydantic.BaseModel):
     """A pydantic model for tsplib95.
@@ -40,7 +41,7 @@ class BaseTSP(pydantic.BaseModel):
     demands: Optional[VertexFunction]
     depots: VertexList
     dimension: int
-    display_data: Optional[List[Tuple[int, float, float]]]
+    display_data: Optional[NodeCoords]
     display_data_type: DisplayDataType
     edge_data: EdgeList
     edge_data_format: EdgeDataFormat
@@ -67,7 +68,7 @@ class BaseTSP(pydantic.BaseModel):
         problem_type: str,
         G: nx.Graph,
         capacity: Optional[Union[int, float]] = None,
-        display_data: Optional[List[Tuple[Vertex, float, float]]] = None,
+        display_data: Optional[NodeCoords] = None,
         display_data_type: DisplayDataType = DisplayDataType.NO_DISPLAY,
         edge_weight_format: EdgeWeightFormat = EdgeWeightFormat.FULL_MATRIX,
         weight_attr_name: str = "weight",
@@ -76,21 +77,24 @@ class BaseTSP(pydantic.BaseModel):
         edge_attr_names = edge_attribute_names(G)
         node_attr_names = node_attribute_names(G)
         if weight_attr_name not in edge_attr_names:
-            message = f"{weight_attr_name} is required to be an edge attribute, but was not found in graph. "
+            message = f"{weight_attr_name} is required to be an edge attribute, "
+            message += "but was not found in graph. "
             message += "This function only supports an explicit weight function. "
             raise NotImplementedError(message)
         is_2d = "x" in node_attr_names and "y" in node_attr_names
         is_3d = is_2d and "z" in node_attr_names
         if is_3d:
-            node_coord_type = NodeCoordType.THREED_COORDS
-            node_coords = {
-                node: (data["x"], data["y"], data["z"])
-                for node, data in G.nodes(data=True)
-            }
-        elif is_2d:
+            raise NotImplementedError("3D coords are not supported")
+            # node_coord_type = NodeCoordType.THREED_COORDS
+            # node_coords = {
+            #     node: (float(data["x"]), float(data["y"]), float(data["z"]))
+            #     for node, data in G.nodes(data=True)
+            # }
+        if is_2d:
             node_coord_type = NodeCoordType.TWOD_COORDS
             node_coords = {
-                node: (data["x"], data["y"]) for node, data in G.nodes(data=True)
+                node: (float(data["x"]), float(data["y"]))
+                for node, data in G.nodes(data=True)
             }
         else:
             node_coord_type = NodeCoordType.NO_COORDS
@@ -143,7 +147,7 @@ class BaseTSP(pydantic.BaseModel):
         edges_df: pd.DataFrame,
         nodes_df: pd.DataFrame,
         capacity: Optional[Union[int, float]] = None,
-        display_data: Optional[List[Tuple[Vertex, float, float]]] = None,
+        display_data: Optional[NodeCoords] = None,
         display_data_type: DisplayDataType = DisplayDataType.NO_DISPLAY,
         edge_weight_format: EdgeWeightFormat = EdgeWeightFormat.FULL_MATRIX,
     ):
@@ -165,11 +169,8 @@ class BaseTSP(pydantic.BaseModel):
         is_2d = "x" in nodes_df.columns and "y" in nodes_df.columns
         is_3d = is_2d and "z" in nodes_df.columns
         if is_3d:
-            node_coord_type = NodeCoordType.THREED_COORDS
-            node_coords = dict(
-                zip(nodes_df["node"], zip(nodes_df["x"], nodes_df["y"], nodes_df["z"]))
-            )
-        elif is_2d:
+            raise NotImplementedError("3D coords not supported")
+        if is_2d:
             node_coord_type = NodeCoordType.TWOD_COORDS
             node_coords = dict(zip(nodes_df["node"], zip(nodes_df["x"], nodes_df["y"])))
         else:
@@ -290,10 +291,8 @@ class BaseTSP(pydantic.BaseModel):
                 graph.nodes[vertex]["display"] = self.display_data[vertex]
             if self.node_coords:
                 coords = self.node_coords[vertex]
-                graph.nodes[vertex]["x"] = coords["x"]
-                graph.nodes[vertex]["y"] = coords["y"]
-                if self.node_coord_type == NodeCoordType.THREED_COORDS:
-                    graph.nodes[vertex]["z"] = coords["z"]
+                graph.nodes[vertex]["x"] = coords[0]
+                graph.nodes[vertex]["y"] = coords[1]
 
     def __add_edges(self, graph: nx.Graph) -> None:
         """Add edges from edge data
@@ -301,8 +300,8 @@ class BaseTSP(pydantic.BaseModel):
         Args:
             graph: Input graph
         """
-        for (u, v) in self.edge_data:
-            graph.add_edge(u, v)
+        for edge in self.edge_data:
+            graph.add_edge(edge[0], edge[1])
 
     def __set_edge_attributes(self, graph: nx.Graph) -> None:
         """Set edge attributes for 'weight' and 'is_fixed'
@@ -353,7 +352,9 @@ class PrizeCollectingTSP(BaseTSP):
 
     def get_total_prize(self) -> Union[int, float]:
         """"Get the total prize (demand) of all vertices"""
-        return sum(self.demands.values())
+        if self.demands:
+            return sum(self.demands.values())
+        return 0
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
@@ -391,11 +392,11 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     def __set_edge_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Set edge attributes"""
         # add every edge with some associated metadata
-        for u, v in self.get_edges():
-            cost: int = self.get_weight(u, v)
+        for edge in self.get_edges():
+            cost: int = self.get_weight(edge[0], edge[1])
             # pylint: disable=unsupported-membership-test
             # is_fixed: bool = (u, v) in self.fixed_edges
-            graph.add_edge(names[u], names[v], cost=cost)
+            graph.add_edge(names[edge[0]], names[edge[1]], cost=cost)
 
     def __set_graph_attributes(self, graph: nx.Graph) -> None:
         """Set attributes of the graph such as the name"""
@@ -533,9 +534,8 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         except KeyError as key_error:
             raise ValueError("The list of depots is empty") from key_error
 
-    def get_edges(
-        self, normalize: bool = False
-    ) -> EdgeList:  # pylint: disable=arguments-differ
+    # pylint: disable=arguments-differ
+    def get_edges(self, normalize: bool = False) -> EdgeList:
         """Get a list of edges in the graph
 
         If the `edge_removal_probability` is set in the constructor,
@@ -598,23 +598,3 @@ def is_pctsp_yes_instance(
         and root_vertex == walk[0]
         and root_vertex == walk[len(walk) - 1]
     )
-
-
-def parse_edge_list_weights(text: str) -> EdgeFunction:
-    print(text)
-    return {}
-
-
-def render_edge_list_weights(edge_weights: EdgeFunction) -> str:
-    """Render edge weight dictionary to a string
-
-    Args:
-        edge_weights: Keys are edge tuples. Values are the weight of the edge.
-
-    Returns:
-        String representation of edge weights, including new lines.
-    """
-    render = ""
-    for (u, v), weight in edge_weights.items():
-        render += f"{u} {v} {weight}\n"
-    return render
