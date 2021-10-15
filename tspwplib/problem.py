@@ -51,7 +51,7 @@ class BaseTSP(pydantic.BaseModel):
     edge_weight_type: EdgeWeightType
     fixed_edges: EdgeList
     name: str
-    node_coords: NodeCoords
+    node_coords: Optional[NodeCoords]
     node_coord_type: NodeCoordType
     problem_type: str
     tours: Optional[List[VertexList]]
@@ -217,25 +217,66 @@ class BaseTSP(pydantic.BaseModel):
     @classmethod
     def from_tsplib95(cls, problem: tsplib95.models.StandardProblem):
         """Get a TSP base model from a StandardProblem object"""
+
+        display_data_type = (
+            problem.display_data_type
+            if problem.display_data_type
+            else DisplayDataType.NO_DISPLAY
+        )
+        edge_data_format = (
+            problem.edge_data_format
+            if problem.edge_data_format
+            else EdgeDataFormat.EDGE_LIST
+        )
+        edge_weight_type = problem.edge_weight_type
+
+        # edge weight format
+        edge_weight_format = problem.edge_weight_format
+        if (
+            not edge_weight_format
+            and edge_weight_type in EdgeWeightType.__members__
+            and edge_weight_type != EdgeWeightType.EXPLICIT
+        ):
+            edge_weight_format = EdgeWeightFormat.FUNCTION
+        elif not edge_weight_format and edge_weight_type == EdgeWeightType.EXPLICIT:
+            raise ValueError(
+                "Edge weight type is set to EXPLICIT but no edge weight format is given"
+            )
+        elif not edge_weight_format:
+            raise ValueError(
+                "Edge weight format in StandardProblem is not set - cannot assign edge weights."
+            )
+
+        node_coord_type = (
+            problem.node_coord_type
+            if problem.node_coord_type
+            else NodeCoordType.NO_COORDS
+        )
+        node_coords = None
+        if node_coord_type == NodeCoordType.TWOD_COORDS:
+            node_coords = {i: problem.node_coords.get(i) for i in problem.get_nodes()}
+        elif node_coord_type == NodeCoordType.THREED_COORDS:
+            raise NotImplementedError("3D coords not yet supported")
+
         return cls(
             capacity=problem.capacity,
-            comment=problem.comment,
+            comment=problem.comment if problem.comment else "",
             demands=problem.demands,
             depots=problem.depots,
             dimension=problem.dimension,
             display_data=problem.display_data,
-            display_data_type=problem.display_data_type,
-            edge_data=problem.get_edges(),
-            edge_data_format=problem.edge_data_format,
+            display_data_type=display_data_type,
+            edge_data=list(problem.get_edges()),
+            edge_data_format=edge_data_format,
             edge_weights={
                 (i, j): problem.get_weight(i, j) for i, j in problem.get_edges()
             },
-            edge_weight_format=problem.edge_weight_format,
-            edge_weight_type=problem.edge_weight_type,
+            edge_weight_format=edge_weight_format,
+            edge_weight_type=edge_weight_type,
             fixed_edges=problem.fixed_edges,
             name=problem.name,
-            node_coords=[problem.node_coords.get(i) for i in problem.get_nodes()],
-            node_coord_type=problem.node_coord_type,
+            node_coords=node_coords,
+            node_coord_type=node_coord_type,
             problem_type=problem.type,
             tours=problem.tours,
         )

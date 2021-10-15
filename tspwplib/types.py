@@ -38,13 +38,13 @@ class EdgeWeightType(StrEnumMixin, str, Enum):
     """Specifies how the edge weights (or distances) are given"""
 
     EXPLICIT = "EXPLICIT"  # Weights are listed explicitly in the corresponding section
-    EUC2D = "EUC2D"  # Weights are Euclidean distances in 2-D
-    EUC3D = "EUC3D"  # Weights are Euclidean distances in 3-D
-    MAX2D = "MAX2D"  # Weights are maximum distances in 2-D
-    MAX3D = "MAX3D"  # Weights are maximum distances in 3-D
-    MAN2D = "MAN2D"  # Weights are Manhattan distances in 2-D
-    MAN3D = "MAN3D"  # Weights are Manhattan distances in 3-D
-    CEIL2D = "CEIL2D"  # Weights are Euclidean distances in 2-D rounded up
+    EUC_2D = "EUC_2D"  # Weights are Euclidean distances in 2-D
+    EUC_3D = "EUC_3D"  # Weights are Euclidean distances in 3-D
+    MAX_2D = "MAX_2D"  # Weights are maximum distances in 2-D
+    MAX_3D = "MAX_3D"  # Weights are maximum distances in 3-D
+    MAN_2D = "MAN_2D"  # Weights are Manhattan distances in 2-D
+    MAN_3D = "MAN_3D"  # Weights are Manhattan distances in 3-D
+    CEIL_2D = "CEIL_2D"  # Weights are Euclidean distances in 2-D rounded up
     GEO = "GEO"  # Weights are geographical distances
     ATT = "ATT"  # Special distance function for problems att48 and att532
     XRAY1 = (
