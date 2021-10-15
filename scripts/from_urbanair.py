@@ -65,7 +65,9 @@ def generate_londonaq_dataset(
     old_vertices = {new: old for old, new in normalize_map.items()}
 
     # convert tuples to lists when dumping
-    json_old_edges = {list(key): list(value) for key, value in old_edges.items()}
+    json_old_edges = {
+        key[0]: {key[1]: list(old_edges[key])} for key in old_edges.keys()
+    }
     with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as json_file:
         json.dump(json_old_edges, json_file)
     with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as json_file:

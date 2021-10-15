@@ -27,7 +27,7 @@ def build_path_to_londonaq_instance(
     Returns:
         Filepath to the londonaq txt
     """
-    return londonaq_root / str(name) / f"{str(name)}.txt"
+    return londonaq_root / name.value / f"{name.value}.txt"
 
 
 def build_path_to_oplib_instance(

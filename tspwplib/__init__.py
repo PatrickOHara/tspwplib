@@ -26,6 +26,7 @@ from .exception import (
 )
 from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
 from .utils import (
+    build_path_to_londonaq_instance,
     build_path_to_oplib_instance,
     build_path_to_tsplib_instance,
     rename_edge_attributes,
@@ -94,6 +95,7 @@ __all__ = [
     "asymmetric_from_directed",
     "asymmetric_from_undirected",
     "biggest_vertex_id_from_graph",
+    "build_path_to_londonaq_instance",
     "build_path_to_oplib_instance",
     "build_path_to_tsplib_instance",
     "complete",
