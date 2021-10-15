@@ -25,7 +25,12 @@ from .exception import (
     NotSimplePathException,
 )
 from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
-from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
+from .utils import (
+    build_path_to_oplib_instance,
+    build_path_to_tsplib_instance,
+    rename_edge_attributes,
+    rename_node_attributes,
+)
 from .types import (
     Alpha,
     DisjointPaths,
@@ -109,6 +114,8 @@ __all__ = [
     "order_edge_list",
     "problem",
     "remove_self_loops_from_edge_list",
+    "rename_edge_attributes",
+    "rename_node_attributes",
     "reorder_edge_list_from_root",
     "split_graph_from_properties",
     "split_head",

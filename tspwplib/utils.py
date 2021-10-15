@@ -2,7 +2,7 @@
 
 from itertools import chain
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 import networkx as nx
 from .types import (
     Alpha,
@@ -90,3 +90,57 @@ def londonaq_comment(
     comment = f"A London air quality dataset starting at {location_id.value}. "
     comment += f"The UTC timestamp for the air quality forecast is {timestamp_id.value.isoformat()}"
     return comment
+
+
+def rename_edge_attributes(
+    graph: nx.Graph,
+    renaming: Dict[str, str],
+    copy_graph: bool = False,
+    del_old_attr: bool = False,
+) -> nx.Graph:
+    """Rename edge attributes
+
+    Args:
+        graph: Networkx graph
+        renaming: Keys are current attribute names. Values are new attribute names.
+        copy_graph: If true, copy the graph before renaming attributes.
+        del_old_attr: If true, delete the old edge attribute.
+
+    Returns:
+        Graph with renamed attributes. If `copy_graph` is `True`, then the copied graph is returned.
+        Otherwise the original graph is returned.
+    """
+    G = graph.copy() if copy_graph else graph
+    for u, v, data in G.edges(data=True):
+        for old_name, new_name in renaming.items():
+            G.edges[u, v][new_name] = data[old_name]
+            if del_old_attr:  # delete the old attribute
+                data.pop(old_name)
+    return G
+
+
+def rename_node_attributes(
+    graph: nx.Graph,
+    renaming: Dict[str, str],
+    copy_graph: bool = False,
+    del_old_attr: bool = False,
+) -> nx.Graph:
+    """Rename node attributes
+
+    Args:
+        graph: Networkx graph
+        renaming: Keys are current attribute names. Values are new attribute names.
+        copy_graph: If true, copy the graph before renaming attributes.
+        del_old_attr: If true, delete the old node attribute.
+
+    Returns:
+        Graph with renamed attributes. If `copy_graph` is `True`, then the copied graph is returned.
+        Otherwise the original graph is returned.
+    """
+    G = graph.copy() if copy_graph else graph
+    for u, data in G.nodes(data=True):
+        for old_name, new_name in renaming.items():
+            G.nodes[u][new_name] = data[old_name]
+            if del_old_attr:  # delete the old attribute
+                data.pop(old_name)
+    return G
