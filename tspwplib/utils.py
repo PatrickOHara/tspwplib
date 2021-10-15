@@ -14,6 +14,22 @@ from .types import (
 )
 
 
+def build_path_to_londonaq_instance(
+    londonaq_root: Path,
+    name: LondonaqGraphName,
+) -> Path:
+    """Build a filepath to a londonaq instance
+
+    Args:
+        londonaq_root: Root directory of the londonaq dataset
+        name: Londonaq graph name
+
+    Returns:
+        Filepath to the londonaq txt
+    """
+    return londonaq_root / str(name) / f"{str(name)}.txt"
+
+
 def build_path_to_oplib_instance(
     oplib_root: Path,
     generation: Generation,
