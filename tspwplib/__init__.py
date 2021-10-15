@@ -10,9 +10,11 @@ from .converter import (
     is_split_vertex_pair,
     is_vertex_split_head,
     is_vertex_split_tail,
+    split_graph_from_properties,
     split_head,
     split_tail,
     tail_prize,
+    to_simple_undirected,
     to_vertex_dataframe,
 )
 from .complete import is_complete, is_complete_with_self_loops
@@ -22,7 +24,7 @@ from .exception import (
     NotSimpleCycleException,
     NotSimplePathException,
 )
-from .problem import ProfitsProblem, is_pctsp_yes_instance
+from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
 from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
 from .types import (
     Alpha,
@@ -33,6 +35,10 @@ from .types import (
     EdgeList,
     Generation,
     GraphName,
+    LondonaqGraphName,
+    LondonaqLocation,
+    LondonaqLocationShort,
+    LondonaqTimestamp,
     OptimalSolutionTSP,
     Vertex,
     VertexFunction,
@@ -57,6 +63,7 @@ from .walk import (
 
 __all__ = [
     "Alpha",
+    "BaseTSP",
     "DisjointPaths",
     "Edge",
     "EdgeFunction",
@@ -65,6 +72,10 @@ __all__ = [
     "EdgesNotAdjacentException",
     "Generation",
     "GraphName",
+    "LondonaqGraphName",
+    "LondonaqLocation",
+    "LondonaqLocationShort",
+    "LondonaqTimestamp",
     "NotSimpleException",
     "NotSimpleCycleException",
     "NotSimplePathException",
@@ -99,9 +110,11 @@ __all__ = [
     "problem",
     "remove_self_loops_from_edge_list",
     "reorder_edge_list_from_root",
+    "split_graph_from_properties",
     "split_head",
     "split_tail",
     "tail_prize",
+    "to_simple_undirected",
     "to_vertex_dataframe",
     "total_cost",
     "total_cost_networkx",

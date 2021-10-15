@@ -1,7 +1,17 @@
 """Useful functions for parsing"""
 
+from itertools import chain
 from pathlib import Path
-from .types import Alpha, Generation, GraphName
+from typing import List
+import networkx as nx
+from .types import (
+    Alpha,
+    Generation,
+    GraphName,
+    LondonaqGraphName,
+    LondonaqLocation,
+    LondonaqTimestamp,
+)
 
 
 def build_path_to_oplib_instance(
@@ -40,3 +50,43 @@ def build_path_to_tsplib_instance(tsplib_root: Path, name: GraphName) -> Path:
     """
     filename = name.value + ".tsp"
     return tsplib_root / filename
+
+
+def edge_attribute_names(G: nx.Graph) -> List[str]:
+    """Get the names of all edge attributes
+
+    Args:
+        G: Graph
+
+    Returns:
+        List of attribute names
+    """
+    return list(set(chain.from_iterable(d.keys() for *_, d in G.edges(data=True))))
+
+
+def node_attribute_names(G: nx.Graph) -> List[str]:
+    """Get the names of all node attributes
+
+    Args:
+        G: Graph
+
+    Returns:
+        List of node attribute names
+    """
+    return list(set(chain.from_iterable(d.keys() for _, d in G.nodes(data=True))))
+
+
+def londonaq_graph_name(
+    location_id: LondonaqLocation, timestamp_id: LondonaqTimestamp
+) -> LondonaqGraphName:
+    """Get a londonaq graph name"""
+    return LondonaqGraphName["laq" + location_id.name + timestamp_id.name]
+
+
+def londonaq_comment(
+    location_id: LondonaqLocation, timestamp_id: LondonaqTimestamp
+) -> str:
+    """Get a comment for a londonaq dataset"""
+    comment = f"A London air quality dataset starting at {location_id.value}. "
+    comment += f"The UTC timestamp for the air quality forecast is {timestamp_id.value.isoformat()}"
+    return comment

@@ -5,7 +5,14 @@ from typing import Dict, Iterable, Mapping, Set
 
 import networkx as nx
 from .exception import EdgesNotAdjacentException, NotSimpleException
-from .types import Edge, EdgeFunctionName, EdgeList, Vertex, VertexList, VertexLookup
+from .types import (
+    EdgeFunction,
+    EdgeFunctionName,
+    EdgeList,
+    Vertex,
+    VertexList,
+    VertexLookup,
+)
 
 
 def edge_list_from_walk(walk: VertexList) -> EdgeList:
@@ -74,9 +81,9 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     # create a lookup table of the first and second occurence of each vertex in the edge list
     first_occurence: VertexLookup = {}
     second_occurence: VertexLookup = {}
-    for i, (u, v) in enumerate(unordered_edges):
-        __add_vertex_to_occurence(first_occurence, second_occurence, u, i)
-        __add_vertex_to_occurence(first_occurence, second_occurence, v, i)
+    for i, edge in enumerate(unordered_edges):
+        __add_vertex_to_occurence(first_occurence, second_occurence, edge[0], i)
+        __add_vertex_to_occurence(first_occurence, second_occurence, edge[1], i)
 
     # use the lookup tables to place the edges in the correct order in the edge list
     ordered_edges = []
@@ -84,8 +91,9 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     target_index = -1
     found_source = False
     first_vertex = 0
-    for i, (u, v) in enumerate(unordered_edges):
-        u, v = unordered_edges[i]
+    for i, edge in enumerate(unordered_edges):
+        u = edge[0]
+        v = edge[1]
         if not found_source and u not in second_occurence:
             j = i
             found_source = True
@@ -108,7 +116,8 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
         if visited[j]:
             raise NotSimpleException()
         visited[j] = True
-        u, v = edge
+        u = edge[0]
+        v = edge[1]
         ordered_edges.append(edge)
         if j == target_index:
             break
@@ -221,7 +230,7 @@ def is_walk(G: nx.Graph, walk: VertexList) -> bool:
         True if all vertices are adjacent in the graph
     """
     edge_list = edge_list_from_walk(walk)
-    return all(G.has_edge(u, v) for u, v in edge_list)
+    return all(G.has_edge(edge[0], edge[1]) for edge in edge_list)
 
 
 def is_simple_cycle(G: nx.Graph, cycle: VertexList) -> bool:
@@ -273,7 +282,7 @@ def total_prize(prizes: Mapping[Vertex, int], vertices: Iterable[Vertex]) -> int
     return sum_prize
 
 
-def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
+def total_cost(costs: EdgeFunction, edges: EdgeList) -> int:
     """Total cost of edges
 
     Args:
@@ -283,13 +292,14 @@ def total_cost(costs: Mapping[Edge, int], edges: EdgeList) -> int:
     Returns:
         Total cost of edges
     """
-    sum_cost: int = 0
+    sum_cost = 0
     for edge in edges:
         try:
             sum_cost += costs[edge]
         except KeyError:
             try:
-                u, v = edge
+                u = edge[0]
+                v = edge[1]
                 sum_cost += costs[(v, u)]
             except KeyError as second_key_error:
                 raise KeyError(

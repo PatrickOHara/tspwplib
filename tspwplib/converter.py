@@ -3,11 +3,22 @@
 
 from copy import deepcopy
 import math
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 import networkx as nx
 import pandas as pd
 from .exception import UnexpectedSelfLoopException
-from .types import EdgeFunctionName, Vertex, VertexFunctionName, VertexList
+from .types import (
+    Edge,
+    EdgeFunction,
+    EdgeFunctionName,
+    EdgeList,
+    EdgeProperties,
+    MultiEdge,
+    Vertex,
+    VertexFunction,
+    VertexFunctionName,
+    VertexList,
+)
 
 
 def to_vertex_dataframe(graph: nx.Graph) -> pd.DataFrame:
@@ -321,3 +332,170 @@ def to_simple_undirected(G: nx.MultiGraph) -> nx.Graph:
             raise ValueError("Negative key for edge.")
 
     return simple_graph
+
+
+def split_edges(edge_list: EdgeList) -> List[Edge]:
+    """Split each edge (u,v) by adding a new vertex w and two new edges (u,w), (w,v).
+
+    Args:
+        edge_list: List of edges or multi-edges
+
+    Returns:
+        List of edges (size 2 tuple).
+        Size of returned edge list is twice the size of the input edges.
+    """
+    new_vertex = -1
+    splits: List[Edge] = []
+    for edge in edge_list:
+        splits.append((edge[0], new_vertex))
+        splits.append((new_vertex, edge[1]))
+        new_vertex -= 1
+    return splits
+
+
+LookupFromSplit = Dict[Edge, Union[Edge, MultiEdge]]
+
+
+def lookup_from_split(edge_list: EdgeList, splits: List[Edge]) -> LookupFromSplit:
+    """Get lookup from a split edge to an original edge.
+
+    Args:
+        edge_list: Edge in original graph.
+        splits: List of edges created by [split_edges][tspwplib.converter.split_edges].
+
+    Returns:
+        Dictionary lookup from split edges to the original edges.
+    """
+    lookup = {}
+    for i, edge in enumerate(edge_list):
+        lookup[splits[2 * i]] = edge
+        lookup[splits[2 * i + 1]] = edge
+    return lookup
+
+
+LookupToSplit = Dict[Union[Edge, MultiEdge], Tuple[Edge, Edge]]
+
+
+def lookup_to_split(edge_list: EdgeList, splits: List[Edge]) -> LookupToSplit:
+    """Get lookup from an original edge to the two split edges.
+
+    Args:
+        edge_list: Edge in original graph.
+        splits: List of edges created by [split_edges][tspwplib.converter.split_edges].
+
+    Returns:
+        Dictionary lookup from the original edges to a pair of split edges.
+    """
+    lookup = {}
+    for i, edge in enumerate(edge_list):
+        lookup[edge] = (splits[2 * i], splits[2 * i + 1])
+    return lookup
+
+
+def prize_from_weighted_edges(
+    edge_weights: EdgeFunction, to_split: LookupToSplit
+) -> VertexFunction:
+    """Get a prize function on the vertices from a weight function on the edges.
+
+    Args:
+        edge_weights: Lookup from edges to weights.
+        to_split: Lookup from original edges to pairs of split edges
+            (see [lookup_to_split][tspwplib.converter.lookup_to_split]).
+
+    Returns:
+        Lookup from fake vertices to weight of original edge that the fake vertex represents.
+    """
+    prizes = {}
+    for edge, weight in edge_weights.items():
+        first_split, second_split = to_split[edge]
+        if first_split[1] != second_split[0]:
+            message = "Second vertex of first edge and first vertex of second edge "
+            message += "must match in to_split_lookup"
+            raise LookupError(message)
+        vertex = first_split[1]
+        prizes[vertex] = weight
+    return prizes
+
+
+def split_edge_cost(
+    edge_cost: EdgeFunction, to_split: LookupToSplit
+) -> Dict[Edge, float]:
+    """Assign half the cost of the original edge to each of the split edges.
+
+    Args:
+        edge_cost: Lookup from edges to cost.
+        to_split: Lookup from original edges to pairs of split edges
+            (see [lookup_to_split][tspwplib.converter.lookup_to_split]).
+
+    Returns:
+        Lookup from split edges to cost.
+
+    Notes:
+        The cost is cast to a float.
+    """
+    split_cost = {}
+    for edge, cost in edge_cost.items():
+        first_split, second_split = to_split[edge]
+        half_cost = float(cost) / 2.0
+        split_cost[first_split] = half_cost
+        split_cost[second_split] = half_cost
+    return split_cost
+
+
+def split_graph_from_properties(
+    edge_properties: EdgeProperties,
+    edge_attr_to_split: str = "cost",
+    edge_attr_to_vertex: str = "length",
+    new_vertex_attr: str = "prize",
+    old_edge_attr: str = "old_edge",
+) -> nx.Graph:
+    """Split edges with properties and create undirected simple graph.
+
+    Args:
+        edge_properties: Keys are edges. Values are dicts of edge attributes.
+        edge_attr_to_split: Name of edge attribute. Assign half the value to each split edge.
+        edge_attr_to_vertex: Name of edge attribute. Assign edge value to a new vertex attribute.
+        new_vertex_attr: Name of the newly created vertex attribute.
+        old_edge_attr: Name of the newly created attribute for the old edge ID.
+
+    Returns:
+        Undirected simple graph with edge attributes for cost, prize and old_edge
+
+    Notes:
+        To get the original_edge that a split edge represents, access the 'old_edge' attribute
+    """
+    # check that every edge has an attribute to split and an attr to move to vertex
+    is_edge_attr_to_split = True
+    is_edge_attr_to_vertex = True
+    for data in edge_properties.values():
+        if not edge_attr_to_split in data:
+            is_edge_attr_to_split = False
+        if not edge_attr_to_vertex in data:
+            is_edge_attr_to_vertex = False
+
+    # split edges and create lookups
+    edge_list = list(edge_properties.keys())
+    splits = split_edges(edge_list)
+    to_split = lookup_to_split(edge_list, splits)
+    from_split = lookup_from_split(edge_list, splits)
+
+    # create graph and assign prizes and costs
+    G = nx.Graph()
+    G.add_edges_from(splits)
+    if is_edge_attr_to_vertex:
+        prize = prize_from_weighted_edges(
+            {edge: item[edge_attr_to_vertex] for edge, item in edge_properties.items()},
+            to_split,
+        )
+        nx.set_node_attributes(G, 0.0, name=new_vertex_attr)
+        nx.set_node_attributes(G, prize, name=new_vertex_attr)
+
+    if is_edge_attr_to_split:
+        cost = split_edge_cost(
+            {edge: item[edge_attr_to_split] for edge, item in edge_properties.items()},
+            to_split,
+        )
+        nx.set_edge_attributes(G, 0.0, name=edge_attr_to_split)
+        nx.set_edge_attributes(G, cost, name=edge_attr_to_split)
+    nx.set_edge_attributes(G, from_split, name=old_edge_attr)
+    return G
