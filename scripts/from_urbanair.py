@@ -101,10 +101,7 @@ def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
     return pd.DataFrame([{"node": node, **data} for node, data in G.nodes(data=True)])
 
 
-def main(
-    location: LondonaqLocationShort,
-    dataset_dir: Path = Path("/", "Users", "patrick", "Datasets", "pctsp", "londonaq"),
-):
+def main(location: LondonaqLocationShort, dataset_dir: Path):
     """Entrypoint for generating londonaq dataset"""
     timestamp_id: LondonaqTimestamp = LondonaqTimestamp.A
     name = londonaq_graph_name(location, timestamp_id)
