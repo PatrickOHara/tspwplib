@@ -79,6 +79,12 @@ def generate_londonaq_dataset(
     for v in depots:
         normalized_graph.nodes[v]["is_depot"] = True
 
+    # round cost and demand
+    for _, data in normalized_graph.nodes(data=True):
+        data["demand"] = round(data["demand"])
+    for _, _, data in normalized_graph.edges(data=True):
+        data["cost"] = round(data["cost"])
+
     # NOTE (not implemented yet) get node co-ordinates
 
     # get TSP representation
@@ -87,7 +93,7 @@ def generate_londonaq_dataset(
         comment,
         "PCTSP",
         normalized_graph,
-        edge_weight_format=EdgeWeightFormat.LOWER_DIAG_ROW,
+        edge_weight_format=EdgeWeightFormat.FULL_MATRIX,
         weight_attr_name="cost",
     )
 
