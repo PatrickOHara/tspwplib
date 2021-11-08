@@ -10,6 +10,7 @@ import pandas as pd
 import pydantic
 import tsplib95
 
+from .tsplib95 import TempEdgeDataField
 from .types import (
     DisplayDataType,
     EdgeDataFormat,
@@ -420,6 +421,8 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     You can set `edge_removal_probability` to remove edges with this probability.
     """
 
+    # overwrite edge data to fix bugs
+    edge_data = TempEdgeDataField("EDGE_DATA")
     # Maximum distance of the total route in a OP.
     cost_limit = tsplib95.fields.IntegerField("COST_LIMIT")
     # The scores of the nodes of a OP are given in the form (per line)
