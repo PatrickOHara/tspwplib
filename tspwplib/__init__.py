@@ -25,7 +25,15 @@ from .exception import (
     NotSimplePathException,
 )
 from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
-from .utils import build_path_to_oplib_instance, build_path_to_tsplib_instance
+from .utils import (
+    build_path_to_londonaq_instance,
+    build_path_to_oplib_instance,
+    build_path_to_tsplib_instance,
+    londonaq_comment,
+    londonaq_graph_name,
+    rename_edge_attributes,
+    rename_node_attributes,
+)
 from .types import (
     Alpha,
     DisjointPaths,
@@ -39,6 +47,7 @@ from .types import (
     LondonaqLocation,
     LondonaqLocationShort,
     LondonaqTimestamp,
+    LondonaqTimestampId,
     OptimalSolutionTSP,
     Vertex,
     VertexFunction,
@@ -76,6 +85,7 @@ __all__ = [
     "LondonaqLocation",
     "LondonaqLocationShort",
     "LondonaqTimestamp",
+    "LondonaqTimestampId",
     "NotSimpleException",
     "NotSimpleCycleException",
     "NotSimplePathException",
@@ -89,6 +99,7 @@ __all__ = [
     "asymmetric_from_directed",
     "asymmetric_from_undirected",
     "biggest_vertex_id_from_graph",
+    "build_path_to_londonaq_instance",
     "build_path_to_oplib_instance",
     "build_path_to_tsplib_instance",
     "complete",
@@ -106,9 +117,13 @@ __all__ = [
     "is_vertex_split_head",
     "is_vertex_split_tail",
     "is_walk",
+    "londonaq_comment",
+    "londonaq_graph_name",
     "order_edge_list",
     "problem",
     "remove_self_loops_from_edge_list",
+    "rename_edge_attributes",
+    "rename_node_attributes",
     "reorder_edge_list_from_root",
     "split_graph_from_properties",
     "split_head",

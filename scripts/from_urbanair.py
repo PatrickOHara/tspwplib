@@ -1,5 +1,6 @@
 """Script for generating a tsplib style txt file from londonaq CSV"""
 
+import itertools
 import json
 from pathlib import Path
 
@@ -7,18 +8,44 @@ import networkx as nx
 import pandas as pd
 import typer
 
+from urbanroute import frames_from_urbanair_api
+
 from tspwplib import split_graph_from_properties
 from tspwplib.problem import BaseTSP
 from tspwplib.types import (
     EdgeWeightFormat,
     LondonaqGraphName,
+    LondonaqLocation,
     LondonaqLocationShort,
     LondonaqTimestamp,
+    LondonaqTimestampId,
 )
 from tspwplib.utils import londonaq_comment, londonaq_graph_name
 
 OLD_EDGE_LOOKUP_JSON = "old_edge_lookup.json"
 OLD_NODE_LOOKUP_JSON = "old_node_lookup.json"
+
+
+def csv_from_urbanair_api(
+    username: str,
+    password: str,
+    location: LondonaqLocation,
+    distance: int,
+    timestamp: LondonaqTimestamp,
+    csv_output_dir: Path,
+    csv_prefix: str,
+) -> None:
+    """Write CSV files of nodes and edges from urbanair API."""
+    csv_output_dir.mkdir(exist_ok=True, parents=False)
+    print(location.value)
+    edges_df, nodes_df = frames_from_urbanair_api(
+        username, password, location.value, distance, timestamp.value
+    )
+    # output is a CSV file representing an undirected simple graph
+    edges_df.to_csv(csv_output_dir / (csv_prefix + "_edges.csv"), index=False)
+    nodes_df.to_csv(
+        csv_output_dir / (csv_prefix + "_nodes.csv"), index=True, index_label="node"
+    )
 
 
 def generate_londonaq_dataset(
@@ -65,7 +92,9 @@ def generate_londonaq_dataset(
     old_vertices = {new: old for old, new in normalize_map.items()}
 
     # convert tuples to lists when dumping
-    json_old_edges = {list(key): list(value) for key, value in old_edges.items()}
+    json_old_edges = {
+        key[0]: {key[1]: list(old_edges[key])} for key in old_edges.keys()
+    }
     with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as json_file:
         json.dump(json_old_edges, json_file)
     with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as json_file:
@@ -77,6 +106,12 @@ def generate_londonaq_dataset(
     for v in depots:
         normalized_graph.nodes[v]["is_depot"] = True
 
+    # round cost and demand
+    for _, data in normalized_graph.nodes(data=True):
+        data["demand"] = round(data["demand"])
+    for _, _, data in normalized_graph.edges(data=True):
+        data["cost"] = round(data["cost"])
+
     # NOTE (not implemented yet) get node co-ordinates
 
     # get TSP representation
@@ -85,7 +120,7 @@ def generate_londonaq_dataset(
         comment,
         "PCTSP",
         normalized_graph,
-        edge_weight_format=EdgeWeightFormat.LOWER_DIAG_ROW,
+        edge_weight_format=EdgeWeightFormat.FULL_MATRIX,
         weight_attr_name="cost",
     )
 
@@ -101,11 +136,41 @@ def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
     return pd.DataFrame([{"node": node, **data} for node, data in G.nodes(data=True)])
 
 
-def main(location: LondonaqLocationShort, dataset_dir: Path):
-    """Entrypoint for generating londonaq dataset"""
-    timestamp_id: LondonaqTimestamp = LondonaqTimestamp.A
-    name = londonaq_graph_name(location, timestamp_id)
-    comment = londonaq_comment(location, timestamp_id)
+app = typer.Typer(name="generate")
+
+LONDONAQ_TINY_QUOTA = 200
+LONDONAQ_SMALL_QUOTA = 500
+
+
+@app.command(name="onlyone")
+def generate_only_one_dataset(
+    username: str,
+    password: str,
+    location_short: LondonaqLocationShort,
+    timestamp_id: LondonaqTimestampId,
+    dataset_dir: Path,
+):
+    """Generate only one dataset given the location and timestamp"""
+    timestamp = LondonaqTimestamp[timestamp_id]
+    print("location short:", location_short)
+    location = LondonaqLocation[location_short]
+    print("location:", location.name)
+    name = londonaq_graph_name(location, timestamp)
+    print("New thread for", name)
+    comment = londonaq_comment(location, timestamp)
+    if location_short == LondonaqLocationShort.tiny:
+        distance = LONDONAQ_TINY_QUOTA
+    else:
+        distance = LONDONAQ_SMALL_QUOTA
+    csv_from_urbanair_api(
+        username,
+        password,
+        location,
+        distance,
+        timestamp,
+        dataset_dir / name.value,
+        name,
+    )
     generate_londonaq_dataset(
         dataset_dir / name.value,
         name,
@@ -113,7 +178,19 @@ def main(location: LondonaqLocationShort, dataset_dir: Path):
         edges_csv_filename=name.value + "_edges.csv",
         nodes_csv_filename=name.value + "_nodes.csv",
     )
+    print("Finished", name)
+
+
+@app.command(name="all")
+def generate_all_datasets(username: str, password: str, dataset_dir: Path):
+    """Generate all urbanair datasets"""
+    for timestamp_id, location in itertools.product(
+        LondonaqTimestampId, LondonaqLocationShort
+    ):
+        generate_only_one_dataset(
+            username, password, location, timestamp_id, dataset_dir
+        )
 
 
 if __name__ == "__main__":
-    typer.run(main)
+    app()

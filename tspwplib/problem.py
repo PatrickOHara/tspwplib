@@ -1,9 +1,11 @@
 """Functions and classes for datasets"""
 
 import random
-from typing import List, Optional, Union
+from typing import List, Optional, Union, no_type_check
 
 import networkx as nx
+import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import pydantic
 import tsplib95
@@ -110,7 +112,7 @@ class BaseTSP(pydantic.BaseModel):
         fixed_edges = []
         if "is_fixed" in edge_attr_names:
             fixed_edges = [
-                edge for edge, data in G.edges(data=True) if data["is_fixed"]
+                (u, v) for u, v, data in G.edges(data=True) if data["is_fixed"]
             ]
 
         depots = []
@@ -281,37 +283,50 @@ class BaseTSP(pydantic.BaseModel):
             tours=problem.tours,
         )
 
+    @no_type_check
     def to_tsplib95(self) -> tsplib95.models.StandardProblem:
         """Convert to a tsplib95 standard model"""
-        weights = self.edge_weights
+        weights = None
         if self.edge_weight_type == EdgeWeightType.EXPLICIT:
-            # create a graph
-            G = nx.Graph(incoming_graph_data=self.edge_data)
-            nx.set_edge_attributes(G, self.edge_weights, name="weight")
-            # then get the weighted adjacency matrix
-            weights = nx.to_numpy_array(
-                G, nodelist=list(G.nodes()).sort(), weight="weight", dtype=int
-            )
+            weights = self.get_weighted_full_matrix()
 
+        optional_kwargs = {}
+        if not self.capacity is None:
+            optional_kwargs["capacity"] = self.capacity
+        if self.display_data:
+            optional_kwargs["display_data"] = self.display_data
+        if self.fixed_edges:
+            optional_kwargs["fixed_edges"] = self.fixed_edges
+        if self.tours:
+            optional_kwargs["tours"] = self.tours
         return tsplib95.models.StandardProblem(
-            # capacity=self.capacity,
             comment=self.comment,
             demands=self.demands,
             depots=self.depots,
             dimension=self.dimension,
-            # display_data=self.display_data,
             display_data_type=self.display_data_type,
             edge_data=self.edge_data,
             edge_data_format=self.edge_data_format,
             edge_weights=weights,
             edge_weight_format=self.edge_weight_format,
             edge_weight_type=self.edge_weight_type,
-            # fixed_edges=self.fixed_edges,
             name=self.name,
             node_coords=self.node_coords,
             node_coord_type=self.node_coord_type,
             type=self.problem_type,
-            # tours=self.tours,
+            **optional_kwargs,
+        )
+
+    def get_weighted_full_matrix(self) -> npt.NDArray[np.int_]:
+        """Get a square weighted adjacency matrix, sorted by node ID"""
+        # create a graph
+        G = self.get_graph()
+        # sort the node list (ascending)
+        sorted_node_list = list(G.nodes())
+        sorted_node_list.sort()
+        # then get the weighted adjacency matrix
+        return nx.to_numpy_array(
+            G, nodelist=sorted_node_list, weight="weight", dtype=int
         )
 
     def __set_graph_attributes(self, graph: nx.Graph) -> None:

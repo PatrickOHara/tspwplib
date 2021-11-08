@@ -245,6 +245,9 @@ class LondonaqGraphName(StrEnumMixin, str, Enum):
 
     laqkxA = "laqkxA"
     laqtinyA = "laqtinyA"
+    laqbbA = "laqbbA"
+    laqidA = "laqidA"
+    laqwsA = "laqwsA"
 
 
 class LondonaqTimestamp(Enum):
@@ -253,13 +256,22 @@ class LondonaqTimestamp(Enum):
     A = datetime(2021, 10, 13, 8, 0, 0, tzinfo=timezone.utc)  # 9am BST
 
 
+class LondonaqTimestampId(StrEnumMixin, str, Enum):
+    """Timestamp IDs for CLI"""
+
+    A = "A"
+    # B = "B"
+    # C = "C"
+    # D = "D"
+
+
 class LondonaqLocation(StrEnumMixin, str, Enum):
     """Names of locations that the London air quality graph is centered upon"""
 
     bb = "Big Ben"
     kx = "King's Cross"
-    tiny = "King's Cross"
-    ro = "Royal Observatory Greenwich"
+    tiny = "Camden Town"
+    id = "Isle of Dogs"
     ws = "Wembley Stadium"
 
 
@@ -269,7 +281,7 @@ class LondonaqLocationShort(StrEnumMixin, str, Enum):
     bb = "bb"
     kx = "kx"
     tiny = "tiny"
-    ro = "ro"
+    id = "id"
     ws = "ws"
 
 

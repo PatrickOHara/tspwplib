@@ -8,6 +8,7 @@ __pycache__
 .vscode
 .DSStore
 .devcontainer
+cache
 
 # docs
 site/
