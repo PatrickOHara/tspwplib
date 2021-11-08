@@ -1,7 +1,13 @@
 """Tests for the utils module"""
 
+import itertools
 import networkx as nx
+import pytest
 from tspwplib import (
+    londonaq_graph_name,
+    LondonaqGraphName,
+    LondonaqLocation,
+    LondonaqTimestamp,
     build_path_to_oplib_instance,
     build_path_to_tsplib_instance,
     rename_edge_attributes,
@@ -71,3 +77,11 @@ def test_rename_node_attributes():
         assert "cost" in data
         assert not "length" in data
         assert not "height" in data
+
+
+@pytest.mark.parametrize(
+    "location,timestamp", itertools.product(LondonaqLocation, LondonaqTimestamp)
+)
+def test_londonaq_graph_name(location, timestamp):
+    """Test every combination of location and timestamp yields a valid graph name"""
+    assert londonaq_graph_name(location, timestamp) in LondonaqGraphName

@@ -1,7 +1,7 @@
 """Functions and classes for datasets"""
 
 import random
-from typing import List, Optional, Union
+from typing import List, Optional, Union, no_type_check
 
 import networkx as nx
 import numpy as np
@@ -283,6 +283,7 @@ class BaseTSP(pydantic.BaseModel):
             tours=problem.tours,
         )
 
+    @no_type_check
     def to_tsplib95(self) -> tsplib95.models.StandardProblem:
         """Convert to a tsplib95 standard model"""
         weights = None
@@ -291,7 +292,7 @@ class BaseTSP(pydantic.BaseModel):
 
         optional_kwargs = {}
         if not self.capacity is None:
-            optional_kwargs["capacity"]=self.capacity
+            optional_kwargs["capacity"] = self.capacity
         if self.display_data:
             optional_kwargs["display_data"] = self.display_data
         if self.fixed_edges:

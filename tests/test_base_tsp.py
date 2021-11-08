@@ -4,6 +4,7 @@ import pytest
 from tsplib95.models import StandardProblem
 from tspwplib import BaseTSP, GraphName, build_path_to_tsplib_instance
 
+
 def test_get_weighted_full_matrix(tsplib_root, graph_name):
     """Test weighted adjacency matrix"""
     tsp_path = build_path_to_tsplib_instance(tsplib_root, graph_name)
@@ -13,6 +14,7 @@ def test_get_weighted_full_matrix(tsplib_root, graph_name):
     for i, u in enumerate(problem.get_nodes()):
         for j, v in enumerate(problem.get_nodes()):
             assert weights[i, j] == problem.get_weight(u, v)
+
 
 @pytest.mark.parametrize("gname", list(GraphName))
 def test_from_tsplib95(tsplib_root, gname):
@@ -28,6 +30,7 @@ def test_from_tsplib95(tsplib_root, gname):
         for edge, weight in tsp.edge_weights.items():
             assert weight == problem.get_weight(edge[0], edge[1])
 
+
 @pytest.mark.parametrize("gname", list(GraphName))
 def test_to_tsplib95(tsplib_root, gname):
     """Test going to tsplib"""
@@ -39,6 +42,7 @@ def test_to_tsplib95(tsplib_root, gname):
         og_problem = StandardProblem.load(tsp_path)
         tsp = BaseTSP.from_tsplib95(og_problem)
         new_problem = tsp.to_tsplib95()
+        # pylint: disable=not-an-iterable,unsupported-membership-test
         for u, v in og_problem.edge_data:
             assert (u, v) in new_problem.edge_data
             assert og_problem.get_weight(u, v) == new_problem.get_weight(u, v)
