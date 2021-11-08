@@ -36,7 +36,7 @@ class TempEdgeListField(fields.TransformerField):
 
     @classmethod
     def build_transformer(cls):
-        edge = transformers.TupleT(value=transformers.FuncT(func=int), size=2)
+        edge = TupleT(value=transformers.FuncT(func=int), size=2)
         return transformers.ListT(value=edge, terminal="-1", sep="\n")
 
 
