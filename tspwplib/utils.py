@@ -5,13 +5,30 @@ from pathlib import Path
 from typing import Dict, List
 import networkx as nx
 from .types import (
+    AdjList,
     Alpha,
     Generation,
     GraphName,
     LondonaqGraphName,
     LondonaqLocation,
     LondonaqTimestamp,
+    SimpleEdgeFunction,
+    SimpleEdgeList,
+    Vertex,
 )
+
+
+def build_path_to_londonaq_yaml(londonaq_root: Path, name: LondonaqGraphName) -> Path:
+    """Build a filepath to the londonaq yaml file
+
+    Args:
+        londonaq_root: Root directory of the londonaq dataset
+        name: Londonaq graph name
+
+    Returns:
+        Filepath to the londonaq yaml file
+    """
+    return londonaq_root / name.value / f"{name.value}.yaml"
 
 
 def build_path_to_londonaq_instance(
@@ -160,3 +177,62 @@ def rename_node_attributes(
             if del_old_attr:  # delete the old attribute
                 data.pop(old_name)
     return G
+
+
+def adjacency_list_from_edge_list(edge_list: SimpleEdgeList) -> AdjList:
+    """Return a adjacency list from an edge list
+
+    Args:
+        edge_list: List of tuples representing edges
+
+    Returns:
+        Adjacency list representation
+    """
+    adj_list: AdjList = {}
+    for (u, v) in edge_list:
+        if u in adj_list:
+            adj_list[u].append(v)
+        else:
+            adj_list[u] = [v]
+    return adj_list
+
+
+def edge_list_from_adjacency_list(adj_list: Dict[Vertex, List]) -> SimpleEdgeList:
+    """Returns an edge list from an adjacency list
+
+    Args:
+        adj_list: Adjacency list representation
+
+    Returns:
+        Edge list representation
+    """
+    edge_list: SimpleEdgeList = []
+    for u, neighbors in adj_list.items():
+        for v in neighbors:
+            edge_list.append((u, v))
+    return edge_list
+
+
+AdjWeights = Dict[Vertex, Dict[Vertex, int]]
+
+
+def adjacency_weights_from_edge_dict(weights: SimpleEdgeFunction) -> AdjWeights:
+    """Converts a mapping from edges to weights into an adjacency weight mapping"""
+    adj_weights: AdjWeights = {}
+    for (u, v), w in weights.items():
+        if u not in adj_weights:
+            adj_weights[u] = {v: w}
+        # elif v not in adj_weights[u]:
+        #     adj_weights[u] = {v: w}
+        else:
+            adj_weights[u][v] = w
+    return adj_weights
+
+
+def edge_dict_from_adjacency_weights(adj_weights: AdjWeights) -> SimpleEdgeFunction:
+    """Converts adjacency weight representation to edge function"""
+    weights: SimpleEdgeFunction = {}
+    for u, neighbor_weights in adj_weights.items():
+        for v, w in neighbor_weights.items():
+            weights[(u, v)] = w
+    return weights

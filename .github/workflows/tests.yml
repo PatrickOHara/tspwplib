@@ -35,6 +35,6 @@ jobs:
     - name: Formatting
       run: black --check */
     - name: Lint
-      run: pylint --rcfile .pylintrc setup.py tspwplib tests/*
+      run: pylint --rcfile .pylintrc setup.py tspwplib/* tests/*
     - name: Type hinting
       run: mypy --config-file .mypy.ini tspwplib

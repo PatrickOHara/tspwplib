@@ -17,9 +17,14 @@ MultiEdge = Tuple[Vertex, Vertex, int]
 EdgeList = List[Union[Edge, MultiEdge]]
 EdgeFunction = Dict[Union[Edge, MultiEdge], int]
 EdgeProperties = Dict[Union[Edge, MultiEdge], Dict[str, Any]]
+SimpleEdgeFunction = Dict[Edge, int]
+SimpleEdgeList = List[Edge]
 
 # path data structures
 DisjointPaths = Tuple[VertexList, VertexList]
+
+# graph data structures
+AdjList = Dict[Vertex, VertexList]
 
 # pylint: disable=invalid-name,too-few-public-methods
 

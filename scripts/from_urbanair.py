@@ -36,10 +36,18 @@ def csv_from_urbanair_api(
     csv_prefix: str,
 ) -> None:
     """Write CSV files of nodes and edges from urbanair API."""
+    if location == LondonaqLocation.id:
+        root_priority = "coordinate_centrality"
+    else:
+        root_priority = "betweenness_centrality"
     csv_output_dir.mkdir(exist_ok=True, parents=False)
-    print(location.value)
     edges_df, nodes_df = frames_from_urbanair_api(
-        username, password, location.value, distance, timestamp.value
+        username,
+        password,
+        location.value,
+        distance,
+        timestamp.value,
+        root_priority=root_priority,
     )
     # output is a CSV file representing an undirected simple graph
     edges_df.to_csv(csv_output_dir / (csv_prefix + "_edges.csv"), index=False)
@@ -123,11 +131,13 @@ def generate_londonaq_dataset(
         edge_weight_format=EdgeWeightFormat.FULL_MATRIX,
         weight_attr_name="cost",
     )
+    # save to yaml file
+    tsp.to_yaml(dataset_dir / f"{name}.yaml")
 
     # save to txt file
-    problem = tsp.to_tsplib95()
-    txt_filepath = dataset_dir / f"{name}.txt"
-    problem.save(txt_filepath)
+    # problem = tsp.to_tsplib95()
+    # txt_filepath = dataset_dir / f"{name}.txt"
+    # problem.save(txt_filepath)
     return tsp
 
 
@@ -139,7 +149,7 @@ def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
 app = typer.Typer(name="generate")
 
 LONDONAQ_TINY_QUOTA = 200
-LONDONAQ_SMALL_QUOTA = 500
+LONDONAQ_QUOTA = 2500
 
 
 @app.command(name="onlyone")
@@ -152,16 +162,14 @@ def generate_only_one_dataset(
 ):
     """Generate only one dataset given the location and timestamp"""
     timestamp = LondonaqTimestamp[timestamp_id]
-    print("location short:", location_short)
     location = LondonaqLocation[location_short]
-    print("location:", location.name)
     name = londonaq_graph_name(location, timestamp)
-    print("New thread for", name)
     comment = londonaq_comment(location, timestamp)
     if location_short == LondonaqLocationShort.tiny:
         distance = LONDONAQ_TINY_QUOTA
     else:
-        distance = LONDONAQ_SMALL_QUOTA
+        distance = LONDONAQ_QUOTA
+
     csv_from_urbanair_api(
         username,
         password,
