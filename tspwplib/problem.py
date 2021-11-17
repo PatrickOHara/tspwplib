@@ -333,7 +333,7 @@ class BaseTSP(pydantic.BaseModel):
     def from_yaml(cls, yaml_filepath: Path):
         """Load from a yaml file"""
         with open(yaml_filepath, "r", encoding="utf-8") as yaml_file:
-            yaml_dict = yaml.load(yaml_file)
+            yaml_dict = yaml.load(yaml_file, Loader=yaml.FullLoader)
         edge_data = edge_list_from_adjacency_list(yaml_dict.pop("edge_data"))
         edge_weights = edge_dict_from_adjacency_weights(yaml_dict.pop("edge_weights"))
         fixed_edges = edge_list_from_adjacency_list(yaml_dict.pop("fixed_edges"))
