@@ -37,6 +37,4 @@ jobs:
     - name: Lint
       run: pylint --rcfile .pylintrc setup.py tspwplib/* tests/*
     - name: Type hinting
-      run: |
-        mypy --install-types
-        mypy --config-file .mypy.ini tspwplib
+      run: mypy --config-file .mypy.ini tspwplib
