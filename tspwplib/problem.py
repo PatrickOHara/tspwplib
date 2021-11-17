@@ -1,7 +1,9 @@
 """Functions and classes for datasets"""
 
+from pathlib import Path
 import random
 from typing import List, Optional, Union, no_type_check
+import yaml
 
 import networkx as nx
 import numpy as np
@@ -14,19 +16,28 @@ from .tsplib95 import TempEdgeDataField
 from .types import (
     DisplayDataType,
     EdgeDataFormat,
-    EdgeFunction,
     EdgeList,
     EdgeWeightFormat,
     EdgeWeightType,
     NodeCoords,
     NodeCoordType,
+    SimpleEdgeFunction,
+    SimpleEdgeList,
     Vertex,
     VertexFunction,
     VertexFunctionName,
     VertexList,
     VertexLookup,
 )
-from .utils import edge_attribute_names, node_attribute_names
+from .utils import (
+    AdjWeights,
+    adjacency_list_from_edge_list,
+    adjacency_weights_from_edge_dict,
+    edge_attribute_names,
+    edge_dict_from_adjacency_weights,
+    edge_list_from_adjacency_list,
+    node_attribute_names,
+)
 from .walk import is_simple_cycle, walk_from_edge_list, total_prize
 
 # pylint: disable=too-few-public-methods
@@ -47,12 +58,12 @@ class BaseTSP(pydantic.BaseModel):
     dimension: int
     display_data: Optional[NodeCoords]
     display_data_type: DisplayDataType
-    edge_data: EdgeList
+    edge_data: SimpleEdgeList
     edge_data_format: EdgeDataFormat
-    edge_weights: Optional[EdgeFunction]
+    edge_weights: Optional[SimpleEdgeFunction]
     edge_weight_format: EdgeWeightFormat
     edge_weight_type: EdgeWeightType
-    fixed_edges: EdgeList
+    fixed_edges: SimpleEdgeList
     name: str
     node_coords: Optional[NodeCoords]
     node_coord_type: NodeCoordType
@@ -317,6 +328,48 @@ class BaseTSP(pydantic.BaseModel):
             type=self.problem_type,
             **optional_kwargs,
         )
+
+    @classmethod
+    def from_yaml(cls, yaml_filepath: Path):
+        """Load from a yaml file"""
+        with open(yaml_filepath, "r", encoding="utf-8") as yaml_file:
+            yaml_dict = yaml.load(yaml_file)
+        edge_data = edge_list_from_adjacency_list(yaml_dict.pop("edge_data"))
+        edge_weights = edge_dict_from_adjacency_weights(yaml_dict.pop("edge_weights"))
+        fixed_edges = edge_list_from_adjacency_list(yaml_dict.pop("fixed_edges"))
+        return cls(
+            **yaml_dict,
+            edge_data=edge_data,
+            edge_weights=edge_weights,
+            fixed_edges=fixed_edges,
+        )
+
+    def to_yaml(self, yaml_filepath: Path) -> None:
+        """Dump the TSP to a YAML file"""
+        yaml_dict = dict(
+            comment=self.comment,
+            demands=self.demands,
+            depots=self.depots,
+            dimension=self.dimension,
+            display_data_type=self.display_data_type.value,
+            edge_data=adjacency_list_from_edge_list(self.edge_data),
+            edge_data_format=self.edge_data_format.value,
+            edge_weight_format=self.edge_weight_format.value,
+            edge_weight_type=self.edge_weight_type.value,
+            fixed_edges=adjacency_list_from_edge_list(self.fixed_edges),
+            name=self.name,
+            node_coords=self.node_coords,
+            node_coord_type=self.node_coord_type.value,
+            problem_type=self.problem_type,
+            tours=self.tours,
+        )
+        if self.edge_weights:
+            weights: AdjWeights = adjacency_weights_from_edge_dict(self.edge_weights)
+            yaml_dict["edge_weights"] = weights  # type: ignore
+        else:
+            yaml_dict["edge_weights"] = None
+        with open(yaml_filepath, "w", encoding="utf-8") as yaml_file:
+            yaml.dump(yaml_dict, yaml_file)
 
     def get_weighted_full_matrix(self) -> npt.NDArray[np.int_]:
         """Get a square weighted adjacency matrix, sorted by node ID"""
