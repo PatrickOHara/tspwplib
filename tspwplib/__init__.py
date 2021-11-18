@@ -20,6 +20,7 @@ from .converter import (
 from .complete import is_complete, is_complete_with_self_loops
 from .exception import (
     EdgesNotAdjacentException,
+    EdgeNotFoundException,
     NotSimpleException,
     NotSimpleCycleException,
     NotSimplePathException,
@@ -80,6 +81,7 @@ __all__ = [
     "EdgeFunctionName",
     "EdgeList",
     "EdgesNotAdjacentException",
+    "EdgeNotFoundException",
     "Generation",
     "GraphName",
     "LondonaqGraphName",

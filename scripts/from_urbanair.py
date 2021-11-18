@@ -186,7 +186,6 @@ def generate_only_one_dataset(
         edges_csv_filename=name.value + "_edges.csv",
         nodes_csv_filename=name.value + "_nodes.csv",
     )
-    print("Finished", name)
 
 
 @app.command(name="all")
