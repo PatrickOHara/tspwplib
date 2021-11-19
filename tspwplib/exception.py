@@ -3,6 +3,10 @@
 from networkx import exception as ex
 
 
+class EdgeNotFoundException(ex.NetworkXException):
+    """An edge could not be found in the graph"""
+
+
 class EdgesNotAdjacentException(ex.AmbiguousSolution):
     """An edge list has been given non-adjacent edges which is ambiguous"""
 

@@ -112,7 +112,6 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
 
     for i in range(len(unordered_edges)):
         edge = unordered_edges[j]
-        print(edge)
         if visited[j]:
             raise NotSimpleException()
         visited[j] = True
