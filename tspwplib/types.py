@@ -296,7 +296,6 @@ class Generation(StrEnumMixin, str, Enum):
     gen1 = "gen1"
     gen2 = "gen2"
     gen3 = "gen3"
-    gen4 = "gen4"
 
 
 class Alpha(IntEnum):
