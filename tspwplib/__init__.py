@@ -51,6 +51,8 @@ from .types import (
     LondonaqTimestamp,
     LondonaqTimestampId,
     OptimalSolutionTSP,
+    SimpleEdgeFunction,
+    SimpleEdgeList,
     Vertex,
     VertexFunction,
     VertexFunctionName,
