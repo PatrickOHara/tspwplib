@@ -78,6 +78,8 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     Raises:
         NotSimpleException: If the list of edges is not a simple path or cycle
     """
+    if not unordered_edges:
+        return []
     # create a lookup table of the first and second occurence of each vertex in the edge list
     first_occurence: VertexLookup = {}
     second_occurence: VertexLookup = {}
