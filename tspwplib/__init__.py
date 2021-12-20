@@ -36,7 +36,7 @@ from .utils import (
     rename_edge_attributes,
     rename_node_attributes,
 )
-from .sparse import sparsify_uid
+from .sparse import sparsify_by_cost, sparsify_uid
 from .types import (
     Alpha,
     DisjointPaths,
@@ -132,6 +132,7 @@ __all__ = [
     "rename_edge_attributes",
     "rename_node_attributes",
     "reorder_edge_list_from_root",
+    "sparsify_by_cost",
     "sparsify_uid",
     "split_graph_from_properties",
     "split_head",
