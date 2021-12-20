@@ -1,10 +1,11 @@
 """Tests for sparsity"""
 
-
+import pytest
 from tspwplib import (
     ProfitsProblem,
     is_complete_with_self_loops,
     build_path_to_oplib_instance,
+    sparsify_uid,
 )
 
 
@@ -43,3 +44,13 @@ def test_remove_random_edges_from_graph(
             <= smaller_graph.number_of_edges() - smaller_graph.number_of_nodes()
             <= num_edges_upper_bound
         )
+
+@pytest.mark.parametrize("k", [1, 2, 5, 10])
+def test_sparsify_uid(oplib_root, generation, graph_name, k):
+    """Test sparsity is created uniformly and independently"""
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
+    complete_problem = ProfitsProblem.load(filepath)
+    complete_graph = complete_problem.get_graph()
+    sparse_graph = sparsify_uid(complete_graph, k)
+    assert sparse_graph.number_of_nodes() == complete_graph.number_of_nodes()
+    assert sparse_graph.number_of_edges() == complete_graph.number_of_nodes() * k

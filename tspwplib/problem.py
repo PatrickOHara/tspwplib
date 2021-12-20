@@ -469,10 +469,7 @@ class PrizeCollectingTSP(BaseTSP):
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
-    """TSP with Profits Problem
-
-    You can set `edge_removal_probability` to remove edges with this probability.
-    """
+    """TSP with Profits Problem"""
 
     # overwrite edge data to fix bugs
     edge_data = TempEdgeDataField("EDGE_DATA")
@@ -484,23 +481,10 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
 
     def __init__(
-        self, edge_removal_probability: float = 0.0, seed: int = 0, special=None, **data
+        self, special=None, **data
     ):
         super().__init__(special=special, **data)
-        self._edge_removal_probability = edge_removal_probability
-        self._seed = seed
 
-    @property
-    def edge_removal_probability(self) -> float:
-        """Probability of removing an edge from the graph.
-
-        Returns:
-            Edge removal probability.
-
-        Notes:
-            It is strongly recommended to only set this value in the constructor.
-        """
-        return self._edge_removal_probability
 
     def __set_edge_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Set edge attributes"""
@@ -651,9 +635,6 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     def get_edges(self, normalize: bool = False) -> EdgeList:
         """Get a list of edges in the graph
 
-        If the `edge_removal_probability` is set in the constructor,
-        then edges will be randomly removed
-
         Args:
             normalize: If true use the normalized vertex ids
 
@@ -662,24 +643,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         """
         if normalize:
             raise NotImplementedError("Normalizing edges not yet implemented")
-        edges: EdgeList = list(super().get_edges())
-        edges_copy = edges.copy()
-        random.seed(self._seed)
-        for edge in edges:
-            # do not remove self-loops
-            if (
-                random.random() < self.edge_removal_probability
-                and edge[0] != edge[1]
-                and edge in edges_copy
-            ):
-                if self.is_symmetric() and edge[0] < edge[1]:
-                    # remove both (u,v) and (v,u) in undirected case
-                    edges_copy.remove(edge)
-                    edges_copy.remove((edge[1], edge[0]))
-                else:
-                    # remove just (u,v) in directed case
-                    edges_copy.remove(edge)
-        return edges_copy
+        return list(super().get_edges())
 
 
 def is_pctsp_yes_instance(
