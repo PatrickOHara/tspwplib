@@ -32,8 +32,8 @@ def test_is_not_a_walk(walk_graph, not_a_walk):
 
 def test_edge_list_from_walk():
     """Test edge list from any walk"""
-    assert edge_list_from_walk([]) == []
-    assert edge_list_from_walk([0]) == []
+    assert edge_list_from_walk([])
+    assert edge_list_from_walk([0])
     assert edge_list_from_walk([0, 1, 3, 1, 2]) == [(0, 1), (1, 3), (3, 1), (1, 2)]
 
 
@@ -79,7 +79,7 @@ def test_reorder_edge_list_from_root():
 
 def test_walk_from_edge_list():
     """Test a walk is returned from an edge list"""
-    assert walk_from_edge_list([]) == []
+    assert walk_from_edge_list([])
     assert walk_from_edge_list([(0, 1)]) == [0, 1]
     assert walk_from_edge_list([(0, 1), (2, 1)]) == [0, 1, 2]
     assert walk_from_edge_list([(1, 0), (2, 1), (0, 2)]) == [0, 1, 2, 0]
