@@ -1,7 +1,6 @@
 """Functions and classes for datasets"""
 
 from pathlib import Path
-import random
 from typing import List, Optional, Union, no_type_check
 import yaml
 
@@ -480,11 +479,8 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
     # The optimal solution to the TSP
     tspsol = tsplib95.fields.IntegerField("TSPSOL")
 
-    def __init__(
-        self, special=None, **data
-    ):
+    def __init__(self, special=None, **data):
         super().__init__(special=special, **data)
-
 
     def __set_edge_attributes(self, graph: nx.Graph, names: VertexLookup) -> None:
         """Set edge attributes"""
