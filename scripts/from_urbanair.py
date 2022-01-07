@@ -41,7 +41,7 @@ def csv_from_urbanair_api(
     else:
         root_priority = "betweenness_centrality"
     csv_output_dir.mkdir(exist_ok=True, parents=False)
-    edges_df, nodes_df = frames_from_urbanair_api(
+    edges_df, nodes_df, pollution_df = frames_from_urbanair_api(
         username,
         password,
         location.value,
@@ -54,6 +54,7 @@ def csv_from_urbanair_api(
     nodes_df.to_csv(
         csv_output_dir / (csv_prefix + "_nodes.csv"), index=True, index_label="node"
     )
+    pollution_df.to_csv(csv_output_dir / (csv_prefix + "_hexgrid.csv"), index=False)
 
 
 def generate_londonaq_dataset(
@@ -100,9 +101,13 @@ def generate_londonaq_dataset(
     old_vertices = {new: old for old, new in normalize_map.items()}
 
     # convert tuples to lists when dumping
-    json_old_edges = {
-        key[0]: {key[1]: list(old_edges[key])} for key in old_edges.keys()
-    }
+    json_old_edges = {}
+    for (u, v), old_edge in old_edges.items():
+        if u in json_old_edges:
+            json_old_edges[u][v] = list(old_edge)
+        else:
+            json_old_edges[u] = {v: old_edge}
+
     with open(dataset_dir / old_edge_lookup, "w", encoding="UTF-8") as json_file:
         json.dump(json_old_edges, json_file)
     with open(dataset_dir / old_node_lookup, "w", encoding="UTF-8") as json_file:
@@ -133,11 +138,6 @@ def generate_londonaq_dataset(
     )
     # save to yaml file
     tsp.to_yaml(dataset_dir / f"{name}.yaml")
-
-    # save to txt file
-    # problem = tsp.to_tsplib95()
-    # txt_filepath = dataset_dir / f"{name}.txt"
-    # problem.save(txt_filepath)
     return tsp
 
 
@@ -148,8 +148,8 @@ def to_pandas_nodelist(G: nx.Graph) -> pd.DataFrame:
 
 app = typer.Typer(name="generate")
 
-LONDONAQ_TINY_QUOTA = 200
-LONDONAQ_QUOTA = 2500
+LONDONAQ_TINY_QUOTA = 500
+LONDONAQ_QUOTA = 3000
 
 
 @app.command(name="onlyone")
