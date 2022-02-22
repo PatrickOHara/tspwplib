@@ -18,6 +18,9 @@ def test_sparsify_uid(oplib_root, generation, graph_name, k):
     sparse_graph = sparsify_uid(complete_graph, k)
     assert sparse_graph.number_of_nodes() == complete_graph.number_of_nodes()
     assert sparse_graph.number_of_edges() == complete_graph.number_of_nodes() * k
+    for v in complete_graph:
+        if complete_graph.has_edge(v, v):
+            assert sparse_graph.has_edge(v, v)
 
 
 @pytest.mark.parametrize("k", [1, 2, 5, 10])
@@ -29,3 +32,6 @@ def test_sparsity_by_cost(oplib_root, generation, graph_name, k):
     sparse_graph = sparsify_by_cost(complete_graph, k, cost_attr="cost")
     assert sparse_graph.number_of_nodes() == complete_graph.number_of_nodes()
     assert sparse_graph.number_of_edges() == complete_graph.number_of_nodes() * k
+    for v in complete_graph:
+        if complete_graph.has_edge(v, v):
+            assert sparse_graph.has_edge(v, v)
