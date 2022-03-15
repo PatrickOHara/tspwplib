@@ -11,6 +11,7 @@ import pandas as pd
 import pydantic
 import tsplib95
 
+from .metric import uniform_random_cost
 from .tsplib95 import TempEdgeDataField
 from .types import (
     DisplayDataType,
@@ -245,12 +246,16 @@ class BaseTSP(pydantic.BaseModel):
 
         # edge weight format
         edge_weight_format = problem.edge_weight_format
-        if (
+        if edge_weight_type == EdgeWeightType.UNIFORM_RANDOM:
+            edge_weight_format = EdgeWeightFormat.FUNCTION
+            weights = uniform_random_cost(list(problem.get_edges()))
+        elif (
             not edge_weight_format
             and edge_weight_type in EdgeWeightType.__members__
             and edge_weight_type != EdgeWeightType.EXPLICIT
         ):
             edge_weight_format = EdgeWeightFormat.FUNCTION
+            weights = {(i, j): problem.get_weight(i, j) for i, j in problem.get_edges()}
         elif not edge_weight_format and edge_weight_type == EdgeWeightType.EXPLICIT:
             raise ValueError(
                 "Edge weight type is set to EXPLICIT but no edge weight format is given"
@@ -259,6 +264,8 @@ class BaseTSP(pydantic.BaseModel):
             raise ValueError(
                 "Edge weight format in StandardProblem is not set - cannot assign edge weights."
             )
+        else:
+            weights = {(i, j): problem.get_weight(i, j) for i, j in problem.get_edges()}
 
         node_coord_type = (
             problem.node_coord_type
@@ -281,9 +288,7 @@ class BaseTSP(pydantic.BaseModel):
             display_data_type=display_data_type,
             edge_data=list(problem.get_edges()),
             edge_data_format=edge_data_format,
-            edge_weights={
-                (i, j): problem.get_weight(i, j) for i, j in problem.get_edges()
-            },
+            edge_weights=weights,
             edge_weight_format=edge_weight_format,
             edge_weight_type=edge_weight_type,
             fixed_edges=problem.fixed_edges,

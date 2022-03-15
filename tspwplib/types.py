@@ -59,6 +59,7 @@ class EdgeWeightType(StrEnumMixin, str, Enum):
         "XRAY2"  # Special distance function for crystallography problems (Version 2)
     )
     SPECIAL = "SPECIAL"  # There is a special distance function documented elsewhere
+    UNIFORM_RANDOM = "UNIFORM_RANDOM"
 
 
 class EdgeWeightFormat(StrEnumMixin, str, Enum):

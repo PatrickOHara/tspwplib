@@ -25,6 +25,7 @@ from .exception import (
     NotSimpleCycleException,
     NotSimplePathException,
 )
+from .metric import uniform_random_cost
 from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
 from .utils import (
     build_path_to_londonaq_instance,
@@ -44,6 +45,7 @@ from .types import (
     EdgeFunction,
     EdgeFunctionName,
     EdgeList,
+    EdgeWeightType,
     Generation,
     GraphName,
     LondonaqGraphName,
@@ -83,6 +85,7 @@ __all__ = [
     "EdgeFunction",
     "EdgeFunctionName",
     "EdgeList",
+    "EdgeWeightType",
     "EdgesNotAdjacentException",
     "EdgeNotFoundException",
     "Generation",
@@ -97,6 +100,8 @@ __all__ = [
     "NotSimplePathException",
     "OptimalSolutionTSP",
     "ProfitsProblem",
+    "SimpleEdgeFunction",
+    "SimpleEdgeList",
     "Vertex",
     "VertexFunction",
     "VertexFunctionName",
@@ -144,6 +149,7 @@ __all__ = [
     "total_cost_networkx",
     "total_prize",
     "types",
+    "uniform_random_cost",
     "utils",
     "walk",
     "walk_from_edge_list",
