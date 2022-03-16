@@ -1,12 +1,12 @@
 """Function for metric and non-metric cost functions"""
 
 import random
-from .types import SimpleEdgeList, EdgeFunction
+from .types import SimpleEdgeList, SimpleEdgeFunction
 
 
 def uniform_random_cost(
     edge_list: SimpleEdgeList, min_value: int = 1, max_value: int = 100, seed: int = 0
-) -> EdgeFunction:
+) -> SimpleEdgeFunction:
     """Generate a cost function for each edge drawn from a uniform and independant probability
 
     Args:
@@ -18,7 +18,7 @@ def uniform_random_cost(
     Returns:
         Edge cost function
     """
-    cost = {}
+    cost: SimpleEdgeFunction = {}
     random.seed(seed)
     for u, v in edge_list:
         cost[(u, v)] = random.randint(min_value, max_value)
