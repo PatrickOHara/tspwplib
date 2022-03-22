@@ -25,7 +25,7 @@ from .exception import (
     NotSimpleCycleException,
     NotSimplePathException,
 )
-from .metric import uniform_random_cost
+from .metric import mst_cost, uniform_random_cost
 from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
 from .utils import (
     build_path_to_londonaq_instance,
@@ -132,6 +132,7 @@ __all__ = [
     "londonaq_comment",
     "londonaq_graph_name",
     "order_edge_list",
+    "mst_cost",
     "problem",
     "remove_self_loops_from_edge_list",
     "rename_edge_attributes",
