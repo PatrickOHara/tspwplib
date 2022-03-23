@@ -41,9 +41,7 @@ def mst_cost(G: nx.Graph, cost_attr: str = "cost") -> SimpleEdgeFunction:
     """
     # find the cost of the minimum spanning tree in G
     T = nx.minimum_spanning_tree(G, weight=cost_attr)
-    tree_cost = 0
-    for cost in nx.get_edge_attributes(T, cost_attr).values():
-        tree_cost += cost
+    tree_cost = dict(nx.all_pairs_bellman_ford_path_length(T, weight=cost_attr))
 
     # set the cost of the new edges
     new_cost: SimpleEdgeFunction = {}
@@ -51,5 +49,5 @@ def mst_cost(G: nx.Graph, cost_attr: str = "cost") -> SimpleEdgeFunction:
         if T.has_edge(u, v):
             new_cost[(u, v)] = cost
         else:
-            new_cost[(u, v)] = cost + tree_cost
+            new_cost[(u, v)] = cost + tree_cost[u][v]
     return new_cost
