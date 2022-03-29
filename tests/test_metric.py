@@ -9,13 +9,15 @@ def test_mst_cost(oplib_root, generation, graph_name):
     filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     G = problem.get_graph()
-    new_cost = mst_cost(G, cost_attr="weight")
-    T = nx.minimum_spanning_tree(G, weight="weight")
-    tree_cost = 0
-    for cost in nx.get_edge_attributes(T, "weight").values():
-        tree_cost += cost
-    for (u, v), cost in nx.get_edge_attributes(G, "weight"):
-        if T.has_edge(u, v):
+    new_cost = mst_cost(G, cost_attr="cost")
+    T = nx.minimum_spanning_tree(G, weight="cost")
+
+    for (u, v), cost in nx.get_edge_attributes(G, "cost").items():
+        if u == v:
+            assert cost == 0
+        elif T.has_edge(u, v):
             assert new_cost[(u, v)] == cost
         else:
-            assert new_cost[(u, v)] == cost + tree_cost
+            assert new_cost[(u, v)] == cost + nx.shortest_path_length(
+                T, u, v, weight="cost"
+            )
