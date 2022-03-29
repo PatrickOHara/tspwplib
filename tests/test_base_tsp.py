@@ -2,7 +2,7 @@
 
 import pytest
 from tsplib95.models import StandardProblem
-from tspwplib import BaseTSP, GraphName, build_path_to_tsplib_instance
+from tspwplib import BaseTSP, EdgeWeightType, GraphName, build_path_to_tsplib_instance
 
 
 def test_get_weighted_full_matrix(tsplib_root, graph_name):
@@ -46,3 +46,18 @@ def test_to_tsplib95(tsplib_root, gname):
         for u, v in og_problem.edge_data:
             assert (u, v) in new_problem.edge_data
             assert og_problem.get_weight(u, v) == new_problem.get_weight(u, v)
+
+
+def test_uniform_random_cost(tsplib_root, graph_name):
+    """Test creating a cost function with uniform random costs"""
+    tsp_path = build_path_to_tsplib_instance(tsplib_root, graph_name)
+    problem = StandardProblem.load(tsp_path)
+    problem.edge_weight_type = EdgeWeightType.UNIFORM_RANDOM
+    tsp = BaseTSP.from_tsplib95(problem)
+    match_count = 0
+    for (u, v), cost in tsp.edge_weights.items():
+        assert 1 <= cost <= 100
+        if u != v:
+            if cost == problem.get_weight(u, v):
+                match_count += 1
+    assert match_count < 0.5 * float(len(tsp.edge_data))  # expect not many matches
