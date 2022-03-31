@@ -25,3 +25,12 @@ class NotSimplePathException(NotSimpleException):
 
 class UnexpectedSelfLoopException(ex.NetworkXException):
     """A self loop was found where it wasn't exprected"""
+
+class GraphStructureException(ex.NetworkXException):
+    """The structure of a graph is not allowed"""
+
+class NoTreesException(GraphStructureException):
+    """The graph is not allowed to be a tree"""
+
+class NotConnectedException(GraphStructureException):
+    """The graph must be connected"""
