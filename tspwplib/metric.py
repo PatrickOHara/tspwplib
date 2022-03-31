@@ -20,6 +20,9 @@ def metricness(graph: nx.Graph, cost_attr: str = "cost") -> float:
     Raises:
         NotConnectedException: If the graph is not connected
         NoTreesException: If the graph is a tree
+
+    Notes:
+        Self loops are ignored from the metricness
     """
     if not nx.is_connected(graph):
         raise NotConnectedException("Make sure your graph is connected")
@@ -27,11 +30,18 @@ def metricness(graph: nx.Graph, cost_attr: str = "cost") -> float:
         raise NoTreesException("Make sure your graph is not a tree")
     path_cost = dict(nx.all_pairs_bellman_ford_path_length(graph, weight=cost_attr))
     num_metric = 0
+    num_non_metric = 0
+    num_self_loops = 0
     for (u, v), cost in nx.get_edge_attributes(graph, cost_attr).items():
-        if cost <= path_cost[u][v]:
+        if u == v:
+            num_self_loops += 1
+        elif cost <= path_cost[u][v]:
             num_metric += 1
-    numerator = (float)(num_metric - (graph.number_of_nodes() - 1))
-    denominator = (float) (graph.number_of_edges() - graph.number_of_nodes() + 1)
+        else:
+            num_non_metric += 1
+    print(num_metric, "metric edges and", num_non_metric, "non metric edges")
+    numerator = (float)(num_metric - graph.number_of_nodes() + 1)
+    denominator = (float) (graph.number_of_edges() - graph.number_of_nodes() - num_self_loops + 1)
     return numerator / denominator
 
 
