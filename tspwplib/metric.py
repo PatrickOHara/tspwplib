@@ -41,7 +41,9 @@ def metricness(graph: nx.Graph, cost_attr: str = "cost") -> float:
             num_non_metric += 1
     print(num_metric, "metric edges and", num_non_metric, "non metric edges")
     numerator = (float)(num_metric - graph.number_of_nodes() + 1)
-    denominator = (float) (graph.number_of_edges() - graph.number_of_nodes() - num_self_loops + 1)
+    denominator = (float)(
+        graph.number_of_edges() - graph.number_of_nodes() - num_self_loops + 1
+    )
     return numerator / denominator
 
 
