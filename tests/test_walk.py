@@ -15,6 +15,7 @@ from tspwplib import (
     reorder_edge_list_from_root,
     total_cost_networkx,
     total_prize,
+    total_prize_of_tour,
     vertex_set_from_edge_list,
     walk_from_edge_list,
 )
@@ -137,8 +138,17 @@ def test_total_prize(weighted_walk_networkx_graph):
         weighted_walk_networkx_graph, VertexFunctionName.prize
     )
     assert total_prize(prizes, [0, 1, 2]) == 3
+    assert total_prize(prizes, [1, 2, 3, 1]) == 7
     assert total_prize(prizes, []) == 0
 
+def test_total_prize_of_tour(weighted_walk_networkx_graph):
+    """Test total prize of a tour"""
+    prizes = nx.get_node_attributes(
+        weighted_walk_networkx_graph, VertexFunctionName.prize
+    )
+    assert total_prize_of_tour(prizes, [0, 1, 2, 0]) == 3
+    assert total_prize_of_tour(prizes, [1, 2, 3, 1]) == 6
+    assert total_prize_of_tour(prizes, []) == 0
 
 def test_remove_self_loops_from_edge_list():
     """Test all self loops are removed"""

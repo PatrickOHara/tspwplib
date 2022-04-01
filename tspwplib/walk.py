@@ -282,6 +282,17 @@ def total_prize(prizes: Mapping[Vertex, int], vertices: Iterable[Vertex]) -> int
         sum_prize += prizes[vertex]
     return sum_prize
 
+def total_prize_of_tour(prizes: Mapping[Vertex, int], tour: VertexList) -> int:
+    """Total prize of unique vertices in the tour
+    
+    Args:
+        prizes: A mapping from vertices to prizes, e.g. dict, property map
+        vertices: List of vertices in the prizes map
+
+    Returns:
+        Total prize of the tour
+    """
+    return total_prize(prizes, set(tour))
 
 def total_cost(costs: EdgeFunction, edges: EdgeList) -> int:
     """Total cost of edges
