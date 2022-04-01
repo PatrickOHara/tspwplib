@@ -2,7 +2,49 @@
 
 import random
 import networkx as nx
+from .exception import NoTreesException, NotConnectedException
 from .types import SimpleEdgeList, SimpleEdgeFunction
+
+
+def metricness(graph: nx.Graph, cost_attr: str = "cost") -> float:
+    """Measures how metric a cost function is
+
+    Args:
+        graph: Must be undirected, connected and not a tree
+        cost_attr: Name of cost attribute
+
+    Returns:
+        If a cost function is metric, return 1.0.
+        If n-1 edges are metric and the remaining edges are non-metric, return 0.0.
+
+    Raises:
+        NotConnectedException: If the graph is not connected
+        NoTreesException: If the graph is a tree
+
+    Notes:
+        Self loops are ignored from the metricness
+    """
+    if not nx.is_connected(graph):
+        raise NotConnectedException("Make sure your graph is connected")
+    if nx.is_tree(graph):
+        raise NoTreesException("Make sure your graph is not a tree")
+    path_cost = dict(nx.all_pairs_bellman_ford_path_length(graph, weight=cost_attr))
+    num_metric = 0
+    num_non_metric = 0
+    num_self_loops = 0
+    for (u, v), cost in nx.get_edge_attributes(graph, cost_attr).items():
+        if u == v:
+            num_self_loops += 1
+        elif cost <= path_cost[u][v]:
+            num_metric += 1
+        else:
+            num_non_metric += 1
+    print(num_metric, "metric edges and", num_non_metric, "non metric edges")
+    numerator = (float)(num_metric - graph.number_of_nodes() + 1)
+    denominator = (float)(
+        graph.number_of_edges() - graph.number_of_nodes() - num_self_loops + 1
+    )
+    return numerator / denominator
 
 
 def uniform_random_cost(

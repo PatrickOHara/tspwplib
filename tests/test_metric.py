@@ -1,7 +1,8 @@
 """Tests for creating metric and non-metric cost functions"""
 
 import networkx as nx
-from tspwplib import build_path_to_oplib_instance, mst_cost, ProfitsProblem
+import pytest
+from tspwplib import build_path_to_oplib_instance, metricness, mst_cost, ProfitsProblem
 
 
 def test_mst_cost(oplib_root, generation, graph_name):
@@ -21,3 +22,42 @@ def test_mst_cost(oplib_root, generation, graph_name):
             assert new_cost[(u, v)] == cost + nx.shortest_path_length(
                 T, u, v, weight="cost"
             )
+
+
+@pytest.mark.parametrize(
+    "edges,expected_metricness",
+    [
+        ([(0, 1, 1), (1, 2, 1), (2, 0, 5)], 0),
+        ([(0, 1, 1), (1, 2, 1), (2, 0, 1)], 1),
+        ([(0, 1, 1), (1, 2, 1), (2, 0, 5), (2, 3, 1)], 0.0),
+        (
+            [
+                (0, 1, 1),
+                (1, 2, 1),
+                (2, 0, 5),
+                (2, 3, 1),
+                (3, 4, 1),
+                (4, 2, 1),
+                (1, 3, 5),
+            ],
+            1.0 / 3.0,
+        ),
+        (
+            [
+                (0, 1, 10),
+                (1, 2, 1),
+                (2, 3, 1),
+                (3, 4, 1),
+                (1, 4, 1),
+                (4, 5, 1),
+                (0, 5, 1),
+            ],
+            0.5,
+        ),
+    ],
+)
+def test_metricness(edges, expected_metricness):
+    """Test metricness"""
+    G = nx.Graph()
+    G.add_weighted_edges_from(edges, weight="cost")
+    assert metricness(G) == expected_metricness
