@@ -2,6 +2,7 @@
 
 import random
 import networkx as nx
+import numpy as np
 from .exception import NoTreesException, NotConnectedException
 from .types import SimpleEdgeList, SimpleEdgeFunction
 
@@ -89,6 +90,52 @@ def mst_cost(G: nx.Graph, cost_attr: str = "cost") -> SimpleEdgeFunction:
     new_cost: SimpleEdgeFunction = {}
     for (u, v), cost in nx.get_edge_attributes(G, cost_attr).items():
         if T.has_edge(u, v):
+            new_cost[(u, v)] = cost
+        else:
+            new_cost[(u, v)] = cost + tree_cost[u][v]
+    return new_cost
+
+
+def semi_mst_cost(
+    G: nx.Graph, cost_attr: str = "cost", seed: int = 0
+) -> SimpleEdgeFunction:
+    """Half of the non-MST-tree edges are left unchanged.
+    The other half are assigned cost as described in mst_cost.
+
+    The half of edges are chosen with uniform and independent probability.
+
+    Args:
+        G: Undirected, simple graph
+        cost_attr: Name of the cost attribute of edges
+        seed: Set the seed of the random number generator
+
+    Returns
+        A new cost function
+    """
+    # find the cost of the minimum spanning tree in G
+    T = nx.minimum_spanning_tree(G, weight=cost_attr)
+    tree_cost = dict(nx.all_pairs_bellman_ford_path_length(T, weight=cost_attr))
+
+    # get edges not in the tree
+    non_tree_edges = [(u, v) for u, v in G.edges() if not T.has_edge(u, v)]
+    num_non_tree_edges = len(non_tree_edges)
+
+    gen = np.random.default_rng(seed=seed)
+    donot_change_edge_cost = set()
+    while len(non_tree_edges) >= float(num_non_tree_edges) * 0.5:
+        index = gen.integers(0, len(non_tree_edges) - 1)  # get random index
+        donot_change_edge_cost.add(
+            non_tree_edges.pop(index)
+        )  # remove item at random index, add to set
+
+    # set the cost of the new edges
+    new_cost: SimpleEdgeFunction = {}
+    for (u, v), cost in nx.get_edge_attributes(G, cost_attr).items():
+        if (
+            T.has_edge(u, v)
+            or (u, v) in donot_change_edge_cost
+            or (v, u) in donot_change_edge_cost
+        ):
             new_cost[(u, v)] = cost
         else:
             new_cost[(u, v)] = cost + tree_cost[u][v]
