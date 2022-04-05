@@ -73,6 +73,7 @@ from .walk import (
     total_cost,
     total_cost_networkx,
     total_prize,
+    total_prize_of_tour,
     vertex_set_from_edge_list,
     walk_from_edge_list,
 )
@@ -150,6 +151,7 @@ __all__ = [
     "total_cost",
     "total_cost_networkx",
     "total_prize",
+    "total_prize_of_tour",
     "types",
     "uniform_random_cost",
     "utils",

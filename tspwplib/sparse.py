@@ -85,7 +85,6 @@ def sparsify_by_cost(
         u_has_self_loop = graph_copy.has_edge(u, u)
         u_neighbors = list(graph_copy.neighbors(u))
         if u_has_self_loop and not remove_self_loops:
-            print(u_neighbors)
             u_neighbors.remove(u)
         if len(u_neighbors) > 0:
             # draw a random number from uniform and independent distribution (UID)
