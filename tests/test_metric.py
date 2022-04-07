@@ -3,6 +3,7 @@
 import networkx as nx
 import pytest
 from tspwplib import build_path_to_oplib_instance, metricness, mst_cost, ProfitsProblem
+from tspwplib.metric import semi_mst_cost
 
 
 def test_mst_cost(oplib_root, generation, graph_name):
@@ -22,6 +23,18 @@ def test_mst_cost(oplib_root, generation, graph_name):
             assert new_cost[(u, v)] == cost + nx.shortest_path_length(
                 T, u, v, weight="cost"
             )
+
+
+def test_semi_mst_cost(oplib_root, generation, graph_name):
+    """Test Semi MST cost"""
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
+    problem = ProfitsProblem.load(filepath)
+    G = problem.get_graph()
+    new_cost = semi_mst_cost(G, cost_attr="cost")
+    T = nx.minimum_spanning_tree(G, weight="cost")
+    tree_cost = sum(nx.get_edge_attributes(T, "cost").values())
+    upper_bound_cost = sum(mst_cost(G).values())
+    assert tree_cost < sum(new_cost.values()) < upper_bound_cost
 
 
 @pytest.mark.parametrize(

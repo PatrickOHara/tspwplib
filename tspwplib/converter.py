@@ -419,7 +419,7 @@ def prize_from_weighted_edges(
 
 def split_edge_cost(
     edge_cost: EdgeFunction, to_split: LookupToSplit
-) -> Dict[Edge, float]:
+) -> Dict[Edge, int]:
     """Assign half the cost of the original edge to each of the split edges.
 
     Args:
@@ -436,9 +436,8 @@ def split_edge_cost(
     split_cost = {}
     for edge, cost in edge_cost.items():
         first_split, second_split = to_split[edge]
-        half_cost = float(cost) / 2.0
-        split_cost[first_split] = half_cost
-        split_cost[second_split] = half_cost
+        split_cost[first_split] = cost
+        split_cost[second_split] = 0
     return split_cost
 
 

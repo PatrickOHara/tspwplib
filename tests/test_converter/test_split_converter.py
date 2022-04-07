@@ -37,4 +37,4 @@ def test_split_graph_from_properties():
     G = split_graph_from_properties(properties)
     for _, _, data in G.edges(data=True):
         old_edge = data["old_edge"]
-        assert data["cost"] == float(properties[old_edge]["cost"]) / 2.0
+        assert data["cost"] == float(properties[old_edge]["cost"]) or data["cost"] == 0
