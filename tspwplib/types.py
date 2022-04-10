@@ -61,6 +61,7 @@ class EdgeWeightType(StrEnumMixin, str, Enum):
     SPECIAL = "SPECIAL"  # There is a special distance function documented elsewhere
     UNIFORM_RANDOM = "UNIFORM_RANDOM"
     MST = "MST"
+    SEMI_MST = "SEMI_MST"
 
 
 class EdgeWeightFormat(StrEnumMixin, str, Enum):
