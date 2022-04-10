@@ -1,5 +1,6 @@
 """Functions and classes for datasets"""
 
+import math
 from pathlib import Path
 from typing import List, Optional, Union, no_type_check
 import yaml
@@ -526,6 +527,28 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                 coord = self.node_coords.get(vertex)
                 graph.nodes[names[vertex]]["x"] = coord[0]
                 graph.nodes[names[vertex]]["y"] = coord[1]
+
+    def get_weight(self, start, end) -> int:
+        """Return the weight of the edge between start and end.
+
+        This method provides a single way to obtain edge weights regardless of
+        whether the problem uses an explicit matrix or a distance function.
+
+        Args:
+            start: starting node index
+            end: ending node index
+
+        Returns:
+            Weight of edge
+
+        Notes:
+            Over-rides euclidean weight to ensure the costs are metric
+        """
+        if self.edge_weight_type == EdgeWeightType.EUC_2D:
+            return tsplib95.distances.euclidean(
+                self.node_coords[start], self.node_coords[end], round=math.ceil
+            )
+        return super().get_weight(start, end)
 
     def get_graph(self, normalize: bool = False) -> nx.Graph:
         """Return a networkx graph instance representing the problem.

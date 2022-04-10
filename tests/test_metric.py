@@ -1,9 +1,18 @@
 """Tests for creating metric and non-metric cost functions"""
 
+import math
 import networkx as nx
 import pytest
-from tspwplib import build_path_to_oplib_instance, metricness, mst_cost, ProfitsProblem
+from tspwplib import (
+    BaseTSP,
+    build_path_to_tsplib_instance,
+    build_path_to_oplib_instance,
+    metricness,
+    mst_cost,
+    ProfitsProblem,
+)
 from tspwplib.metric import semi_mst_cost
+from tspwplib.types import EdgeWeightType
 
 
 def test_mst_cost(oplib_root, generation, graph_name):
@@ -29,12 +38,24 @@ def test_semi_mst_cost(oplib_root, generation, graph_name):
     """Test Semi MST cost"""
     filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
-    G = problem.get_graph()
+    tsp = BaseTSP.from_tsplib95(problem)
+    G = tsp.get_graph()
+    nx.set_edge_attributes(G, tsp.edge_weights, name="cost")
     new_cost = semi_mst_cost(G, cost_attr="cost")
-    T = nx.minimum_spanning_tree(G, weight="cost")
-    tree_cost = sum(nx.get_edge_attributes(T, "cost").values())
-    upper_bound_cost = sum(mst_cost(G).values())
-    assert tree_cost < sum(new_cost.values()) < upper_bound_cost
+    nx.set_edge_attributes(G, new_cost, name="cost")
+    # assert metricness is less than 0.01 aways from 0.50
+    assert abs(metricness(G, cost_attr="cost") - 0.5) < 0.01
+
+
+def test_tsplib_metricness(oplib_root, generation, graph_name):
+    """Test that graphs in the TSPLIB dataset are metric (since the cost function is Euclidean)"""
+    # filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
+    filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
+    problem = ProfitsProblem.load(filepath)
+    tsp = BaseTSP.from_tsplib95(problem)
+    G = tsp.get_graph()
+    nx.set_edge_attributes(G, tsp.edge_weights, name="cost")
+    assert metricness(G) == 1
 
 
 @pytest.mark.parametrize(
