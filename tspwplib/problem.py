@@ -546,7 +546,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         """
         if self.edge_weight_type == EdgeWeightType.EUC_2D:
             return tsplib95.distances.euclidean(
-                self.node_coords[start], self.node_coords[end], round=math.ceil
+                self.node_coords.get(start), self.node_coords.get(end), round=math.ceil
             )
         return super().get_weight(start, end)
 

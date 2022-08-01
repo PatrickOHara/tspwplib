@@ -1,18 +1,15 @@
 """Tests for creating metric and non-metric cost functions"""
 
-import math
 import networkx as nx
 import pytest
 from tspwplib import (
     BaseTSP,
-    build_path_to_tsplib_instance,
     build_path_to_oplib_instance,
     metricness,
     mst_cost,
     ProfitsProblem,
 )
 from tspwplib.metric import semi_mst_cost
-from tspwplib.types import EdgeWeightType
 
 
 def test_mst_cost(oplib_root, generation, graph_name):
