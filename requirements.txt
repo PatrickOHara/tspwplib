@@ -1,10 +1,10 @@
-black>=21.9b0
+black>=22.6.0
 markdown-include>=0.6.0
 mkdocs>=1.1.2
 mkdocstrings>=0.13.6
 mkdocs-material>=6.0.2
-mypy>=0.782
-pylint>=2.12.2
+mypy>=0.971
+pylint>=2.14.5
 pytest>=6.1.1
 pytest-tspwplib>=0.2.5
 types-PyYAML>=6.0.1
