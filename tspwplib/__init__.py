@@ -25,7 +25,7 @@ from .exception import (
     NotSimpleCycleException,
     NotSimplePathException,
 )
-from .metric import metricness, mst_cost, uniform_random_cost
+from .metric import metricness, mst_cost, semi_mst_cost, uniform_random_cost
 from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
 from .utils import (
     build_path_to_londonaq_instance,
@@ -140,6 +140,7 @@ __all__ = [
     "rename_edge_attributes",
     "rename_node_attributes",
     "reorder_edge_list_from_root",
+    "semi_mst_cost",
     "sparsify_by_cost",
     "sparsify_uid",
     "split_graph_from_properties",
