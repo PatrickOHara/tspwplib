@@ -297,7 +297,7 @@ def total_prize_of_tour(prizes: Mapping[Vertex, int], tour: VertexList) -> int:
 
     Args:
         prizes: A mapping from vertices to prizes, e.g. dict, property map
-        vertices: List of vertices in the prizes map
+        tour: List of vertices in the prizes map
 
     Returns:
         Total prize of the tour

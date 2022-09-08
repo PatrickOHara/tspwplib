@@ -528,7 +528,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
                 graph.nodes[names[vertex]]["x"] = coord[0]
                 graph.nodes[names[vertex]]["y"] = coord[1]
 
-    def get_weight(self, start, end) -> int:
+    def get_weight(self, start: int, end: int) -> int:
         """Return the weight of the edge between start and end.
 
         This method provides a single way to obtain edge weights regardless of
