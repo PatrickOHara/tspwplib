@@ -12,6 +12,7 @@ setup(
         "numpy>=1.21.0",
         "pandas>=1.0.0",
         "pydantic>=1.8.2",
+        "pyyaml>=6.0",
         "tsplib95>=0.7.1",
     ],
     name="tspwplib",
