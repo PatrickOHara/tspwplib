@@ -51,13 +51,17 @@ def test_order_edge_list():
     edges3 = [(1, 0), (2, 1), (0, 2), (3, 4), (4, 5), (3, 5)]
     edges4 = [(0, 1), (2, 3), (1, 2)]
     edges5 = [(0, 2), (2, 7), (4, 6), (6, 7), (0, 1), (1, 4)]
-    assert order_edge_list(edges1) == edges1
+    edges6 = [(1, 0), (2, 1), (0, 2), (0, 3)]
+    with pytest.raises(NotSimpleException):
+        order_edge_list(edges1)
     assert order_edge_list(edges2) == [(1, 0), (0, 2), (2, 1)]
-    assert order_edge_list(edges4) == edges1
+    with pytest.raises(NotSimpleException):
+        order_edge_list(edges4)
     assert order_edge_list(edges5)
     with pytest.raises(NotSimpleException):
         order_edge_list(edges3)
-
+    with pytest.raises(NotSimpleException):
+        order_edge_list(edges6)
 
 def test_reorder_edge_list_from_root():
     """Test edges are reordered starting and ending at root"""
