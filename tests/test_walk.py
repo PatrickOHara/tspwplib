@@ -63,7 +63,6 @@ def test_order_edge_list():
     with pytest.raises(NotSimpleException):
         order_edge_list(edges6)
 
-
 def test_reorder_edge_list_from_root():
     """Test edges are reordered starting and ending at root"""
     root = 0
