@@ -189,7 +189,7 @@ def adjacency_list_from_edge_list(edge_list: SimpleEdgeList) -> AdjList:
         Adjacency list representation
     """
     adj_list: AdjList = {}
-    for (u, v) in edge_list:
+    for u, v in edge_list:
         if u in adj_list:
             adj_list[u].append(v)
         else:
