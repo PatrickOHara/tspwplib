@@ -4,11 +4,7 @@ import itertools
 from typing import Dict, Iterable, Mapping, Set
 
 import networkx as nx
-from .exception import (
-    EdgesNotAdjacentException,
-    NotSimpleException,
-    NotSimpleCycleException,
-)
+from .exception import EdgesNotAdjacentException, NotSimpleException, NotSimpleCycleException
 from .types import (
     EdgeFunction,
     EdgeFunctionName,
