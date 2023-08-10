@@ -472,6 +472,17 @@ class PrizeCollectingTSP(BaseTSP):
             return sum(self.demands.values())
         return 0
 
+    def get_quota(self, alpha: int) -> int:
+        """The quota is alpha percent of the total prize
+
+        Args:
+            alpha: Percent of the total prize
+
+        Returns:
+            quota
+        """
+        return get_quota_from_alpha(alpha, self.get_total_prize())
+
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
     """TSP with Profits Problem"""
@@ -591,11 +602,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         Returns:
             quota
         """
-        if alpha > 100:
-            raise ValueError("Cannot have a percent over 100 for alpha")
-        if alpha < 0:
-            raise ValueError("Cannot have a negative percent for alpha")
-        return int(float(alpha * self.get_total_prize()) / 100.0)
+        return get_quota_from_alpha(alpha, self.get_total_prize())
 
     def number_of_nodes(self) -> int:
         """Get the number of nodes in the problem
@@ -668,6 +675,23 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         if normalize:
             raise NotImplementedError("Normalizing edges not yet implemented")
         return list(super().get_edges())
+
+
+def get_quota_from_alpha(alpha: int, total_prize: int) -> int:
+    """The quota is alpha percent of the total prize
+
+    Args:
+        alpha: Percent of the total prize
+        total_prize: Total prize of the graph
+
+    Returns:
+        quota as an integer
+    """
+    if alpha > 100:
+        raise ValueError("Cannot have a percent over 100 for alpha")
+    if alpha < 0:
+        raise ValueError("Cannot have a negative percent for alpha")
+    return int(float(alpha * total_prize) / 100.0)
 
 
 def is_pctsp_yes_instance(
