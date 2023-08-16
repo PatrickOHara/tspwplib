@@ -21,12 +21,13 @@ from .complete import is_complete, is_complete_with_self_loops
 from .exception import (
     EdgesNotAdjacentException,
     EdgeNotFoundException,
+    NotConnectedException,
     NotSimpleException,
     NotSimpleCycleException,
     NotSimplePathException,
 )
 from .metric import metricness, mst_cost, semi_mst_cost, uniform_random_cost
-from .problem import BaseTSP, ProfitsProblem, is_pctsp_yes_instance
+from .problem import BaseTSP, ProfitsProblem, get_quota_from_alpha, is_pctsp_yes_instance
 from .utils import (
     build_path_to_londonaq_instance,
     build_path_to_londonaq_yaml,
@@ -120,6 +121,7 @@ __all__ = [
     "edge_list_from_walk",
     "get_original_from_split_vertex",
     "get_original_path_from_split_path",
+    "get_quota_from_alpha",
     "head_prize",
     "is_complete",
     "is_complete_with_self_loops",
