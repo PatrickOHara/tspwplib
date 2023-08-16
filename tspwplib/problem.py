@@ -52,24 +52,24 @@ class BaseTSP(pydantic.BaseModel):
 
     # pylint: disable=too-many-arguments
 
-    capacity: Optional[Union[int, float]]
+    capacity: Optional[Union[int, float]] = None
     comment: str
     demands: Optional[VertexFunction]
     depots: VertexList
     dimension: int
-    display_data: Optional[NodeCoords]
+    display_data: Optional[NodeCoords] = None
     display_data_type: DisplayDataType
     edge_data: SimpleEdgeList
     edge_data_format: EdgeDataFormat
-    edge_weights: Optional[SimpleEdgeFunction]
+    edge_weights: Optional[SimpleEdgeFunction] = None
     edge_weight_format: EdgeWeightFormat
     edge_weight_type: EdgeWeightType
     fixed_edges: SimpleEdgeList
     name: str
-    node_coords: Optional[NodeCoords]
+    node_coords: Optional[NodeCoords] = None
     node_coord_type: NodeCoordType
     problem_type: str
-    tours: Optional[List[VertexList]]
+    tours: Optional[List[VertexList]] = None
 
     class Config:
         """Pydantic configuration"""
