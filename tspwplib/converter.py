@@ -1,6 +1,5 @@
 """Converting between different types of graphs"""
 
-
 from copy import deepcopy
 import math
 from typing import Dict, List, Tuple, Union

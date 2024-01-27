@@ -27,7 +27,12 @@ from .exception import (
     NotSimplePathException,
 )
 from .metric import metricness, mst_cost, semi_mst_cost, uniform_random_cost
-from .problem import BaseTSP, ProfitsProblem, get_quota_from_alpha, is_pctsp_yes_instance
+from .problem import (
+    BaseTSP,
+    ProfitsProblem,
+    get_quota_from_alpha,
+    is_pctsp_yes_instance,
+)
 from .utils import (
     build_path_to_londonaq_instance,
     build_path_to_londonaq_yaml,
