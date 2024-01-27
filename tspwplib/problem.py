@@ -466,7 +466,7 @@ class PrizeCollectingTSP(BaseTSP):
         except KeyError as key_error:
             raise ValueError("The list of depots is empty") from key_error
 
-    def get_total_prize(self) -> Union[int, float]:
+    def get_total_prize(self) -> int:
         """ "Get the total prize (demand) of all vertices"""
         if self.demands:
             return sum(self.demands.values())
