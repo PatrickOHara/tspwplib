@@ -21,7 +21,7 @@ git clone https://github.com/rhgrant10/tsplib95.git
 It is convenient to define environment variables to define the location of OPLib and tsplib95:
 
 ```bash
-TSPLIB_ROOT="$(pwd)/tsblib95/archives/problems/tsp"
+TSPLIB_ROOT="$(pwd)/tsplib95/archives/problems/tsp"
 OPLIB_ROOT="$(pwd)/OPLib/"
 ```
 
