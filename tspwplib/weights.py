@@ -15,6 +15,10 @@ def generation_two_prize(vertex: Vertex) -> int:
     """Returns a prize that relatively random"""
     return int(1 + (7141 * vertex + 73) % 100)
 
+def __euclidean_distance_oplib(coord1: npt.NDArray, coord2: npt.NDArray) -> int:
+    xd = coord1[0] - coord2[0]
+    yd = coord1[1] - coord2[1]
+    return (int) (np.sqrt( xd*xd + yd*yd) + 0.5)
 
 def generation_three_prize_list(
     vertex_coords: npt.ArrayLike,
@@ -23,7 +27,7 @@ def generation_three_prize_list(
     """Generate a prize map from the vertex coordinates using the generation three prize function"""
     # get the distance from the root vertex to every other vertex
     root_coord = vertex_coords[root_vertex_index]
-    max_distance = np.max(np.linalg.norm(root_coord - vertex_coords, axis=1))
+    max_distance = np.max(np.linalg.norm(root_coord - vertex_coords, axis=1, ord=2))
     if np.isclose(max_distance, 0):
         raise ValueError("Maximum distance from any vertex to the root vertex is zero.")
     return [
@@ -37,5 +41,5 @@ def generation_three_prize(
 ) -> int:
     """Vertices have larger prizes when they are further away from the root vertex"""
     return int(
-        1 + np.floor((99 / max_distance) * np.linalg.norm(root_coord - vertex_coord))
+        1 + np.floor((99.0 / max_distance) * np.linalg.norm(root_coord - vertex_coord, ord=2))
     )

@@ -273,11 +273,18 @@ class BaseTSP(pydantic.BaseModel):
             if problem.node_coord_type
             else NodeCoordType.NO_COORDS
         )
-        node_coords = None
-        if node_coord_type == NodeCoordType.TWOD_COORDS:
-            node_coords = {i: problem.node_coords.get(i) for i in problem.get_nodes()}
-        elif node_coord_type == NodeCoordType.THREED_COORDS:
+
+        node_coords = {i: problem.node_coords.get(i) for i in problem.get_nodes()}
+        if len(node_coords) == 0:
+            node_coord_type == NodeCoordType.NO_COORDS
+            node_coords = None
+            raise RuntimeWarning(f"Problem {problem.name} has no node co-ordinates.")
+        elif len(node_coords.get(1)) == 3 or node_coord_type == NodeCoordType.THREED_COORDS:
             raise NotImplementedError("3D coords not yet supported")
+        elif (len(node_coords.get(1)) == 2 and node_coord_type == NodeCoordType.THREED_COORDS) or (len(node_coords.get(1)) == 3 and node_coord_type == NodeCoordType.TWOD_COORDS):
+            raise ValueError(f"Problem {problem.name} has NODE_COORD_TYPE {node_coord_type.value}, but the length of the co-ordinates for node 1 is {len(node_coords.get(1))}.")
+        elif len(node_coords.get(1)) == 2:
+            node_coord_type = NodeCoordType.TWOD_COORDS             
 
         return cls(
             capacity=problem.capacity,
