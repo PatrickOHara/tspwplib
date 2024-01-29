@@ -23,16 +23,40 @@ jobs:
         REPO_OWNER: PatrickOHara
         RELEASE_BRANCHES: main
 
+  build-dist:
+    name: Build distribution
+    needs: bump
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+
+    - name: Install pypa/build
+      run: python3 -m pip install build --user
+    - name: Build a binary wheel and a source tarball
+      run: python3 -m build
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+
   pypi-publish:
     name: upload release to PyPI
-    needs: bump
+    needs: build-dist
     runs-on: ubuntu-latest
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
-    steps:
-      # retrieve your distributions here
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Download all the dists
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
