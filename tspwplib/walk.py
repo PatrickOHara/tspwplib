@@ -4,7 +4,11 @@ import itertools
 from typing import Dict, Iterable, Mapping, Set
 
 import networkx as nx
-from .exception import EdgesNotAdjacentException, NotSimpleException
+from .exception import (
+    EdgesNotAdjacentException,
+    NotSimpleException,
+    NotSimpleCycleException,
+)
 from .types import (
     EdgeFunction,
     EdgeFunctionName,
@@ -53,7 +57,7 @@ def __add_vertex_to_occurence(
     index: int,
 ) -> None:
     """Add vertex to either the first or second occurence lookup"""
-    if vertex in first_occurence:
+    if vertex in first_occurence and vertex not in second_occurence:
         second_occurence[vertex] = index
     elif vertex not in first_occurence:
         first_occurence[vertex] = index
@@ -86,6 +90,11 @@ def order_edge_list(unordered_edges: EdgeList) -> EdgeList:
     for i, edge in enumerate(unordered_edges):
         __add_vertex_to_occurence(first_occurence, second_occurence, edge[0], i)
         __add_vertex_to_occurence(first_occurence, second_occurence, edge[1], i)
+
+    for u in first_occurence:
+        if u not in second_occurence:
+            message = f"Vertex {u} does not appear in two edges. Walk must be closed."
+            raise NotSimpleCycleException(message)
 
     # use the lookup tables to place the edges in the correct order in the edge list
     ordered_edges = []

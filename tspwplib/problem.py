@@ -52,24 +52,24 @@ class BaseTSP(pydantic.BaseModel):
 
     # pylint: disable=too-many-arguments
 
-    capacity: Optional[Union[int, float]]
+    capacity: Optional[Union[int, float]] = None
     comment: str
     demands: Optional[VertexFunction]
     depots: VertexList
     dimension: int
-    display_data: Optional[NodeCoords]
+    display_data: Optional[NodeCoords] = None
     display_data_type: DisplayDataType
     edge_data: SimpleEdgeList
     edge_data_format: EdgeDataFormat
-    edge_weights: Optional[SimpleEdgeFunction]
+    edge_weights: Optional[SimpleEdgeFunction] = None
     edge_weight_format: EdgeWeightFormat
     edge_weight_type: EdgeWeightType
     fixed_edges: SimpleEdgeList
     name: str
-    node_coords: Optional[NodeCoords]
+    node_coords: Optional[NodeCoords] = None
     node_coord_type: NodeCoordType
     problem_type: str
-    tours: Optional[List[VertexList]]
+    tours: Optional[List[VertexList]] = None
 
     class Config:
         """Pydantic configuration"""
@@ -466,11 +466,22 @@ class PrizeCollectingTSP(BaseTSP):
         except KeyError as key_error:
             raise ValueError("The list of depots is empty") from key_error
 
-    def get_total_prize(self) -> Union[int, float]:
+    def get_total_prize(self) -> int:
         """ "Get the total prize (demand) of all vertices"""
         if self.demands:
             return sum(self.demands.values())
         return 0
+
+    def get_quota(self, alpha: int) -> int:
+        """The quota is alpha percent of the total prize
+
+        Args:
+            alpha: Percent of the total prize
+
+        Returns:
+            quota
+        """
+        return get_quota_from_alpha(alpha, self.get_total_prize())
 
 
 class ProfitsProblem(tsplib95.models.StandardProblem):
@@ -591,11 +602,7 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         Returns:
             quota
         """
-        if alpha > 100:
-            raise ValueError("Cannot have a percent over 100 for alpha")
-        if alpha < 0:
-            raise ValueError("Cannot have a negative percent for alpha")
-        return int(float(alpha * self.get_total_prize()) / 100.0)
+        return get_quota_from_alpha(alpha, self.get_total_prize())
 
     def number_of_nodes(self) -> int:
         """Get the number of nodes in the problem
@@ -668,6 +675,23 @@ class ProfitsProblem(tsplib95.models.StandardProblem):
         if normalize:
             raise NotImplementedError("Normalizing edges not yet implemented")
         return list(super().get_edges())
+
+
+def get_quota_from_alpha(alpha: int, total_prize: int) -> int:
+    """The quota is alpha percent of the total prize
+
+    Args:
+        alpha: Percent of the total prize
+        total_prize: Total prize of the graph
+
+    Returns:
+        quota as an integer
+    """
+    if alpha > 100:
+        raise ValueError("Cannot have a percent over 100 for alpha")
+    if alpha < 0:
+        raise ValueError("Cannot have a negative percent for alpha")
+    return int(float(alpha * total_prize) / 100.0)
 
 
 def is_pctsp_yes_instance(
