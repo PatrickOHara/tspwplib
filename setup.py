@@ -12,6 +12,7 @@ setup(
         "numpy>=1.26.0",
         "pandas>=2.0.0",
         "pydantic>=2.5.3",
+        "pyyaml>=6.0",
         "tsplib95@git+https://github.com/ben-hudson/tsplib95.git",
     ],
     name="tspwplib",
