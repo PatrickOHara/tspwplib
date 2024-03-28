@@ -24,7 +24,7 @@ class NotSimplePathException(NotSimpleException):
 
 
 class UnexpectedSelfLoopException(ex.NetworkXException):
-    """A self loop was found where it wasn't exprected"""
+    """A self loop was found where it wasn't expected"""
 
 
 class GraphStructureException(ex.NetworkXException):

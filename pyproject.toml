@@ -11,7 +11,7 @@ urls = {Code = "https://github.com/PatrickOHara/tspwplib", Documentation = "http
 description="Library of instances for TSP with Profits"
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = ["Distributionally Robust Optimisation"]
+keywords = ["TSP"]
 license = {text = "MIT"}
 classifiers=[
     "Programming Language :: Python",
@@ -36,3 +36,4 @@ dynamic = ["version"]
 packages = ["tspwplib"]
 
 [tool.setuptools_scm]
+version_file = "tspwplib/_version.py"
