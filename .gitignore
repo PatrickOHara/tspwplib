@@ -10,7 +10,8 @@ __pycache__
 .DSStore
 .devcontainer
 cache
-build
+build/*
+dist/*
 
 # docs
 site/
