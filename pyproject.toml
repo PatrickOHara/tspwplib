@@ -37,3 +37,5 @@ packages = ["tspwplib"]
 
 [tool.black]
 exclude = "_version.py"
+
+[tool.setuptools_scm]
