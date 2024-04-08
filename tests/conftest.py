@@ -1,10 +1,76 @@
 """Fixtures for testing"""
 
+import os
+from pathlib import Path
 import networkx as nx
 import pytest
-from tspwplib import EdgeFunctionName, VertexFunctionName, VertexList
+from tspwplib import (
+    EdgeFunctionName,
+    Generation,
+    GraphName,
+    VertexFunctionName,
+    VertexList,
+)
 
 # pylint: disable=redefined-outer-name
+
+
+def pytest_addoption(parser):
+    """Options for filepaths for pytest-tspwplib"""
+    group = parser.getgroup("tspwplib")
+    group.addoption(
+        "--tsplib-root",
+        default=os.getenv("TSPLIB_ROOT"),
+        required=False,
+        type=str,
+        help="Filepath to tsplib95 directory",
+    )
+    group.addoption(
+        "--oplib-root",
+        default=os.getenv("OPLIB_ROOT"),
+        required=False,
+        type=str,
+        help="Filepath to oplib directory",
+    )
+
+
+@pytest.fixture(scope="function")
+def tsplib_root(request) -> Path:
+    """Root of tsplib95 data"""
+    return Path(request.config.getoption("--tsplib-root"))
+
+
+@pytest.fixture(scope="function")
+def oplib_root(request) -> Path:
+    """Root of the cloned OP lib"""
+    return Path(request.config.getoption("--oplib-root"))
+
+
+@pytest.fixture(
+    scope="function",
+    params=[
+        GraphName.eil76,
+        GraphName.st70,
+        GraphName.att48,
+    ],
+)
+def graph_name(request) -> GraphName:
+    """Loop through valid instance names"""
+    return request.param
+
+
+@pytest.fixture(
+    scope="function",
+    params=[
+        Generation.gen1,
+        Generation.gen2,
+        Generation.gen3,
+    ],
+)
+def generation(request) -> Generation:
+    """Loop through valid generations"""
+    # NOTE generation 4 has different alpha values
+    return request.param
 
 
 @pytest.fixture(scope="function", params=[[], [0], [0, 1, 3, 1, 2]])

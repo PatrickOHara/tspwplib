@@ -4,6 +4,7 @@ import math
 import pytest
 import networkx as nx
 from tspwplib import (
+    Alpha,
     Generation,
     ProfitsProblem,
     EdgeFunctionName,
@@ -24,8 +25,9 @@ def test_parse_profits_problem(oplib_root, generation, graph_name):
     assert problem.is_complete()
 
 
-def test_get_cost_limit(oplib_root, generation, graph_name, alpha):
+def test_get_cost_limit(oplib_root, generation, graph_name):
     """Test we can get the cost limit"""
+    alpha = Alpha.fifty
     filepath = build_path_to_oplib_instance(oplib_root, generation, graph_name)
     problem = ProfitsProblem.load(filepath)
     expected_cost_limit = math.ceil(OptimalSolutionTSP[graph_name] * (alpha / 100.0))

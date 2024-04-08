@@ -71,10 +71,8 @@ class BaseTSP(pydantic.BaseModel):
     problem_type: str
     tours: Optional[List[VertexList]] = None
 
-    class Config:
-        """Pydantic configuration"""
-
-        arbitrary_types_allowed = True
+    # pydantic model config
+    model_config = {"arbitrary_types_allowed": True}
 
     @classmethod
     def from_networkx(

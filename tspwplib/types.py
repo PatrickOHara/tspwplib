@@ -1,6 +1,6 @@
 """Type hinting and names"""
 
-from datetime import datetime, timezone
+import datetime
 from enum import Enum, IntEnum
 from typing import Any, Dict, List, Tuple, Union
 
@@ -261,7 +261,7 @@ class LondonaqGraphName(StrEnumMixin, str, Enum):
 class LondonaqTimestamp(Enum):
     """Timestamps of the forecasts for London air quality forecasts"""
 
-    A = datetime(2021, 10, 13, 8, 0, 0, tzinfo=timezone.utc)  # 9am BST
+    A = datetime.datetime(2021, 10, 13, 8, 0, 0, tzinfo=datetime.UTC)  # 9am BST
 
 
 class LondonaqTimestampId(StrEnumMixin, str, Enum):
