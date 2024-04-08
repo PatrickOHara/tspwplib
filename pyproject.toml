@@ -10,14 +10,12 @@ authors = [
 urls = {Code = "https://github.com/PatrickOHara/tspwplib", Documentation = "https://patrickohara.github.io/tspwplib/", Download = "https://pypi.org/project/tspwplib/", Homepage = "https://github.com/PatrickOHara/tspwplib", Issues = "https://github.com/PatrickOHara/tspwplib/issues"}
 description="Library of instances for TSP with Profits"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 keywords = ["TSP"]
 license = {text = "MIT"}
 classifiers=[
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3 :: Only",
     "Operating System :: OS Independent",
@@ -26,6 +24,7 @@ dependencies = [
     "networkx>=3.0.0",
     "numpy>=1.26.0",
     "pandas>=2.0.0",
+    "pyarrow>=15.0.0",
     "pydantic>=2.5.3",
     "pyyaml>=6.0",
     "tsplib95@git+https://github.com/ben-hudson/tsplib95.git",
@@ -37,3 +36,5 @@ packages = ["tspwplib"]
 
 [tool.black]
 exclude = "_version.py"
+
+[tool.setuptools_scm]
