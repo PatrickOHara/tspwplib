@@ -1,8 +1,10 @@
 """Functions for creating a sparse graph from a complete graph"""
 
+from typing import Optional
 from copy import deepcopy
 import random
 import networkx as nx
+import numpy as np
 from .types import Vertex
 
 
@@ -10,7 +12,7 @@ def sparsify_uid(
     G: nx.Graph,
     kappa: int,
     remove_self_loops: bool = False,
-    seed: int = 0,
+    generator: Optional[np.random.Generator] = None,
 ) -> nx.Graph:
     """Remove edges with uniform and independent (uid) probability until
     the number of edges equals kappa * number of nodes
@@ -19,7 +21,7 @@ def sparsify_uid(
         G: Graph
         kappa: Parameter independent of the input size
         remove_self_loops: Should self loops have a change of being removed?
-        seed: Set the random seed
+        generator: Pass an optional random generator
 
     Returns:
         Graph with kappa * V edges where V is the number of nodes
@@ -27,15 +29,16 @@ def sparsify_uid(
     Notes:
         A copy of the graph is made and returned. The original graph is unedited.
     """
-    random.seed(seed)
+    if not generator:
+        generator = np.random.default_rng()
     graph_copy = deepcopy(G)
     vertex_list = list(graph_copy.nodes())
     while graph_copy.number_of_edges() > graph_copy.number_of_nodes() * kappa:
         # choose vertex randomly
-        u = random.choice(vertex_list)
+        u = generator.choice(vertex_list)
         if graph_copy.degree(u) > 0:
             # choose a neighbor randomly
-            v = random.choice(list(graph_copy.neighbors(u)))
+            v = generator.choice(list(graph_copy.neighbors(u)))
             # remove edge if it is not a self loop
             if remove_self_loops or u != v:
                 graph_copy.remove_edge(u, v)
